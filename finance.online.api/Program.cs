@@ -2,6 +2,9 @@ using finance.online.api.Data;
 using finance.online.api.Models;
 using finance.online.api.Models.DTO;
 using finance.online.api.Repositories.RefreshTokenRepository;
+using finance.online.api.Repositories.OrganizationRepository;
+using finance.online.api.Repositories.OperationRepository;
+using finance.online.api.Repositories.CategoryRepository;
 using finance.online.api.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -109,6 +112,12 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+
+builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+
+//builder.Services.AddScoped<IOperationRepository, OperationRepository>();
+
+//builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 
