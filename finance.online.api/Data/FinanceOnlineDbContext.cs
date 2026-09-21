@@ -14,11 +14,12 @@ namespace finance.online.api.Data
         {
         }
 
-
+        public DbSet<AppUser> Users { get; set; }
         public DbSet<Organization> Organizations => Set<Organization>();
         public DbSet<Member> Members => Set<Member>();
         public DbSet<OperationModel> Operations => Set<OperationModel>();
         public DbSet<Category> Categories => Set<Category>();
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
