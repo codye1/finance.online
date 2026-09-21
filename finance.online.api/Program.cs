@@ -117,7 +117,7 @@ builder.Services.AddScoped<IOrganizationRepository, OrganizationRepository>();
 
 //builder.Services.AddScoped<IOperationRepository, OperationRepository>();
 
-//builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 
