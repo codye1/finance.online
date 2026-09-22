@@ -1,49 +1,92 @@
-﻿<!DOCTYPE html>
+﻿@inject finance.online.mvc.Services.IComponentAssetManager AssetManager
+@inject finance.online.mvc.Services.ICurrentUserService CurrentUserService
+@{
+    var currentUser = CurrentUserService.GetUser();
+    var userAuthenticated = currentUser != null;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - finance.online.mvc</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/finance.online.mvc.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/finance.online.mvc.styles.css" />
+
+    @foreach (var style in AssetManager.GetStyles())
+    {
+        <link rel="stylesheet" href="@style" />
+    }
+
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">finance.online.mvc</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+        @if(userAuthenticated)
+        {
+            <div>Authorized</div>
+        }
+        else
+        {
+            <div>not authorized</div>
+        }
+        @* <div class="header-container">
+            <div class="header-meta">
+                <h1 class="header-title">TransitSim</h1>
+                <p class="header-subtitle">Система моделювання міського транспорту</p>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+            <div class="header-buttons">
+                @RenderSection("HeaderFilter", required: false)
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - finance.online.mvc - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+                @if (userAuthenticated)
+                {
+                    <form asp-controller="Auth" asp-action="Logout" method="post" class="logout-form">
+                        <button type="submit" class="icon-btn header-icon-btn" title="Logout">
+                            <img src="~/images/icons/logout.svg" alt="IconBtn" />
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <a asp-controller="Auth" asp-action="Login" class="icon-btn header-icon-btn" title="Login">
+                        <img src="~/images/icons/login.svg" alt="IconBtn" />
+                    </a>
+                }
+            </div>
+        </div> *@
+    </header>
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <footer>
     </footer>
+    <div id="app-modal" class="modal-overlay">
+        <div class="modal-window">
+            <div class="modal-header">
+                <h2 id="modal-title"></h2>
+                <button class="js-close-modal" id="js-close-modal"><img src="~/images/icons/close.svg" alt="CloseIcon" /> </button>
+            </div>
+            <div id="modal-body-content"></div>
+        </div>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+    @foreach (var script in AssetManager.GetScripts())
+    {
+        if (script.IsModule)
+        {
+            <script src="@script.Src" type="module" asp-append-version="true"></script>
+        }
+        else
+        {
+            <script src="@script.Src" asp-append-version="true"></script>
+        }
+    }
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

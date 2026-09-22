@@ -1,22 +1,93 @@
-html {
-  font-size: 14px;
+﻿/*
+  Design tokens for the finance app, reverse-engineered from the Tailwind /
+  shadcn class names used across Home, Settings and Categories
+  (bg-card, text-muted-foreground, bg-primary/15, text-income, bg-expense/10,
+  border-t-primary, font-display, font-mono-tabular, rounded-lg, etc.).
+
+  Values are stored as "H S% L%" triplets (shadcn convention), not hex,
+  so Tailwind's opacity modifiers keep working: bg-primary/15, text-expense,
+  border-expense/40 and friends all need the underlying var to be an HSL
+  triplet, wired up as hsl(var(--x) / <alpha-value>) in tailwind.config
+  (snippet below the file).
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root {
+    /* Typography — Sans for UI/headings, Mono for money (tabular figures).
+     IBM Plex ships full Cyrillic coverage, needed for the UI copy. */
+    --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-display: 'IBM Plex Sans', var(--font-body); /* used via .font-display, weight set per element */
+    --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace; /* used via .font-mono-tabular */
+    /* Base surfaces & text */
+    --background: 220 20% 97%; /* ≈#F5F6F9 — page canvas, bg-background */
+    --foreground: 222 32% 12%; /* ≈#12151F — default text, text-foreground */
+    --card: 0 0% 100%; /* #FFFFFF — bg-card */
+    --card-foreground: 222 32% 12%;
+    --muted: 220 16% 93%; /* ≈#EAEBEF — bg-muted, skeleton fills */
+    --muted-foreground: 222 10% 42%; /* ≈#63677A — text-muted-foreground */
+    --border: 220 14% 89%; /* ≈#DFE1E7 — border-border */
+    --input: 220 14% 89%;
+    --ring: 221 83% 53%; /* focus ring = primary */
+    /* Brand */
+    --primary: 221 83% 53%; /* ≈#2563EB — matches the org-avatar default color already in code */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 16% 93%; /* border-secondary (spinner track), secondary surfaces */
+    --secondary-foreground: 222 32% 12%;
+    /* Destructive (shadcn AlertDialog action) */
+    --destructive: 5 61% 46%; /* ≈#C0362C — brick red, deliberately not a neon Tailwind red */
+    --destructive-foreground: 0 0% 100%;
+    /* Finance semantics — custom slots the app adds on top of shadcn's defaults */
+    --income: 152 62% 32%; /* ≈#1E8A56 — text-income / bg-income, ledger credit */
+    --income-foreground: 0 0% 100%;
+    --expense: 5 61% 46%; /* same red family as destructive — "loss" ink */
+    --expense-foreground: 0 0% 100%;
+    /* Radius — rounded-sm / rounded-md / rounded-lg / rounded-full */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.625rem;
+    --radius-lg: 0.875rem;
+    --radius-full: 999px;
+    /* Spacing — for hand-written component CSS outside Tailwind utilities
+     (e.g. the auth page), kept on the same scale as the old tokens file
+     so nothing besides the var names has to change. */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 2.5rem;
+    --space-8: 3rem;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+[data-theme='dark'] {
+    --background: 224 22% 8%; /* ≈#0E1015 */
+    --foreground: 220 18% 94%; /* ≈#EAEBF0 */
+    --card: 224 20% 11%; /* ≈#161923 */
+    --card-foreground: 220 18% 94%;
+    --muted: 224 16% 16%; /* ≈#212530 */
+    --muted-foreground: 220 10% 63%; /* ≈#9CA0AC */
+    --border: 224 16% 18%; /* ≈#262B37 */
+    --input: 224 16% 18%;
+    --secondary: 224 16% 16%;
+    --secondary-foreground: 220 18% 94%;
+    --primary: 221 89% 66%; /* brightened for contrast on dark bg */
+    --primary-foreground: 224 22% 8%;
+    --ring: 221 89% 66%;
+    --destructive: 5 72% 58%;
+    --destructive-foreground: 0 0% 100%;
+    --income: 152 55% 45%;
+    --income-foreground: 224 22% 8%;
+    --expense: 5 72% 58%;
+    --expense-foreground: 0 0% 100%;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+/* Referenced directly in Home.jsx as `font-mono-tabular` on money figures */
+.font-mono-tabular {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums lining-nums;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  margin-bottom: 60px;
+.hidden {
+    display: none !important;
 }
