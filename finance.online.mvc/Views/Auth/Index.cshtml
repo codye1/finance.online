@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Авторизація";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Views/auth.css" asp-append-version="true" />
+}
+
+<div class="auth-wrapper">
+    <div class="auth-card" id="loginPanel">
+        <h2 class="auth-title">Вхід у систему</h2>
+        <p class="auth-lead">Введіть свої дані для доступу до симулятора</p>
+
+        <div class="alert-danger" id="loginError"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label class="form-label" for="loginEmail">Електронна пошта</label>
+                <input class="form-control" type="email" id="loginEmail" name="email" required placeholder="name@example.com" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="loginPassword">Пароль</label>
+                <input class="form-control" type="password" id="loginPassword" name="password" required placeholder="••••••••" />
+            </div>
+
+            <button class="btn-primary auth-btn" type="submit">
+                <span class="btn-text">Увійти</span>
+                <span class="spinner"></span>
+            </button>
+        </form>
+
+        <p class="auth-footer-text">
+            Немає облікового запису?
+            <span class="auth-link toggle-auth-panels">Зареєструватися</span>
+        </p>
+    </div>
+
+    <div class="auth-card hidden" id="registerPanel">
+        <h2 class="auth-title">Реєстрація</h2>
+        <p class="auth-lead">Створіть новий акаунт TransitFlow</p>
+
+        <div class="alert-danger" id="registerError"></div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label class="form-label" for="registerEmail">Електронна пошта</label>
+                <input class="form-control" type="email" id="registerEmail" name="email" required placeholder="name@example.com" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="registerPassword">Пароль</label>
+                <input class="form-control" type="password" id="registerPassword" name="password" required placeholder="••••••••" />
+            </div>
+
+            <button class="btn-primary auth-btn" type="submit">
+                <span class="btn-text">Створити акаунт</span>
+                <span class="spinner"></span>
+            </button>
+        </form>
+
+        <p class="auth-footer-text">
+            Вже маєте акаунт?
+            <span class="auth-link toggle-auth-panels">Увійти</span>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/Views/Auth/auth.js" asp-append-version="true" type="module"></script>
+}

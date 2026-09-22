@@ -1,0 +1,97 @@
+﻿.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px);
+    padding: var(--space-6);
+}
+
+.auth-card {
+    background-color: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 440px;
+    padding: var(--space-7);
+    /* tinted with foreground instead of flat black, matches the app's ink color */
+    box-shadow: 0 10px 25px -5px hsl(var(--foreground) / 0.06), 0 8px 10px -6px hsl(var(--foreground) / 0.05);
+}
+
+.auth-title {
+    font-family: var(--font-display);
+    font-size: var(--space-5);
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+}
+
+.auth-lead {
+    font-size: 0.875rem;
+    color: hsl(var(--muted-foreground));
+    margin-bottom: var(--space-6);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+}
+
+.form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: hsl(var(--foreground));
+}
+
+.form-control {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    /* sits one shade darker than the white card, same as bg-muted elsewhere in the app */
+    background-color: hsl(var(--background));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-md);
+    color: hsl(var(--foreground));
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+    .form-control:focus {
+        outline: none;
+        border-color: hsl(var(--primary));
+        box-shadow: 0 0 0 3px hsl(var(--primary) / 0.2);
+    }
+
+.auth-footer-text {
+    margin-top: var(--space-5);
+    text-align: center;
+    font-size: 0.875rem;
+    color: hsl(var(--muted-foreground));
+}
+
+.auth-link {
+    color: hsl(var(--primary));
+    text-decoration: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+    .auth-link:hover {
+        text-decoration: underline;
+    }
+
+.alert-danger {
+    background-color: hsl(var(--destructive) / 0.1);
+    border: 1px solid hsl(var(--destructive) / 0.3);
+    color: hsl(var(--destructive));
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    margin-bottom: var(--space-4);
+    display: none; /* Managed dynamically via javascript */
+}
+
+.auth-btn {
+    margin: auto;
+    width: 100%;
+}
