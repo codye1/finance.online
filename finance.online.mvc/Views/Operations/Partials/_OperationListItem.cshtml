@@ -1,0 +1,23 @@
+@model finance.online.mvc.Models.OperationListItemViewModel
+
+<div class="op-item" data-type="@Model.Type" data-category="@Model.Category" data-id="@Model.Id" data-amount="@Model.Amount.ToString(System.Globalization.CultureInfo.InvariantCulture)">
+    <div class="op-item-icon @(Model.Type == "income" ? "income" : "expense")">
+        @Model.CategoryIcon
+    </div>
+    <div class="op-item-body">
+        <div class="op-item-desc">@(string.IsNullOrWhiteSpace(Model.Description) ? Model.Category : Model.Description)</div>
+        <div class="op-item-meta">@Model.Category · @Model.Date.ToString("dd.MM.yyyy")</div>
+    </div>
+    <div class="op-item-amount @(Model.Type == "income" ? "income" : "expense")">
+        @(Model.Type == "income" ? "+" : "-")@Model.Amount.ToString("N2")
+    </div>
+    <button type="button" class="op-delete-btn" data-operation-id="@Model.Id" aria-label="Видалити операцію">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 6h18"></path>
+            <path d="M8 6V4h8v2"></path>
+            <path d="M19 6l-1 14H6L5 6"></path>
+            <path d="M10 11v5"></path>
+            <path d="M14 11v5"></path>
+        </svg>
+    </button>
+</div>
