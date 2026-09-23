@@ -13,7 +13,7 @@ namespace finance.online.api.Repositories.OperationRepository
         private const string IncomeType = "income";
         private const string ExpenseType = "expense";
 
-        private const int PageSize = 20;
+        private const int PageSize = 5;
 
         private readonly FinanceOnlineDbContext _context;
 

@@ -72,6 +72,12 @@
                 </select>
             </section>
 
+            @* ВАЖЛИВО для infinite scroll: контейнер має бути обмежений по висоті
+               і мати overflow-y:auto (переконайтесь, що це є в operations.css,
+               наприклад .op-list { max-height: ...; overflow-y: auto; }).
+               Якщо контейнер необмежений — скрол ніколи не з'явиться і сторінка
+               просто довантажить усі сторінки одну за одною при відкритті,
+               завдяки fillOperationsListIfNeeded() в operations.js. *@
             <div class="op-list" id="operations-list">
                 @if (Model.Operations.Count == 0)
                 {
@@ -86,6 +92,9 @@
                         @await Html.PartialAsync("~/Views/Operations/Partials/_OperationListItem.cshtml", op)
                     }
                 }
+                <div id="operations-loading" class="text-xs text-muted-foreground" style="display:none; text-align:center; padding:0.5rem 0;">
+                    Завантаження…
+                </div>
             </div>
             <div class="op-card op-empty-state" id="op-empty-state" style="display:none;">
                 <p>Операцій не знайдено</p>

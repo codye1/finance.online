@@ -176,6 +176,9 @@
                                     @await Html.PartialAsync("~/Views/Home/Partials/_OperationItem.cshtml", op)
                                 }
                         }
+                        <div id="operations-loading" class="text-xs text-muted-foreground" style="display:none; text-align:center; padding:0.5rem 0;">
+    Завантаження…
+</div>
                     </div>
                 </div>
             </section>
@@ -286,13 +289,11 @@
 @section Scripts{
     <script>
         window.TransitData = {
-            organizationId: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ActiveOrganization.Id, new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase })),
+            organizationId: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ActiveOrganization.Id)),
+            activePeriod: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ActivePeriod))
         };
 
         localStorage.setItem('activeOrganizationId', window.TransitData.organizationId);
-
-        // при виборі іншої організації в дропдауні:
-        // localStorage.setItem('activeOrganizationId', selectedId);
-        // window.location.href = '/?organizationId=' + selectedId;
+        localStorage.setItem('activePeriod', window.TransitData.activePeriod);
     </script>
 }
