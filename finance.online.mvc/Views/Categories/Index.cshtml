@@ -1,0 +1,105 @@
+@model finance.online.mvc.Models.CategoriesViewModel
+@inject IComponentAssetManager AssetManager
+
+@{
+    ViewData["Title"] = "Категорії";
+    AssetManager.RegisterStyle("/css/views/categories.css");
+    AssetManager.RegisterScript("/lib/jquery-validation/dist/jquery.validate.min.js");
+    AssetManager.RegisterScript("/js/views/Categories/categories.js", isModule: true);
+}
+
+<div class="categories-page">
+    <header class="categories-header">
+        <div class="categories-header-inner">
+            <h1>Категорії</h1>
+        </div>
+    </header>
+
+    <main class="categories-main">
+        @if (!Model.HasOrganizations || Model.ActiveOrganization is null)
+        {
+            <section class="categories-empty">
+                <div class="categories-empty-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 21h18"></path>
+                        <path d="M5 21V7l7-4 7 4v14"></path>
+                    </svg>
+                </div>
+                <h2>У вас ще немає організацій</h2>
+                <p>Створіть організацію на дашборді, щоб керувати категоріями.</p>
+                <a class="categories-primary-link" href="/">На дашборд</a>
+            </section>
+        }
+        else
+        {
+            <section class="categories-card">
+                <div class="categories-section-heading">
+                    <div>
+                        <h2>Усі категорії</h2>
+                        <p>@Model.Categories.Count категорі(й) в організації</p>
+                    </div>
+                    <button type="button" class="btn-primary" id="open-add-category-modal-btn" style="max-width:none; width:auto;">
+                        <span class="btn-text">＋ Додати категорію</span>
+                    </button>
+                </div>
+
+                <div class="categories-members-list" id="categories-list">
+                    @if (Model.Categories.Count == 0)
+                    {
+                        <div class="categories-muted-row">Категорій ще немає</div>
+                    }
+                    else
+                    {
+                        @foreach (var category in Model.Categories)
+                        {
+                            @await Html.PartialAsync("~/Views/Categories/Partials/_CategoryItem.cshtml", category)
+                        }
+                    }
+                </div>
+            </section>
+        }
+    </main>
+
+    <template id="tpl-add-category">
+        <form id="form-add-category" class="modal-form-layout">
+
+            <div class="form-group">
+                <label class="form-label" for="category-name">Назва</label>
+                <input type="text" name="name" id="category-name" required placeholder="Напр. Оренда" class="form-input" autocomplete="off" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Колір</label>
+                <div class="color-swatch-group" id="category-color-group">
+                    <button type="button" class="color-swatch-btn active" data-color="#2563EB" style="background-color:#2563EB;" aria-label="Колір #2563EB"></button>
+                    <button type="button" class="color-swatch-btn" data-color="#10B981" style="background-color:#10B981;" aria-label="Колір #10B981"></button>
+                    <button type="button" class="color-swatch-btn" data-color="#EF4444" style="background-color:#EF4444;" aria-label="Колір #EF4444"></button>
+                    <button type="button" class="color-swatch-btn" data-color="#F59E0B" style="background-color:#F59E0B;" aria-label="Колір #F59E0B"></button>
+                    <button type="button" class="color-swatch-btn" data-color="#8B5CF6" style="background-color:#8B5CF6;" aria-label="Колір #8B5CF6"></button>
+                    <button type="button" class="color-swatch-btn" data-color="#EC4899" style="background-color:#EC4899;" aria-label="Колір #EC4899"></button>
+                    <button type="button" class="color-swatch-btn" data-color="#06B6D4" style="background-color:#06B6D4;" aria-label="Колір #06B6D4"></button>
+                    <button type="button" class="color-swatch-btn" data-color="#84CC16" style="background-color:#84CC16;" aria-label="Колір #84CC16"></button>
+                </div>
+                <input type="hidden" name="color" id="category-color" value="#2563EB" />
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-primary" id="js-close-category-modal">
+                    <span class="btn-text">Скасувати</span>
+                </button>
+                <button type="submit" id="btn-submit-category" class="btn-primary">
+                    <span class="btn-text">Додати категорію</span>
+                    <span class="spinner"></span>
+                </button>
+            </div>
+        </form>
+    </template>
+</div>
+
+@section Scripts {
+    <script>
+        window.TransitData = {
+            organizationId: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ActiveOrganization?.Id))
+        };
+    </script>
+}
