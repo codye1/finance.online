@@ -48,6 +48,10 @@ $(function () {
                         $('#operations-list').prepend($(html));
                         recomputeSummary();
                         Modal.close();
+
+                        // Новий айтем міг заповнити контейнер (з'явився скрол) або
+                        // навпаки — все ще замало, тож перевіряємо необхідність довантаження.
+                        fillOperationsListIfNeeded();
                     })
                     .fail((xhr) => {
                         if (xhr.status === 401) {
@@ -152,6 +156,10 @@ $(function () {
                 .done(function () {
                     $item.remove();
                     applyFilters();
+
+                    // Видалення могло звільнити місце — контейнер міг втратити
+                    // скрол, хоча на сервері ще є що довантажити.
+                    fillOperationsListIfNeeded();
                 })
                 .fail((xhr) => {
                     if (xhr.status === 401) {
@@ -164,6 +172,102 @@ $(function () {
         });
     }
 
+    // ---- Infinite scroll для сторінки "Усі операції" ----
+    let operationsPage = 1;
+    let operationsHasMore = true;
+    let operationsLoading = false;
+
+    function loadMoreOperations() {
+        if (operationsLoading || !operationsHasMore) {
+            return $.Deferred().resolve().promise();
+        }
+
+        const organizationId = window.TransitData?.organizationId;
+
+        if (!organizationId) {
+            return $.Deferred().resolve().promise();
+        }
+
+        operationsLoading = true;
+        const nextPage = operationsPage + 1;
+        $('#operations-loading').show();
+
+        return api.loadMoreOperations(organizationId, nextPage)
+            .done((html) => {
+                const trimmed = (html || '').trim();
+
+                if (!trimmed) {
+                    operationsHasMore = false;
+                    return;
+                }
+
+                const $newItems = $(trimmed);
+                $('#operations-list').append($newItems);
+                operationsPage = nextPage;
+
+                applyFilters();
+            })
+            .fail((xhr) => {
+                if (xhr.status === 401) {
+                    window.location.href = '/login';
+                    return;
+                }
+
+                operationsHasMore = false;
+            })
+            .always(() => {
+                operationsLoading = false;
+                $('#operations-loading').hide();
+
+                // Якщо після довантаження контейнер все ще не заповнений
+                // (немає скролу) і дані ще є — довантажуємо далі рекурсивно.
+                fillOperationsListIfNeeded();
+            });
+    }
+
+    // Довантажує операції, поки контейнер не заповниться настільки,
+    // щоб з'явився скрол, або поки не закінчаться дані на сервері.
+    // Без цього: якщо айтемів мало (або більшість відфільтровано),
+    // подія 'scroll' ніколи не виникає і довантаження просто не почнеться.
+    function fillOperationsListIfNeeded() {
+        const $list = $('#operations-list');
+        if (!$list.length || operationsLoading || !operationsHasMore) {
+            return;
+        }
+
+        const el = $list.get(0);
+        const hasScroll = el.scrollHeight > el.clientHeight + 1;
+
+        if (!hasScroll) {
+            loadMoreOperations();
+        }
+    }
+
+    function initOperationsInfiniteScroll() {
+        const $list = $('#operations-list');
+        if (!$list.length) {
+            return;
+        }
+
+        $list.on('scroll', function () {
+            const el = this;
+            const threshold = 80;
+            const nearBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - threshold;
+
+            if (nearBottom) {
+                loadMoreOperations();
+            }
+        });
+
+        // Перевіряємо одразу після ініціалізації: раптом айтемів
+        // із серверного рендеру замало, щоб з'явився скрол.
+        fillOperationsListIfNeeded();
+
+        $(window).on('resize', function () {
+            fillOperationsListIfNeeded();
+        });
+    }
+
     $('#open-operation-modal-btn').on('click', function () {
         openAddOperationModal();
     });
@@ -172,5 +276,6 @@ $(function () {
     $('#op-type-filter, #op-category-filter').on('change', applyFilters);
 
     initDeleteOperation();
+    initOperationsInfiniteScroll();
     recomputeSummary();
 });

@@ -12,7 +12,10 @@ const operationsApi = {
             url: '/operations/' + operationId,
             method: 'DELETE'
         });
-    }
+    },
+    loadMoreOperations(organizationId, page) {
+    return $.get(`/organizations/${organizationId}/operations/list-more`, { page });
+}
 };
 
 export default operationsApi;

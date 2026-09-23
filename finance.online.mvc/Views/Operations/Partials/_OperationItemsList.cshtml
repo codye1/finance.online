@@ -1,0 +1,8 @@
+@model System.Collections.Generic.List<finance.online.mvc.Models.OperationListItemViewModel>
+
+@foreach (var op in Model)
+{
+    @await Html.PartialAsync(
+        "~/Views/Operations/Partials/_OperationListItem.cshtml",
+        op)
+}
