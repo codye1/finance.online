@@ -192,7 +192,6 @@ namespace finance.online.mvc.Controllers
 
         Operations = operations
             .OrderByDescending(operation => operation.CreatedAt)
-            .Take(12)
             .Select(MapOperation)
             .ToList(),
 
@@ -201,7 +200,26 @@ namespace finance.online.mvc.Controllers
             .ToList()
     };
 }
+[HttpGet("/organizations/{orgId}/operations/more")]
+public async Task<IActionResult> LoadMoreOperations(string orgId, int page = 2, string period = "month")
+{
+    var client = _httpClientFactory.CreateClient("FinanceOnlineApi");
+    var result = await TryGetJsonAsync<List<OperationResponseDto>>(
+        client,
+        $"/organizations/{orgId}/operations?period={period}&page={page}");
 
+    if (result.State is ApiFetchState.Unauthorized or ApiFetchState.Forbidden)
+    {
+        return Unauthorized();
+    }
+
+    var operations = (result.Value ?? new List<OperationResponseDto>())
+        .OrderByDescending(operation => operation.CreatedAt)
+        .Select(MapOperation)
+        .ToList();
+
+    return PartialView("~/Views/Home/Partials/_OperationItemsList.cshtml", operations);
+}
         // Якщо передано organizationId (з localStorage на клієнті) — тягнемо конкретну організацію по id.
         // Якщо його нема, або він виявився невалідним (404/Failed) — фолбек на /organizations/active.
         private static async Task<(ApiFetchState State, OrganizationResponseDto? Value)> ResolveActiveOrganizationAsync(

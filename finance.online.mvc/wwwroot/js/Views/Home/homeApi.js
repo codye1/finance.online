@@ -14,6 +14,13 @@ const homeApi = {
             contentType: 'application/json',
             data: JSON.stringify(organizationData)
         });
+    },
+    loadMoreOperations: function (organizationId, page, period) {
+        return $.ajax({
+            url: '/organizations/' + organizationId + '/operations/more',
+            method: 'GET',
+            data: { page: page, period: period }
+        });
     }
 };
 

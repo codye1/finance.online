@@ -46,8 +46,13 @@ $(function () {
                     .done((html) => {
                         const $newItem = $(html);
                         $('#operations-list').prepend($newItem);
+                        applyOperationsFilter(operationsActiveFilter);
 
                         Modal.close();
+
+                        // Новий айтем міг заповнити список так, що скрол з'явився,
+                        // або навпаки — перевіряємо, чи не треба довантажити ще.
+                        fillOperationsListIfNeeded();
                     })
                     .fail((xhr) => {
                         if (xhr.status === 401) {
@@ -169,7 +174,7 @@ $(function () {
         });
     }
 
-    function initFilter($filterBar, $container, itemSelector, emptyStateHtml) {
+    function initFilter($filterBar, $container, itemSelector, emptyStateHtml, onFilterChange) {
         if (!$filterBar.length || !$container.length) {
             return;
         }
@@ -190,6 +195,10 @@ $(function () {
             if (hasAnyItems && visibleCount === 0 && emptyStateHtml) {
                 $container.append(emptyStateHtml);
             }
+
+            if (onFilterChange) {
+                onFilterChange(filter);
+            }
         }
 
         $filterBar.on('click', '.filter-toggle', function () {
@@ -200,6 +209,117 @@ $(function () {
             $btn.addClass('active');
 
             applyFilter(filter);
+        });
+    }
+
+    // ---- Infinite scroll для стрічки операцій ----
+    let operationsPage = 1;
+    let operationsHasMore = true;
+    let operationsLoading = false;
+    let operationsActiveFilter = 'all';
+
+    function applyOperationsFilter(filter) {
+        operationsActiveFilter = filter;
+
+        $('#operations-list .ledger-item').each(function () {
+            const $item = $(this);
+            const type = $item.data('type');
+            const matches = filter === 'all' || String(type) === filter;
+            $item.toggle(matches);
+        });
+    }
+
+    function loadMoreOperations() {
+        if (operationsLoading || !operationsHasMore) {
+            return $.Deferred().resolve().promise();
+        }
+
+        const organizationId = window.TransitData?.organizationId;
+        const activePeriod = window.TransitData?.activePeriod || 'month';
+
+        if (!organizationId) {
+            return $.Deferred().resolve().promise();
+        }
+
+        operationsLoading = true;
+        const nextPage = operationsPage + 1;
+        $('#operations-loading').show();
+
+        return api.loadMoreOperations(organizationId, nextPage, activePeriod)
+            .done((html) => {
+                const trimmed = (html || '').trim();
+
+                if (!trimmed) {
+                    operationsHasMore = false;
+                    return;
+                }
+
+                const $newItems = $(trimmed);
+                $('#operations-list').append($newItems);
+                operationsPage = nextPage;
+
+                applyOperationsFilter(operationsActiveFilter);
+            })
+            .fail((xhr) => {
+                if (xhr.status === 401) {
+                    window.location.href = '/login';
+                    return;
+                }
+
+                operationsHasMore = false;
+            })
+            .always(() => {
+                operationsLoading = false;
+                $('#operations-loading').hide();
+
+                // Якщо після довантаження список все ще не заповнює контейнер
+                // (скролу немає) і дані ще є — довантажуємо далі рекурсивно.
+                fillOperationsListIfNeeded();
+            });
+    }
+
+    // Довантажує операції, поки контейнер не заповниться настільки,
+    // щоб з'явився скрол, або поки не закінчаться дані на сервері.
+    // Потрібно, бо якщо айтемів мало — подія 'scroll' ніколи не виникає,
+    // і без цієї перевірки довантаження просто ніколи не запуститься.
+    function fillOperationsListIfNeeded() {
+        const $list = $('#operations-list');
+        if (!$list.length || operationsLoading || !operationsHasMore) {
+            return;
+        }
+
+        const el = $list.get(0);
+        const hasScroll = el.scrollHeight > el.clientHeight + 1;
+
+        if (!hasScroll) {
+            loadMoreOperations();
+        }
+    }
+
+    function initOperationsInfiniteScroll() {
+        const $list = $('#operations-list');
+        if (!$list.length) {
+            return;
+        }
+
+        $list.on('scroll', function () {
+            const el = this;
+            const threshold = 80;
+            const nearBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - threshold;
+
+            if (nearBottom) {
+                loadMoreOperations();
+            }
+        });
+
+        // Перевіряємо одразу після ініціалізації: раптом айтемів
+        // із серверного рендеру замало, щоб з'явився скрол.
+        fillOperationsListIfNeeded();
+
+        // На випадок зміни розміру вікна (наприклад, поворот екрана
+        // або зміна layout), коли список міг "розгорнутися" й втратити скрол.
+        $(window).on('resize', function () {
+            fillOperationsListIfNeeded();
         });
     }
 
@@ -275,7 +395,8 @@ $(function () {
         '.ledger-item',
         '<div class="filter-empty-state flex flex-col items-center" style="padding:2.5rem 0; text-align:center;">' +
         '<p class="text-xs text-muted-foreground">Немає операцій цього типу</p>' +
-        '</div>'
+        '</div>',
+        applyOperationsFilter
     );
 
     initFilter(
@@ -287,4 +408,5 @@ $(function () {
 
     initOrganizationDropdown();
     initPeriodDropdown();
+    initOperationsInfiniteScroll();
 });
