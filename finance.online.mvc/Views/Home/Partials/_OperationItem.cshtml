@@ -1,0 +1,19 @@
+@model finance.online.mvc.Models.OperationViewModel
+
+@{
+    var op = Model;
+    string FormatMoney(decimal amount) => amount.ToString("N2");
+}
+
+<div class="ledger-item" data-type="@op.Type">
+    <div class="ledger-icon @(op.Type == "income" ? "bg-income-15" : "bg-expense-15")">
+        @op.CategoryIcon
+    </div>
+    <div class="ledger-body">
+        <div class="ledger-desc">@(op.Description ?? op.Category)</div>
+        <div class="ledger-meta">@op.Category · @op.Date.ToString("dd.MM.yyyy")</div>
+    </div>
+    <div class="ledger-amount @(op.Type == "income" ? "text-income" : "text-expense")">
+        @(op.Type == "income" ? "+" : "−") @FormatMoney(op.Amount)
+    </div>
+</div>
