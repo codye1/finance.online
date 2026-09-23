@@ -158,6 +158,7 @@ a {
     display: flex;
     width: 2.75rem;
     height: 2.75rem;
+    padding:0.5rem;
     align-items: center;
     justify-content: center;
     border-radius: var(--radius-md);
@@ -574,4 +575,11 @@ input[type="date"].form-input {
         grid-template-columns: 1fr;
         gap: 0;
     }
+}
+
+.form-hint {
+  margin: 0;
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+  line-height: 1.4;
 }

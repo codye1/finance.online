@@ -1,0 +1,192 @@
+@model finance.online.mvc.Models.SettingsViewModel
+@inject IComponentAssetManager AssetManager
+
+@{
+    ViewData["Title"] = "Налаштування";
+    AssetManager.RegisterStyle("/css/views/settings.css");
+    AssetManager.RegisterScript("/js/views/Settings/settings.js", isModule: true);
+    AssetManager.RegisterScript("/lib/jquery-validation/dist/jquery.validate.min.js");
+
+    var organization = Model.ActiveOrganization;
+    var organizationColor = "#2563EB";
+}
+
+<div class="settings-page">
+    <header class="settings-header">
+        <div class="settings-header-inner">
+            <h1>Налаштування організації</h1>
+        </div>
+    </header>
+
+    <main class="settings-main">
+        @if (!Model.HasOrganizations || organization is null)
+        {
+            <section class="settings-empty">
+                <div class="settings-empty-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3 21h18"></path>
+                        <path d="M5 21V7l7-4 7 4v14"></path>
+                        <path d="M9 9h1"></path>
+                        <path d="M14 9h1"></path>
+                        <path d="M9 13h1"></path>
+                        <path d="M14 13h1"></path>
+                    </svg>
+                </div>
+                <h2>У вас ще немає організацій</h2>
+                <p>Створіть організацію на дашборді, щоб керувати її учасниками та налаштуваннями.</p>
+                <a class="settings-primary-link" href="/">На дашборд</a>
+            </section>
+        }
+        else
+        {
+            <section class="settings-card">
+                <div class="settings-organization">
+                    <div class="settings-organization-icon"
+                         style="background-color:@(organizationColor)22; color:@organizationColor;"
+                         aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M3 21h18"></path>
+                            <path d="M5 21V7l7-4 7 4v14"></path>
+                            <path d="M9 9h1"></path>
+                            <path d="M14 9h1"></path>
+                            <path d="M9 13h1"></path>
+                            <path d="M14 13h1"></path>
+                        </svg>
+                    </div>
+
+                    <div class="settings-organization-body">
+                        <h2>@organization.Name</h2>
+                        <p>@(string.IsNullOrWhiteSpace(organization.Description) ? "Без опису" : organization.Description)</p>
+                    </div>
+
+                    @if (organization.IsOwner)
+                    {
+                        <button type="button" class="settings-danger-button" id="open-delete-organization-dialog">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M3 6h18"></path>
+                                <path d="M8 6V4h8v2"></path>
+                                <path d="M19 6l-1 14H6L5 6"></path>
+                                <path d="M10 11v5"></path>
+                                <path d="M14 11v5"></path>
+                            </svg>
+                            <span>Видалити</span>
+                        </button>
+                    }else
+                    {
+                        <span class="settings-pill">Учасник</span>
+                    }
+                </div>
+            </section>
+
+            <section class="settings-card">
+                <div class="settings-section-heading">
+        <div>
+            <h2>Учасники</h2>
+            <p>@Model.Members.Count учасник(ів) в організації</p>
+        </div>
+        @if (organization.IsOwner)
+        {
+            <button type="button" class="btn-primary" id="open-invite-member-modal-btn" style="max-width:none; width:auto;">
+                <span class="btn-text">＋ Запросити</span>
+            </button>
+        }
+    </div>
+
+                <div class="settings-members-list">
+                    @if (Model.Members.Count == 0)
+                    {
+                        <div class="settings-muted-row">Учасників не знайдено</div>
+                    }
+                    else
+                    {
+                        @foreach (var member in Model.Members)
+                        {
+                            var email = string.IsNullOrWhiteSpace(member.Email) ? "Користувач без email" : member.Email;
+                            var initial = email.Trim()[0].ToString().ToUpperInvariant();
+
+                            <div class="settings-member">
+                                <div class="settings-member-avatar" aria-hidden="true">@initial</div>
+                                <div class="settings-member-body">
+                                    <div class="settings-member-title">
+                                        <span>@email</span>
+                                        @if (member.IsMe)
+                                        {
+                                            <span class="settings-pill">Ви</span>
+                                        }
+                                    </div>
+                                    <div class="settings-member-meta">
+                                        @(member.IsOwner ? "Власник" : "Учасник") · з @member.CreatedAt.ToString("dd.MM.yyyy")
+                                    </div>
+                                </div>
+                                <span class="settings-role @(member.IsOwner ? "is-owner" : "")">
+                                    @(member.IsOwner ? "Owner" : "Member")
+                                </span>
+                            </div>
+                        }
+                    }
+                </div>
+            </section>
+
+            @if (organization.IsOwner)
+            {
+                <div class="settings-dialog-overlay" id="delete-organization-dialog" aria-hidden="true">
+                    <div class="settings-dialog" role="dialog" aria-modal="true" aria-labelledby="delete-organization-title">
+                        <h2 id="delete-organization-title">Видалити організацію?</h2>
+                        <p>
+                            Буде видалено організацію «@organization.Name» разом із усіма операціями,
+                            категоріями та учасниками. Цю дію неможливо скасувати.
+                        </p>
+                        <form id="delete-organization-form">
+                            <input type="hidden" name="organizationId" value="@organization.Id" />
+                            <div class="settings-dialog-actions">
+                                <button type="button" class="settings-cancel-button" id="cancel-delete-organization">
+                                    Скасувати
+                                </button>
+                                <button type="submit" class="settings-confirm-delete-button">
+                                    Видалити
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            }
+        }
+    </main>
+    <template id="tpl-invite-member">
+    <form id="form-invite-member" class="modal-form-layout">
+
+        <div class="form-group">
+            <label class="form-label" for="member-email">Email користувача</label>
+            <input type="email" name="email" id="member-email" required placeholder="user@example.com" class="form-input" autocomplete="off" />
+            <p class="form-hint">Користувач має бути зареєстрованим у застосунку — організація з'явиться в його селекторі.</p>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="member-role">Роль</label>
+            <select name="role" id="member-role" class="form-input">
+                <option value="owner">Власник — повний контроль</option>
+                <option value="accountant" selected>Бухгалтер — веде облік</option>
+                <option value="viewer">Перегляд — лише читання</option>
+            </select>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn-primary" id="js-close-invite-member-modal">
+                <span class="btn-text">Скасувати</span>
+            </button>
+            <button type="submit" id="btn-submit-invite-member" class="btn-primary">
+                <span class="btn-text">Додати учасника</span>
+                <span class="spinner"></span>
+            </button>
+        </div>
+    </form>
+</template>
+</div>
+
+@section Scripts {
+    <script>
+        window.TransitData = {
+            organizationId: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(organization?.Id))
+        };
+    </script>
+}

@@ -1,0 +1,403 @@
+.settings-page {
+    min-height: 100vh;
+    padding-bottom: 6rem;
+}
+
+.settings-header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    border-bottom: 1px solid hsl(var(--border));
+    background: hsl(var(--background) / 0.8);
+    backdrop-filter: blur(12px);
+}
+
+.settings-header-inner {
+    display: flex;
+    height: 4rem;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0 1rem;
+}
+
+.settings-header h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.settings-main {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1.25rem 1rem;
+}
+
+.settings-main > * + * {
+    margin-top: 1rem;
+}
+
+.settings-card,
+.settings-empty {
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-lg);
+    background: hsl(var(--card));
+}
+
+.settings-card {
+    padding: 1.25rem;
+}
+
+.settings-empty {
+    display: flex;
+    min-height: 22rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+}
+
+.settings-empty-icon,
+.settings-organization-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.settings-empty-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: var(--radius-lg);
+    background: hsl(var(--primary) / 0.12);
+    color: hsl(var(--primary));
+}
+
+.settings-empty h2 {
+    margin: 1rem 0 0;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+}
+
+.settings-empty p {
+    max-width: 28rem;
+    margin: 0.5rem 0 1.25rem;
+    color: hsl(var(--muted-foreground));
+    font-size: 0.925rem;
+}
+
+.settings-primary-link {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    padding: 0.65rem 1rem;
+    font-weight: 700;
+}
+
+.settings-organization {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.settings-organization-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-md);
+}
+
+.settings-organization-body {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.settings-organization-body h2,
+.settings-section-heading h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.settings-organization-body h2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.settings-organization-body p,
+.settings-section-heading p,
+.settings-member-meta,
+.settings-muted-row {
+    color: hsl(var(--muted-foreground));
+}
+
+.settings-organization-body p {
+    margin: 0.25rem 0 0;
+    font-size: 0.875rem;
+}
+
+.settings-danger-button {
+    display: inline-flex;
+    height: 2.25rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    border: 1px solid hsl(var(--expense) / 0.4);
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: hsl(var(--expense));
+    padding: 0 0.75rem;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.settings-danger-button:hover {
+    background: hsl(var(--expense) / 0.1);
+}
+
+.settings-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.settings-section-heading p {
+    margin: 0.25rem 0 0;
+    font-size: 0.8125rem;
+}
+
+.settings-members-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+.settings-member {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-md);
+    padding: 0.75rem;
+}
+
+.settings-member-avatar {
+    display: flex;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    background: hsl(var(--primary) / 0.12);
+    color: hsl(var(--primary));
+    font-weight: 800;
+}
+
+.settings-member-body {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.settings-member-title {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+}
+
+.settings-member-title > span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.settings-member-meta {
+    margin-top: 0.125rem;
+    font-size: 0.8125rem;
+}
+
+.settings-pill,
+.settings-role {
+    display: inline-flex;
+    align-items: center;
+    border-radius: var(--radius-full);
+    font-size: 0.6875rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.settings-pill {
+    background: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+    padding: 0.25rem 0.375rem;
+}
+
+.settings-role {
+    flex-shrink: 0;
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--muted-foreground));
+    padding: 0.375rem 0.5rem;
+}
+
+.settings-role.is-owner {
+    border-color: hsl(var(--primary) / 0.35);
+    background: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+}
+
+.settings-muted-row {
+    border: 1px dashed hsl(var(--border));
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.875rem;
+}
+
+.settings-dialog-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1001;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgb(0 0 0 / 0.45);
+    padding: 1rem;
+}
+
+.settings-dialog-overlay.is-active {
+    display: flex;
+}
+
+.settings-dialog {
+    width: min(100%, 32rem);
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-lg);
+    background: hsl(var(--card));
+    box-shadow: 0 24px 70px rgb(0 0 0 / 0.25);
+    padding: 1.25rem;
+}
+
+.settings-dialog h2 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+}
+
+.settings-dialog p {
+    margin: 0.75rem 0 0;
+    color: hsl(var(--muted-foreground));
+    font-size: 0.925rem;
+    line-height: 1.55;
+}
+
+.settings-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.settings-cancel-button,
+.settings-confirm-delete-button {
+    display: inline-flex;
+    min-height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    padding: 0.625rem 1rem;
+    font-family: var(--font-body);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.settings-cancel-button {
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--card));
+    color: hsl(var(--foreground));
+}
+
+.settings-confirm-delete-button {
+    border: 0;
+    background: hsl(var(--destructive));
+    color: hsl(var(--destructive-foreground));
+}
+
+.settings-confirm-delete-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.settings-empty-icon svg,
+.settings-organization-icon svg,
+.settings-danger-button svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.settings-empty-icon svg,
+.settings-organization-icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    stroke-width: 2;
+}
+
+.settings-danger-button svg {
+    width: 1rem;
+    height: 1rem;
+    stroke-width: 2;
+}
+
+@media (min-width: 768px) {
+    .settings-page {
+        padding-bottom: 0;
+    }
+
+    .settings-header-inner,
+    .settings-main {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (max-width: 560px) {
+    .settings-organization,
+    .settings-member {
+        align-items: flex-start;
+    }
+
+    .settings-organization {
+        flex-wrap: wrap;
+    }
+
+    .settings-danger-button {
+        width: 100%;
+    }
+
+    .settings-role {
+        display: none;
+    }
+
+    .settings-dialog-actions {
+        flex-direction: column-reverse;
+    }
+
+    .settings-cancel-button,
+    .settings-confirm-delete-button {
+        width: 100%;
+    }
+}

@@ -154,10 +154,17 @@ namespace finance.online.api.Controllers
                 return Unauthorized(ApiErrors.General("Authentication is required."));
             }
 
-            var member = await _organizationRepository.AddMemberAsync(orgId, dto.UserId, dto.Role, currentUserId);
+            var normalizedEmail = dto.Email.Trim();
+            var invitedUser = await _userManager.FindByEmailAsync(normalizedEmail);
+            if (invitedUser == null)
+            {
+                return BadRequest(ApiErrors.General("Користувача з таким email не знайдено. Він має бути зареєстрований у застосунку."));
+            }
+
+            var member = await _organizationRepository.AddMemberAsync(orgId, invitedUser.Id, dto.Role, currentUserId);
             if (member == null)
             {
-                return NotFound(ApiErrors.General("Member could not be added."));
+                return BadRequest(ApiErrors.General("Organization not found, or you don't have permission to add members."));
             }
 
             await _organizationRepository.SaveChangesAsync();
@@ -195,7 +202,8 @@ namespace finance.online.api.Controllers
             var organizations = await _organizationRepository.GetMineAsync(currentUserId);
 
             var activeOrganization = organizations
-                .OrderByDescending(organization => organization.CreatedById == currentUserId)
+                .OrderByDescending(organization => organization.Members
+                    .Any(member => member.UserId == currentUserId && string.Equals(member.Role, "owner", StringComparison.OrdinalIgnoreCase)))
                 .ThenBy(organization => organization.CreatedAt)
                 .FirstOrDefault();
 
@@ -208,19 +216,19 @@ namespace finance.online.api.Controllers
         }
 
         [HttpGet("list")]
-public async Task<IActionResult> GetList()
-{
-    var currentUserId = _userManager.GetUserId(User);
+        public async Task<IActionResult> GetList()
+        {
+            var currentUserId = _userManager.GetUserId(User);
 
-    if (string.IsNullOrWhiteSpace(currentUserId))
-    {
-        return Unauthorized(ApiErrors.General("Authentication is required."));
-    }
+            if (string.IsNullOrWhiteSpace(currentUserId))
+            {
+                return Unauthorized(ApiErrors.General("Authentication is required."));
+            }
 
-    var organizations = await _organizationRepository.GetMineListAsync(currentUserId);
+            var organizations = await _organizationRepository.GetMineListAsync(currentUserId);
 
-    return Ok(organizations);
-}
+            return Ok(organizations);
+        }
 
         [HttpDelete("{orgId}/members/{userId}")]
         public async Task<IActionResult> RemoveMember(string orgId, string userId)
@@ -268,6 +276,9 @@ public async Task<IActionResult> GetList()
 
         private static OrganizationResponseDto MapOrganization(Organization organization, string currentUserId)
         {
+            var currentMember = organization.Members
+                .FirstOrDefault(member => member.UserId == currentUserId);
+
             return new OrganizationResponseDto
             {
                 Id = organization.Id,
@@ -276,7 +287,7 @@ public async Task<IActionResult> GetList()
                 CreatedById = organization.CreatedById,
                 CreatedAt = organization.CreatedAt,
                 MemberCount = organization.Members.Count,
-                IsOwner = organization.CreatedById == currentUserId
+                IsOwner = string.Equals(currentMember?.Role, "owner", StringComparison.OrdinalIgnoreCase)
             };
         }
 

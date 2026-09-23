@@ -33,25 +33,31 @@ namespace finance.online.api.Repositories.OrganizationRepository
                 .FirstOrDefaultAsync(organization => organization.Id == orgId && organization.Members.Any(member => member.UserId == userId));
         }
 
+        // Тепер "власник" визначається по ролі в Members ("owner"), а не по CreatedById.
+        // Використовується скрізь, де раніше стояла перевірка CreatedById == userId:
+        // Update/Delete організації, AddMember, UpdateMemberRole, RemoveMember.
         public async Task<Organization?> GetByIdForOwnerAsync(string orgId, string userId)
         {
             return await _context.Organizations
-                .FirstOrDefaultAsync(organization => organization.Id == orgId && organization.CreatedById == userId);
+                .Include(organization => organization.Members)
+                .FirstOrDefaultAsync(organization => organization.Id == orgId
+                    && organization.Members.Any(member => member.UserId == userId
+                        && member.Role == OwnerRole));
         }
 
-public async Task<List<OrganizationListItemDto>> GetMineListAsync(string userId)
-{
-    return await _context.Organizations
-        .AsNoTracking()
-        .Where(organization =>
-            organization.Members.Any(member => member.UserId == userId))
-        .Select(organization => new OrganizationListItemDto
+        public async Task<List<OrganizationListItemDto>> GetMineListAsync(string userId)
         {
-            Id = organization.Id,
-            Name = organization.Name
-        })
-        .ToListAsync();
-}
+            return await _context.Organizations
+                .AsNoTracking()
+                .Where(organization =>
+                    organization.Members.Any(member => member.UserId == userId))
+                .Select(organization => new OrganizationListItemDto
+                {
+                    Id = organization.Id,
+                    Name = organization.Name
+                })
+                .ToListAsync();
+        }
 
         public async Task<List<Member>?> GetMembersAsync(string orgId, string currentUserId)
         {
@@ -220,7 +226,7 @@ public async Task<List<OrganizationListItemDto>> GetMineListAsync(string userId)
                 {
                     UserId = participantUserId,
                     OrganizationId = organization.Id,
-                    Role = "member",
+                    Role = MemberRole,
                     CreatedAt = organization.CreatedAt
                 };
 
