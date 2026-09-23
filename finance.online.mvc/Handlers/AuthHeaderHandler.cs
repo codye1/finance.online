@@ -91,7 +91,7 @@ namespace finance.online.mvc.Handlers
                 if (string.IsNullOrEmpty(refreshToken)) return (false, null);
 
                 var client = _httpClientFactory.CreateClient();
-                client.BaseAddress = new Uri("https://localhost:7094");
+                client.BaseAddress = new Uri("https://localhost:7242");
 
                 var refreshRequest = new HttpRequestMessage(HttpMethod.Post, "/auth/refresh");
                 refreshRequest.Headers.Add("Cookie", $"refreshToken={refreshToken}");

@@ -1,8 +1,298 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@inject IComponentAssetManager AssetManager
+
+
+@{
+    ViewData["Title"] = "Фінанси";
+
+    AssetManager.RegisterStyle("/css/views/finance.css");
+
+    AssetManager.RegisterScript("/lib/jquery-validation/dist/jquery.validate.min.js");
+
+    AssetManager.RegisterScript("/js/views/Home/home.js", isModule: true);
+
+    var viewModel = Model as finance.online.mvc.Models.HomeViewModel ?? new finance.online.mvc.Models.HomeViewModel();
+    var maxOp = viewModel.Operations.Count > 0 ? viewModel.Operations.Max(o => o.Amount) : 1m;
+    var activePeriodLabel = viewModel.Periods.FirstOrDefault(p => p.Value == viewModel.ActivePeriod)?.Label ?? "Період";
+    string FormatMoney(decimal amount) => amount.ToString("N2");
+
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="min-h-screen pb-24">
+
+    @* ---------------- Header ---------------- *@
+    <header class="border-b border-border bg-background-blur" style="position:sticky; top:0; z-index:30;">
+        <div class="flex items-center gap-3 px-4 h-16">
+
+            @* Mobile net balance *@
+            <div class="md:hidden flex flex-col">
+                <span class="text-[10px] uppercase tracking-wide text-muted-foreground">Чистий баланс</span>
+                <span class="font-mono-tabular text-base font-semibold @(viewModel.NetBalance >= 0 ? "text-income" : "text-expense")">
+                    @FormatMoney(viewModel.NetBalance)
+                </span>
+            </div>
+
+            <div class="ml-auto flex items-center gap-3">
+
+                @* Organization selector *@
+<div class="org-select-wrapper" style="position:relative;">
+    <button type="button" class="org-fake" id="org-select-toggle">
+        <span>🏢</span>
+        <span id="org-select-current">@viewModel.ActiveOrganization.Name</span>
+        <span class="icon-muted">▾</span>
+    </button>
+
+    <div class="org-select-dropdown" id="org-select-dropdown" style="display:none; position:absolute; top:100%; right:0; z-index:40;">
+        @foreach (var org in viewModel.Organizations)
+        {
+            <button type="button"
+                    class="org-select-item @(org.Id == viewModel.ActiveOrganization.Id ? "active" : "")"
+                    data-organization-id="@org.Id">
+                @org.Name
+            </button>
+        }
+        <button type="button"
+                    class="org-create-button"
+                    id="open-organization-modal-btn">
+                Cтворити організацію
+            </button>
+    </div>
 </div>
+
+                @* Period switcher (static) *@
+<div class="period-select-wrapper" style="position:relative;">
+    <button type="button"
+            class="select-fake"
+            id="period-select-toggle">
+
+        <span class="icon-muted">📅</span>
+        <span>@activePeriodLabel</span>
+        <span class="icon-muted">▾</span>
+    </button>
+
+    <div id="period-select-dropdown"
+         class="org-select-dropdown"
+         style="display:none; position:absolute; top:100%; right:0; z-index:40;">
+
+        @foreach (var period in viewModel.Periods)
+        {
+            <a href="@Url.Action("Index", "Home", new {
+                organizationId = viewModel.ActiveOrganization.Id,
+                period = period.Value
+            })"
+               class="org-select-item @(period.Value == viewModel.ActivePeriod ? "active" : "")">
+
+                @period.Label
+
+            </a>
+        }
+
+    </div>
+</div>
+
+
+                <button type="button" class="btn-primary" id="open-operation-modal-btn">
+                    <span>＋</span>
+                    <span class=" md:inline">Нова операція</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="px-4 py-5 max-w-1400">
+        <div class="flex flex-col gap-6" style="display:flex; flex-direction:column; gap:1.5rem;">
+
+            @* ---------------- KPI band ---------------- *@
+            <section class="grid grid-kpi gap-3">
+                @foreach (var kpi in viewModel.Kpis)
+                {
+                    <div class="kpi-card tone-@kpi.Tone">
+                        <div class="kpi-top">
+                            <span class="kpi-title">@kpi.Title</span>
+                            <span class="kpi-icon">
+                                @(kpi.Icon == "trend-up" ? "📈" : kpi.Icon == "trend-down" ? "📉" : "％")
+                            </span>
+                        </div>
+                        <div class="kpi-value">@kpi.Value</div>
+                        <div class="kpi-sub">@kpi.Sub</div>
+                    </div>
+                }
+            </section>
+
+            @* ---------------- Main split ---------------- *@
+            <section class="grid grid-split gap-4">
+
+                @* Cash flow chart placeholder *@
+                                <div class="card p-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h2 class="font-display text-lg font-bold">Грошовий потік</h2>
+                            <p class="text-xs text-muted-foreground">Динаміка доходів і витрат</p>
+                        </div>
+                        <div class="flex gap-1 mb-3" id="chart-filter">
+                            <button type="button" class="filter-toggle active" data-filter="all">Усі</button>
+                            <button type="button" class="filter-toggle" data-filter="income">Дохід</button>
+                            <button type="button" class="filter-toggle" data-filter="expense">Витрати</button>
+                        </div>
+                    </div>
+
+                    <div class="chart-placeholder" id="chart-placeholder">
+                        @foreach (var op in viewModel.Operations.OrderBy(o => o.Date))
+                        {
+                            var h = maxOp > 0 ? (int)(op.Amount / maxOp * 100) : 0;
+                            <div class="chart-bar-pair" data-type="@op.Type" title="@op.Category — @FormatMoney(op.Amount)">
+                                <div class="chart-bar @(op.Type)" style="height:@(h)%;"></div>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+
+                @* Recent ledger feed *@
+                <div class="card p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h2 class="font-display text-lg font-bold">Останні операції</h2>
+                    </div>
+
+                                        <div class="flex gap-1 mb-3" id="operations-filter">
+                        <button type="button" class="filter-toggle active" data-filter="all">Усі</button>
+                        <button type="button" class="filter-toggle" data-filter="income">Дохід</button>
+                        <button type="button" class="filter-toggle" data-filter="expense">Витрати</button>
+                    </div>
+
+
+                    <div class="flex flex-col gap-2 max-h-420 pr-1" id="operations-list">
+                        @if (viewModel.Operations.Count == 0)
+                        {
+                            <div class="flex flex-col items-center" style="padding:2.5rem 0; text-align:center;">
+                                <p class="text-xs text-muted-foreground">Поки що немає операцій</p>
+                                <button type="button" class="btn-outline" style="margin-top:0.75rem;" disabled>＋ Додати першу</button>
+                            </div>
+                        }
+                        else
+                        {
+                            @foreach (var op in viewModel.Operations.OrderByDescending(o => o.Date).Take(12))
+                                {
+                                    @await Html.PartialAsync("~/Views/Home/Partials/_OperationItem.cshtml", op)
+                                }
+                        }
+                    </div>
+                </div>
+            </section>
+<template id="tpl-add-organization">
+    <form id="form-add-organization" class="modal-form-layout">
+
+        <div class="form-group">
+            <label class="form-label" for="organization-name">Назва</label>
+            <input type="text" name="name" id="organization-name" required placeholder="Напр. ТОВ «Моя компанія»" class="form-input" autocomplete="off" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="organization-description">Опис</label>
+            <textarea name="description" id="organization-description" placeholder="Чим займається організація (необов'язково)" class="form-input" rows="2"></textarea>
+        </div>
+
+        <input type="hidden" name="color" id="organization-color" value="#2563EB" />
+
+        <div class="form-group">
+            <label class="form-label">Колір</label>
+            <div class="color-swatch-group" id="organization-color-group">
+                <button type="button" class="color-swatch-btn active" data-color="#2563EB" style="background-color:#2563EB;" aria-label="Колір #2563EB"></button>
+                <button type="button" class="color-swatch-btn" data-color="#10B981" style="background-color:#10B981;" aria-label="Колір #10B981"></button>
+                <button type="button" class="color-swatch-btn" data-color="#EF4444" style="background-color:#EF4444;" aria-label="Колір #EF4444"></button>
+                <button type="button" class="color-swatch-btn" data-color="#F59E0B" style="background-color:#F59E0B;" aria-label="Колір #F59E0B"></button>
+                <button type="button" class="color-swatch-btn" data-color="#8B5CF6" style="background-color:#8B5CF6;" aria-label="Колір #8B5CF6"></button>
+                <button type="button" class="color-swatch-btn" data-color="#EC4899" style="background-color:#EC4899;" aria-label="Колір #EC4899"></button>
+                <button type="button" class="color-swatch-btn" data-color="#06B6D4" style="background-color:#06B6D4;" aria-label="Колір #06B6D4"></button>
+                <button type="button" class="color-swatch-btn" data-color="#84CC16" style="background-color:#84CC16;" aria-label="Колір #84CC16"></button>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn-primary" id="js-close-organization-modal">
+                <span class="btn-text">Скасувати</span>
+            </button>
+            <button type="submit" id="btn-submit-organization" class="btn-primary">
+                <span class="btn-text">Створити організацію</span>
+                <span class="spinner"></span>
+            </button>
+        </div>
+    </form>
+</template>
+            <template id="tpl-add-operation">
+    <form id="form-add-operation" class="modal-form-layout">
+        <div class="form-grid-2">
+            <div class="form-group">
+                <label class="form-label">Дохід</label>
+                <button type="button" class="type-toggle-btn income" id="btn-type-income" data-type="income">
+                    <span>Дохід</span>
+                </button>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Витрата</label>
+                <button type="button" class="type-toggle-btn expense active" id="btn-type-expense" data-type="expense">
+                    <span>Витрата</span>
+                </button>
+            </div>
+        </div>
+
+        <input type="hidden" name="type" id="operation-type" value="expense" />
+
+        <div class="form-group">
+            <label class="form-label">Сума (грн)</label>
+            <input type="number" name="amount" id="operation-amount" required placeholder="0,00" class="form-input" min="0" step="0.01" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Категорія</label>
+            <select name="categoryId" id="operation-category" class="form-input">
+                <option value="">Оберіть категорію</option>
+                @foreach (var category in Model.Categories)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="form-grid-2">
+            <div class="form-group">
+                <label class="form-label">Дата</label>
+                <input type="date" name="date" id="operation-date" required class="form-input" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Опис</label>
+            <textarea name="description" id="operation-description" placeholder="Додатковий опис (необов'язково)" class="form-input" rows="2"></textarea>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn-primary" id="js-close-operation-modal">
+                <span class="btn-text">Скасувати</span>
+            </button>
+            <button type="submit" id="btn-submit-operation" class="btn-primary">
+                <span class="btn-text">Додати операцію</span>
+                <span class="spinner"></span>
+            </button>
+        </div>
+    </form>
+</template>
+
+        </div>
+    </main>
+</div>
+
+@section Scripts{
+    <script>
+        window.TransitData = {
+            organizationId: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ActiveOrganization.Id, new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase })),
+        };
+
+        localStorage.setItem('activeOrganizationId', window.TransitData.organizationId);
+
+        // при виборі іншої організації в дропдауні:
+        // localStorage.setItem('activeOrganizationId', selectedId);
+        // window.location.href = '/?organizationId=' + selectedId;
+    </script>
+}

@@ -183,6 +183,45 @@ namespace finance.online.api.Controllers
             return Ok(MapMember(member, currentUserId));
         }
 
+        [HttpGet("active")]
+        public async Task<IActionResult> GetActive()
+        {
+            var currentUserId = _userManager.GetUserId(User);
+            if (string.IsNullOrWhiteSpace(currentUserId))
+            {
+                return Unauthorized(ApiErrors.General("Authentication is required."));
+            }
+
+            var organizations = await _organizationRepository.GetMineAsync(currentUserId);
+
+            var activeOrganization = organizations
+                .OrderByDescending(organization => organization.CreatedById == currentUserId)
+                .ThenBy(organization => organization.CreatedAt)
+                .FirstOrDefault();
+
+            if (activeOrganization == null)
+            {
+                return NotFound(ApiErrors.General("User has no organizations."));
+            }
+
+            return Ok(MapOrganization(activeOrganization, currentUserId));
+        }
+
+        [HttpGet("list")]
+public async Task<IActionResult> GetList()
+{
+    var currentUserId = _userManager.GetUserId(User);
+
+    if (string.IsNullOrWhiteSpace(currentUserId))
+    {
+        return Unauthorized(ApiErrors.General("Authentication is required."));
+    }
+
+    var organizations = await _organizationRepository.GetMineListAsync(currentUserId);
+
+    return Ok(organizations);
+}
+
         [HttpDelete("{orgId}/members/{userId}")]
         public async Task<IActionResult> RemoveMember(string orgId, string userId)
         {

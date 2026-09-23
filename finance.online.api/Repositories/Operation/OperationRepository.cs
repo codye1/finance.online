@@ -9,8 +9,10 @@ namespace finance.online.api.Repositories.OperationRepository
     {
         private const string OwnerRole = "owner";
         private const string AccountantRole = "accountant";
+
         private const string IncomeType = "income";
         private const string ExpenseType = "expense";
+
         private const int PageSize = 20;
 
         private readonly FinanceOnlineDbContext _context;
@@ -20,17 +22,24 @@ namespace finance.online.api.Repositories.OperationRepository
             _context = context;
         }
 
-        public Task<bool> HasMemberAccessAsync(string orgId, string userId)
+        public Task<bool> HasMemberAccessAsync(
+            string orgId,
+            string userId)
         {
-            return _context.Members.AnyAsync(member => member.OrganizationId == orgId && member.UserId == userId);
+            return _context.Members.AnyAsync(member =>
+                member.OrganizationId == orgId &&
+                member.UserId == userId);
         }
 
-        public Task<bool> HasEditorAccessAsync(string orgId, string userId)
+        public Task<bool> HasEditorAccessAsync(
+            string orgId,
+            string userId)
         {
             return _context.Members.AnyAsync(member =>
                 member.OrganizationId == orgId &&
                 member.UserId == userId &&
-                (member.Role == OwnerRole || member.Role == AccountantRole));
+                (member.Role == OwnerRole ||
+                 member.Role == AccountantRole));
         }
 
         public async Task<List<OperationModel>> GetByOrganizationAsync(
@@ -49,20 +58,31 @@ namespace finance.online.api.Repositories.OperationRepository
             }
 
             var normalizedType = NormalizeType(type);
-            var normalizedCategory = string.IsNullOrWhiteSpace(category) ? null : category.Trim();
-            var normalizedQuery = string.IsNullOrWhiteSpace(q) ? null : q.Trim();
+
+            var normalizedCategory =
+                string.IsNullOrWhiteSpace(category)
+                    ? null
+                    : category.Trim();
+
+            var normalizedQuery =
+                string.IsNullOrWhiteSpace(q)
+                    ? null
+                    : q.Trim();
+
             var currentPage = page < 1 ? 1 : page;
 
             var query = _context.Operations
                 .AsNoTracking()
                 .Include(operation => operation.Category)
                 .Include(operation => operation.CreatedBy)
-                .Where(operation => operation.OrganizationId == orgId)
+                .Where(operation =>
+                    operation.OrganizationId == orgId)
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(normalizedType))
             {
-                query = query.Where(operation => operation.Type == normalizedType);
+                query = query.Where(operation =>
+                    operation.Type == normalizedType);
             }
 
             if (!string.IsNullOrWhiteSpace(normalizedCategory))
@@ -74,19 +94,24 @@ namespace finance.online.api.Repositories.OperationRepository
 
             if (from.HasValue)
             {
-                query = query.Where(operation => operation.CreatedAt >= from.Value);
+                query = query.Where(operation =>
+                    operation.CreatedAt >= from.Value);
             }
 
             if (to.HasValue)
             {
-                query = query.Where(operation => operation.CreatedAt <= to.Value);
+                query = query.Where(operation =>
+                    operation.CreatedAt <= to.Value);
             }
 
             if (!string.IsNullOrWhiteSpace(normalizedQuery))
             {
                 query = query.Where(operation =>
-                    (operation.Description != null && operation.Description.Contains(normalizedQuery)) ||
+                    (operation.Description != null &&
+                     operation.Description.Contains(normalizedQuery)) ||
+
                     operation.Type.Contains(normalizedQuery) ||
+
                     operation.Category.Name.Contains(normalizedQuery));
             }
 
@@ -97,48 +122,83 @@ namespace finance.online.api.Repositories.OperationRepository
                 .ToListAsync();
         }
 
-        public async Task<OperationModel?> GetByIdAsync(string operationId)
+        public async Task<OperationModel?> GetByIdAsync(
+            string operationId)
         {
             return await _context.Operations
                 .Include(operation => operation.Category)
                 .Include(operation => operation.CreatedBy)
-                .FirstOrDefaultAsync(operation => operation.Id == operationId);
+                .FirstOrDefaultAsync(operation =>
+                    operation.Id == operationId);
         }
 
-        public async Task<OperationModel?> CreateAsync(string orgId, string currentUserId, OperationCreateRequestDto dto)
+        public async Task<OperationModel?> CreateAsync(
+            string orgId,
+            string currentUserId,
+            OperationCreateRequestDto dto)
         {
             var normalizedType = NormalizeType(dto.Type);
-            if (normalizedType == null || dto.Amount < 1)
+
+            if (normalizedType == null)
             {
                 return null;
             }
 
-            var categoryExists = await _context.Categories.AnyAsync(category =>
-                category.Id == dto.CategoryId && category.OrganizationId == orgId);
+            if (dto.Amount < 1)
+            {
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(dto.CategoryId))
+            {
+                return null;
+            }
+
+            var categoryExists = await _context.Categories.AnyAsync(
+                category =>
+                    category.Id == dto.CategoryId &&
+                    category.OrganizationId == orgId);
+
             if (!categoryExists)
             {
                 return null;
             }
 
+            var operationDate = dto.Date?.ToUniversalTime()
+                                ?? DateTime.UtcNow;
+
             var operation = new OperationModel
             {
                 Id = Guid.NewGuid().ToString(),
+
                 Type = normalizedType,
+
                 Amount = dto.Amount,
+
                 CategoryId = dto.CategoryId,
+
                 Description = dto.Description,
-                CreatedAt = DateTime.UtcNow,
+
+                CreatedAt = operationDate,
+
                 CreatedById = currentUserId,
+
                 OrganizationId = orgId
             };
 
             _context.Operations.Add(operation);
+
             return operation;
         }
 
-        public async Task<OperationModel?> UpdateAsync(string operationId, OperationUpdateRequestDto dto)
+        public async Task<OperationModel?> UpdateAsync(
+            string operationId,
+            OperationUpdateRequestDto dto)
         {
-            var operation = await _context.Operations.FirstOrDefaultAsync(item => item.Id == operationId);
+            var operation = await _context.Operations
+                .FirstOrDefaultAsync(item =>
+                    item.Id == operationId);
+
             if (operation == null)
             {
                 return null;
@@ -147,6 +207,7 @@ namespace finance.online.api.Repositories.OperationRepository
             if (!string.IsNullOrWhiteSpace(dto.Type))
             {
                 var normalizedType = NormalizeType(dto.Type);
+
                 if (normalizedType == null)
                 {
                     return null;
@@ -167,8 +228,12 @@ namespace finance.online.api.Repositories.OperationRepository
 
             if (!string.IsNullOrWhiteSpace(dto.CategoryId))
             {
-                var categoryExists = await _context.Categories.AnyAsync(category =>
-                    category.Id == dto.CategoryId && category.OrganizationId == operation.OrganizationId);
+                var categoryExists = await _context.Categories.AnyAsync(
+                    category =>
+                        category.Id == dto.CategoryId &&
+                        category.OrganizationId ==
+                        operation.OrganizationId);
+
                 if (!categoryExists)
                 {
                     return null;
@@ -182,49 +247,88 @@ namespace finance.online.api.Repositories.OperationRepository
                 operation.Description = dto.Description;
             }
 
+            if (dto.Date.HasValue)
+            {
+                operation.CreatedAt =
+                    dto.Date.Value.ToUniversalTime();
+            }
+
             return operation;
         }
 
-        public async Task<bool> DeleteAsync(string operationId)
+        public async Task<bool> DeleteAsync(
+            string operationId)
         {
-            var operation = await _context.Operations.FirstOrDefaultAsync(item => item.Id == operationId);
+            var operation = await _context.Operations
+                .FirstOrDefaultAsync(item =>
+                    item.Id == operationId);
+
             if (operation == null)
             {
                 return false;
             }
 
             _context.Operations.Remove(operation);
+
             return true;
         }
 
-        public async Task<OperationsSummaryDto?> GetSummaryAsync(string orgId, string period)
+        public async Task<OperationsSummaryDto?> GetSummaryAsync(
+            string orgId,
+            string period)
         {
-            if (!string.Equals(period, "month", StringComparison.OrdinalIgnoreCase))
+            var normalizedPeriod =
+                period.Trim().ToLowerInvariant();
+
+            var range = GetPeriodRange(normalizedPeriod);
+
+            if (range == null)
             {
                 return null;
             }
 
-            var start = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1, 0, 0, 0, DateTimeKind.Utc);
-            var end = start.AddMonths(1);
-
             var operations = _context.Operations
                 .AsNoTracking()
-                .Where(operation => operation.OrganizationId == orgId && operation.CreatedAt >= start && operation.CreatedAt < end);
+                .Where(operation =>
+                    operation.OrganizationId == orgId);
+
+            if (range.Value.Start.HasValue)
+            {
+                operations = operations.Where(operation =>
+                    operation.CreatedAt >=
+                    range.Value.Start.Value);
+            }
+
+            if (range.Value.End.HasValue)
+            {
+                operations = operations.Where(operation =>
+                    operation.CreatedAt <
+                    range.Value.End.Value);
+            }
 
             var income = await operations
-                .Where(operation => operation.Type == IncomeType)
-                .SumAsync(operation => (decimal?)operation.Amount) ?? 0m;
+                .Where(operation =>
+                    operation.Type == IncomeType)
+                .SumAsync(operation =>
+                    (decimal?)operation.Amount) ?? 0m;
 
             var expense = await operations
-                .Where(operation => operation.Type == ExpenseType)
-                .SumAsync(operation => (decimal?)operation.Amount) ?? 0m;
+                .Where(operation =>
+                    operation.Type == ExpenseType)
+                .SumAsync(operation =>
+                    (decimal?)operation.Amount) ?? 0m;
 
             var netProfit = income - expense;
-            var margin = income == 0m ? 0m : decimal.Round((netProfit / income) * 100m, 2);
+
+            var margin = income == 0m
+                ? 0m
+                : decimal.Round(
+                    netProfit / income * 100m,
+                    2);
 
             return new OperationsSummaryDto
             {
-                Period = period.ToLowerInvariant(),
+                Period = normalizedPeriod,
                 Income = income,
                 Expense = expense,
                 NetProfit = netProfit,
@@ -237,6 +341,74 @@ namespace finance.online.api.Repositories.OperationRepository
             await _context.SaveChangesAsync();
         }
 
+        private static (
+            DateTime? Start,
+            DateTime? End
+        )? GetPeriodRange(string period)
+        {
+            var now = DateTime.UtcNow;
+
+            return period switch
+            {
+                "week" =>
+                    (
+                        now.Date.AddDays(-6),
+                        now.Date.AddDays(1)
+                    ),
+
+                "month" =>
+                    (
+                        new DateTime(
+                            now.Year,
+                            now.Month,
+                            1,
+                            0,
+                            0,
+                            0,
+                            DateTimeKind.Utc),
+
+                        new DateTime(
+                            now.Year,
+                            now.Month,
+                            1,
+                            0,
+                            0,
+                            0,
+                            DateTimeKind.Utc)
+                            .AddMonths(1)
+                    ),
+
+                "year" =>
+                    (
+                        new DateTime(
+                            now.Year,
+                            1,
+                            1,
+                            0,
+                            0,
+                            0,
+                            DateTimeKind.Utc),
+
+                        new DateTime(
+                            now.Year + 1,
+                            1,
+                            1,
+                            0,
+                            0,
+                            0,
+                            DateTimeKind.Utc)
+                    ),
+
+                "all" =>
+                    (
+                        null,
+                        null
+                    ),
+
+                _ => null
+            };
+        }
+
         private static string? NormalizeType(string? type)
         {
             if (string.IsNullOrWhiteSpace(type))
@@ -244,8 +416,12 @@ namespace finance.online.api.Repositories.OperationRepository
                 return null;
             }
 
-            var normalizedType = type.Trim().ToLowerInvariant();
-            return normalizedType is IncomeType or ExpenseType ? normalizedType : null;
+            var normalizedType =
+                type.Trim().ToLowerInvariant();
+
+            return normalizedType is IncomeType or ExpenseType
+                ? normalizedType
+                : null;
         }
     }
 }

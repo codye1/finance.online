@@ -20,6 +20,8 @@ namespace finance.online.api.Repositories.OrganizationRepository
 
         Task<Member?> LeaveOrganizationAsync(string orgId, string currentUserId);
 
+        Task<List<OrganizationListItemDto>> GetMineListAsync(string userId);
+
         Organization Add(string name, string description, string ownerUserId, IEnumerable<string> participantUserIds);
 
         void Update(Organization organization);

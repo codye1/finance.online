@@ -22,6 +22,8 @@ namespace finance.online.api.Controllers
             _userManager = userManager;
         }
 
+
+
         [HttpGet("/organizations/{orgId}/operations")]
         public async Task<IActionResult> GetByOrganization(
             string orgId,

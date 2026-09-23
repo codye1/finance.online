@@ -39,6 +39,20 @@ namespace finance.online.api.Repositories.OrganizationRepository
                 .FirstOrDefaultAsync(organization => organization.Id == orgId && organization.CreatedById == userId);
         }
 
+public async Task<List<OrganizationListItemDto>> GetMineListAsync(string userId)
+{
+    return await _context.Organizations
+        .AsNoTracking()
+        .Where(organization =>
+            organization.Members.Any(member => member.UserId == userId))
+        .Select(organization => new OrganizationListItemDto
+        {
+            Id = organization.Id,
+            Name = organization.Name
+        })
+        .ToListAsync();
+}
+
         public async Task<List<Member>?> GetMembersAsync(string orgId, string currentUserId)
         {
             var hasAccess = await _context.Members.AnyAsync(member => member.OrganizationId == orgId && member.UserId == currentUserId);
