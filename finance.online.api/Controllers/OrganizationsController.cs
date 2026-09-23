@@ -158,13 +158,13 @@ namespace finance.online.api.Controllers
             var invitedUser = await _userManager.FindByEmailAsync(normalizedEmail);
             if (invitedUser == null)
             {
-                return NotFound(ApiErrors.General("Користувача з таким email не знайдено. Він має бути зареєстрований у застосунку."));
+                return BadRequest(ApiErrors.General("Користувача з таким email не знайдено. Він має бути зареєстрований у застосунку."));
             }
 
             var member = await _organizationRepository.AddMemberAsync(orgId, invitedUser.Id, dto.Role, currentUserId);
             if (member == null)
             {
-                return NotFound(ApiErrors.General("Organization not found, or you don't have permission to add members."));
+                return BadRequest(ApiErrors.General("Organization not found, or you don't have permission to add members."));
             }
 
             await _organizationRepository.SaveChangesAsync();
