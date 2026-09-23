@@ -1,0 +1,163 @@
+@model finance.online.mvc.Models.OperationsViewModel
+@inject IComponentAssetManager AssetManager
+
+@{
+    ViewData["Title"] = "Усі операції";
+    AssetManager.RegisterStyle("/css/views/operations.css");
+    AssetManager.RegisterScript("/lib/jquery-validation/dist/jquery.validate.min.js");
+    AssetManager.RegisterScript("/js/views/Operations/operations.js", isModule: true);
+
+    string FormatMoney(decimal amount) => amount.ToString("N2");
+}
+
+<div class="op-page">
+
+    <header class="op-header">
+        <div class="op-header-inner">
+            <h1>Усі операції</h1>
+
+            @if (Model.HasOrganizations)
+            {
+                <button type="button" class="btn-primary" id="open-operation-modal-btn">
+                    <span>＋</span>
+                    <span>Нова операція</span>
+                </button>
+            }
+        </div>
+    </header>
+
+    <main class="op-main">
+        @if (!Model.HasOrganizations || Model.ActiveOrganization is null)
+        {
+            <div class="op-card op-empty-org">
+                <p>У вас ще немає організацій</p>
+                <a href="/" class="btn-primary" style="margin:0.75rem auto 0; max-width:220px;">На дашборд</a>
+            </div>
+        }
+        else
+        {
+            <section class="op-summary-grid">
+                <div class="op-summary-card">
+                    <p class="op-summary-label">Дохід</p>
+                    <p class="op-summary-value op-summary-income" id="op-summary-income">0.00</p>
+                </div>
+                <div class="op-summary-card">
+                    <p class="op-summary-label">Витрати</p>
+                    <p class="op-summary-value op-summary-expense" id="op-summary-expense">0.00</p>
+                </div>
+                <div class="op-summary-card">
+                    <p class="op-summary-label">Баланс</p>
+                    <p class="op-summary-value op-summary-net" id="op-summary-net">0.00</p>
+                </div>
+            </section>
+
+            <section class="op-filters-row">
+                <div class="op-search-wrap">
+                    <span class="op-search-icon">🔍</span>
+                    <input type="text" class="op-input" id="op-search-input" placeholder="Пошук…" />
+                </div>
+
+                <select class="op-input op-filter-select" id="op-type-filter">
+                    <option value="all">Усі типи</option>
+                    <option value="income">Дохід</option>
+                    <option value="expense">Витрати</option>
+                </select>
+
+                <select class="op-input op-filter-select" id="op-category-filter">
+                    <option value="all">Усі категорії</option>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.Name">@category.Name</option>
+                    }
+                </select>
+            </section>
+
+            <div class="op-list" id="operations-list">
+                @if (Model.Operations.Count == 0)
+                {
+                    <div class="op-card op-empty-state-static">
+                        <p>Операцій не знайдено</p>
+                    </div>
+                }
+                else
+                {
+                    @foreach (var op in Model.Operations)
+                    {
+                        @await Html.PartialAsync("~/Views/Operations/Partials/_OperationListItem.cshtml", op)
+                    }
+                }
+            </div>
+            <div class="op-card op-empty-state" id="op-empty-state" style="display:none;">
+                <p>Операцій не знайдено</p>
+            </div>
+
+            <template id="tpl-add-operation">
+                <form id="form-add-operation" class="op-modal-form">
+                    <div class="op-form-grid-2">
+                        <div class="op-form-group">
+                            <label class="op-form-label">Дохід</label>
+                            <button type="button" class="op-type-toggle-btn income" id="btn-type-income" data-type="income">
+                                <span>Дохід</span>
+                            </button>
+                        </div>
+
+                        <div class="op-form-group">
+                            <label class="op-form-label">Витрата</label>
+                            <button type="button" class="op-type-toggle-btn expense active" id="btn-type-expense" data-type="expense">
+                                <span>Витрата</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="type" id="operation-type" value="expense" />
+
+                    <div class="op-form-group">
+                        <label class="op-form-label">Сума (грн)</label>
+                        <input type="number" name="amount" id="operation-amount" required placeholder="0,00" class="op-input" min="0" step="0.01" />
+                    </div>
+
+                    <div class="op-form-group">
+                        <label class="op-form-label">Категорія</label>
+                        <select name="categoryId" id="operation-category" class="op-input">
+                            <option value="">Оберіть категорію</option>
+                            @foreach (var category in Model.Categories)
+                            {
+                                <option value="@category.Id">@category.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="op-form-grid-2">
+                        <div class="op-form-group">
+                            <label class="op-form-label">Дата</label>
+                            <input type="date" name="date" id="operation-date" required class="op-input" />
+                        </div>
+                    </div>
+
+                    <div class="op-form-group">
+                        <label class="op-form-label">Опис</label>
+                        <textarea name="description" id="operation-description" placeholder="Додатковий опис (необов'язково)" class="op-input" rows="2"></textarea>
+                    </div>
+
+                    <div class="op-modal-footer">
+                        <button type="button" class="btn-primary" id="js-close-operation-modal">
+                            <span class="btn-text">Скасувати</span>
+                        </button>
+                        <button type="submit" id="btn-submit-operation" class="btn-primary">
+                            <span class="btn-text">Додати операцію</span>
+                            <span class="spinner"></span>
+                        </button>
+                    </div>
+                </form>
+            </template>
+        }
+    </main>
+</div>
+
+@section Scripts {
+    <script>
+        window.TransitData = {
+            organizationId: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ActiveOrganization?.Id))
+        };
+    </script>
+}
