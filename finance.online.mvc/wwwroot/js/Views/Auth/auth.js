@@ -1,6 +1,7 @@
 ﻿import { login, register } from './authApi.js';
 import { initCustomRules, loginRules, registerRules } from './authValidator.js';
 import { showApiErrors } from '../../helpers/showApiErrors.js';
+import { handleApiErrors } from "../../helpers/handleApiErrors.js";
 
 $(function () {
     initCustomRules();

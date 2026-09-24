@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "finance.online.api", "finan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "finance.online.mvc", "finance.online.mvc\finance.online.mvc.csproj", "{46C53D75-A0CA-41B8-91C7-48E6AF6685E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "tests\tests.csproj", "{4409ADAB-5255-4FD2-ACCD-308627FAB302}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{46C53D75-A0CA-41B8-91C7-48E6AF6685E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46C53D75-A0CA-41B8-91C7-48E6AF6685E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46C53D75-A0CA-41B8-91C7-48E6AF6685E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4409ADAB-5255-4FD2-ACCD-308627FAB302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4409ADAB-5255-4FD2-ACCD-308627FAB302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4409ADAB-5255-4FD2-ACCD-308627FAB302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4409ADAB-5255-4FD2-ACCD-308627FAB302}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
