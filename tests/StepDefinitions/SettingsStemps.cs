@@ -79,7 +79,9 @@ public class SettingsSteps
 
     // ---------- Members list ----------
 
-    [Then(@"the members list contains the current user marked as ""(.*)""")]
+    // Приймає крок як із лапками навколо маркера ("me", "Owner"), так і без них,
+    // щоб не залежати від стилю конкретного .feature-файлу.
+    [Then(@"the members list contains the current user marked as ""?([^""]+?)""?$")]
     public async Task ThenTheMembersListContainsTheCurrentUserMarkedAs(string marker)
     {
         var me = _page.Locator(".settings-member", new() { HasTextString = TestEmail });
@@ -87,7 +89,7 @@ public class SettingsSteps
         await Assertions.Expect(me.Locator(".settings-pill")).ToHaveTextAsync(marker);
     }
 
-    [Then(@"the current user has the ""(.*)"" role")]
+    [Then("the current user has the {string} role")]
     public async Task ThenTheCurrentUserHasTheRole(string role)
     {
         var me = _page.Locator(".settings-member", new() { HasTextString = TestEmail });

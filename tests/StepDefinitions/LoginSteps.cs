@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Json;
 using Microsoft.Playwright;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Reqnroll;
 
 [Binding]
@@ -8,6 +9,10 @@ public class LoginSteps
     private readonly IPage _page;
     private readonly ScenarioContext _scenarioContext;
     private const string BaseUrl = "https://localhost:7024";
+
+    private const string RegisterResponseStatusKey = "RegisterResponseStatus";
+    private const string RegisterDialogsKey = "RegisterDialogs";
+
     public LoginSteps(IPage page, ScenarioContext scenarioContext)
     {
         _page = page;
@@ -140,9 +145,36 @@ public class LoginSteps
     public async Task WhenIRegisterWithTheExistingEmailAndPassword(string password)
     {
         var email = (string)_scenarioContext["ExistingEmail"];
-        await _page.Locator("#registerEmail").FillAsync(email);
-        await _page.Locator("#registerPassword").FillAsync(password);
-        await _page.Locator("#registerForm button[type=submit]").ClickAsync();
+
+        // Якщо .done() спрацює замість .fail(), auth.js покаже alert() і викличе
+        // togglePanels() — панель реєстрації миттєво зникне. Без підписки на
+        // Dialog тут Playwright сам закриє нештатний діалог, і ми втратимо доказ,
+        // ЩО саме сталось. Тому фіксуємо і статус відповіді, і текст діалогу.
+        var dialogs = new List<string>();
+        void OnDialog(object? _, IDialog dialog)
+        {
+            dialogs.Add($"{dialog.Type}: {dialog.Message}");
+            _ = dialog.AcceptAsync();
+        }
+        _page.Dialog += OnDialog;
+
+        try
+        {
+            await _page.Locator("#registerEmail").FillAsync(email);
+            await _page.Locator("#registerPassword").FillAsync(password);
+
+            var response = await _page.RunAndWaitForResponseAsync(
+                async () => await _page.Locator("#registerForm button[type=submit]").ClickAsync(),
+                r => r.Request.Method == "POST" && r.Url.EndsWith("/auth/register"),
+                new() { Timeout = 10000 });
+
+            _scenarioContext[RegisterResponseStatusKey] = response.Status;
+        }
+        finally
+        {
+            _page.Dialog -= OnDialog;
+            _scenarioContext[RegisterDialogsKey] = dialogs;
+        }
     }
 
     // ---------- Assertions ----------
@@ -162,6 +194,24 @@ public class LoginSteps
     [Then(@"I see a register error message")]
     public async Task ThenISeeARegisterErrorMessage()
     {
+        var status = _scenarioContext.ContainsKey(RegisterResponseStatusKey)
+            ? (int)_scenarioContext[RegisterResponseStatusKey]
+            : -1;
+        var dialogs = _scenarioContext.ContainsKey(RegisterDialogsKey)
+            ? (List<string>)_scenarioContext[RegisterDialogsKey]
+            : new List<string>();
+
+        // Явна, промовиста перевірка ДО пошуку елемента в DOM: якщо сервер
+        // повернув 2xx замість 4xx, помилки в DOM просто не буде — і краще
+        // впасти тут з точним поясненням, ніж через 5с таймауту ToBeVisibleAsync.
+        Assert.IsTrue(
+            status is >= 400,
+            $"Очікував помилку реєстрації (4xx) для вже зареєстрованого email, " +
+            $"але POST /auth/register повернув {status}. " +
+            (dialogs.Count > 0
+                ? $"З'явився діалог: [{string.Join("; ", dialogs)}] — тобто реєстрація пройшла успішно."
+                : "Жодного діалогу не було."));
+
         await Assertions.Expect(_page.Locator("label.error[for='registerEmail']")).ToBeVisibleAsync();
     }
 

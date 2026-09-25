@@ -191,7 +191,7 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 await this.FeatureBackgroundAsync();
 #line hidden
 #line 12
-    await testRunner.ThenAsync("the members list contains the current user marked as me", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("the members list contains the current user marked as Ви", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
 #line 13
     await testRunner.AndAsync("the current user has the \"Owner\" role", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");

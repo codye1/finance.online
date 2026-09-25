@@ -9,7 +9,7 @@ Scenario: Settings page is displayed
     And I see the members section
 
 Scenario: Current user is shown in the members list as owner
-    Then the members list contains the current user marked as me
+    Then the members list contains the current user marked as Ви
     And the current user has the "Owner" role
 
 # ---------- Invite member ----------
