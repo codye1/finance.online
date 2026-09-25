@@ -6,5 +6,6 @@ namespace finance.online.mvc.Models.DTO
         public decimal Amount { get; set; }
         public string CategoryId { get; set; } = string.Empty;
         public string? Description { get; set; }
+        public DateTime? Date { get; set; }
     }
 }

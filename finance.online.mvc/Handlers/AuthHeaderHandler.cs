@@ -8,13 +8,16 @@ namespace finance.online.mvc.Handlers
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly string _financeApiBaseUrl;
 
         private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
-        public AuthHeaderHandler(IHttpContextAccessor httpContextAccessor, IHttpClientFactory factory)
+        public AuthHeaderHandler(IHttpContextAccessor httpContextAccessor, IHttpClientFactory factory,
+        IConfiguration configuration)
         {
             _httpContextAccessor = httpContextAccessor;
             _httpClientFactory = factory;
+            _financeApiBaseUrl = configuration["FinanceApi:BaseUrl"] ?? "https://localhost:7242";
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -91,7 +94,7 @@ namespace finance.online.mvc.Handlers
                 if (string.IsNullOrEmpty(refreshToken)) return (false, null);
 
                 var client = _httpClientFactory.CreateClient();
-                client.BaseAddress = new Uri("https://localhost:7242");
+                client.BaseAddress = new Uri(_financeApiBaseUrl);
 
                 var refreshRequest = new HttpRequestMessage(HttpMethod.Post, "/auth/refresh");
                 refreshRequest.Headers.Add("Cookie", $"refreshToken={refreshToken}");

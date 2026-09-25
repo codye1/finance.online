@@ -36,7 +36,8 @@ $(function () {
                     type: $form.find('#operation-type').val(),
                     amount: parseFloat($form.find('#operation-amount').val()),
                     categoryId: $form.find('#operation-category').val(),
-                    description: $form.find('#operation-description').val().trim()
+                    description: $form.find('#operation-description').val().trim(),
+                    date: $form.find('#operation-date').val()
                 };
 
                 const $submitBtn = $form.find('#btn-submit-operation');

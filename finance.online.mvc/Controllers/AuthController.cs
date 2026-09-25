@@ -12,7 +12,6 @@ namespace finance.online.mvc.Controllers
         public AuthController(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
-
         }
 
         [HttpGet("/auth")]
@@ -24,8 +23,8 @@ namespace finance.online.mvc.Controllers
         [HttpPost("/auth/login")]
         public async Task<IActionResult> ProxyLogin([FromBody] AuthLoginRequestDto model)
         {
-            var client = _httpClientFactory.CreateClient();
-            var response = await client.PostAsJsonAsync("https://localhost:7242/auth/login", model);
+            var client = _httpClientFactory.CreateClient("FinanceOnlineApi");
+            var response = await client.PostAsJsonAsync("/auth/login", model);
 
             if (response.IsSuccessStatusCode)
             {
@@ -57,8 +56,8 @@ namespace finance.online.mvc.Controllers
         [HttpPost("/auth/register")]
         public async Task<IActionResult> ProxyRegister([FromBody] AuthRegisterRequestDto model)
         {
-            var client = _httpClientFactory.CreateClient();
-            var response = await client.PostAsJsonAsync("https://localhost:7242/auth/register", model);
+            var client = _httpClientFactory.CreateClient("FinanceOnlineApi");
+            var response = await client.PostAsJsonAsync("/auth/register", model);
 
             if (response.IsSuccessStatusCode)
             {
