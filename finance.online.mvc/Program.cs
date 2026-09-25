@@ -10,9 +10,11 @@ builder.Services.AddTransient<AuthHeaderHandler>();
 builder.Services.AddControllersWithViews();
 
 builder.Services
-    .AddHttpClient("FinanceOnlineApi", client =>
+    .AddHttpClient("FinanceOnlineApi", (sp, client) =>
     {
-        client.BaseAddress = new Uri("https://localhost:7242");
+        var configuration = sp.GetRequiredService<IConfiguration>();
+        var baseUrl = configuration["FinanceApi:BaseUrl"] ?? "https://localhost:7242";
+        client.BaseAddress = new Uri(baseUrl);
     })
     .AddHttpMessageHandler<AuthHeaderHandler>();
 
@@ -35,7 +37,6 @@ app.Use(async (context, next) =>
 {
     var path = context.Request.Path;
 
-    // /auth доступний без авторизації
     var isAuthPage = path.StartsWithSegments("/auth");
 
     if (!isAuthPage)
@@ -47,8 +48,6 @@ app.Use(async (context, next) =>
 
         if (currentUser is null)
         {
-            // AJAX-запити повинні отримувати 401,
-            // а не HTML сторінки /auth.
             var isAjaxRequest =
                 string.Equals(
                     context.Request.Headers["X-Requested-With"],
@@ -61,7 +60,6 @@ app.Use(async (context, next) =>
                 return;
             }
 
-            // Звичайний запит → redirect на авторизацію.
             context.Response.Redirect("/auth");
             return;
         }
@@ -77,3 +75,5 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+public partial class Program { }

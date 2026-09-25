@@ -1,26 +1,40 @@
 ﻿using Reqnroll;
-using tests.Mocks;
+using System.Collections.Concurrent;
 
 [Binding]
 public class FakeApiHooks
 {
-    public static FakeFinanceApi Api { get; private set; } = null!;
+    // Має збігатися з <Workers> у .runsettings (MSTest Parallelize)
+    private const int WorkerPoolSize = 4;
+
+    private static BlockingCollection<TestBackendFixture> _pool = null!;
 
     [BeforeTestRun]
-    public static void StartFakeApi()
+    public static void StartPool()
     {
-        Api = new FakeFinanceApi();
+        _pool = new BlockingCollection<TestBackendFixture>();
+        for (var i = 0; i < WorkerPoolSize; i++)
+            _pool.Add(new TestBackendFixture());
+    }
+
+    [BeforeScenario]
+    public void CheckoutBackend(ScenarioContext scenarioContext)
+    {
+        var fixture = _pool.Take();          // блокує, якщо всі зайняті — але їх рівно стільки, скільки воркерів
+        fixture.Reset();                     // безпечно: цей комплект зараз використовує тільки цей сценарій
+        scenarioContext.Set(fixture, "BackendFixture");
     }
 
     [AfterScenario]
-    public void ResetFakeApi()
+    public void ReturnBackend(ScenarioContext scenarioContext)
     {
-        Api.Reset();
+        var fixture = scenarioContext.Get<TestBackendFixture>("BackendFixture");
+        _pool.Add(fixture);                  // повертаємо в пул для наступного вільного воркера
     }
 
     [AfterTestRun]
-    public static void StopFakeApi()
+    public static void StopPool()
     {
-        Api.Dispose();
+        while (_pool.TryTake(out var fixture)) fixture.Dispose();
     }
 }

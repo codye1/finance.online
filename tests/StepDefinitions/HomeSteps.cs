@@ -7,7 +7,8 @@ public class HomeSteps
 {
     private readonly IPage _page;
     private readonly ScenarioContext _scenarioContext;
-    private const string BaseUrl = "https://localhost:7024";
+    private string BaseUrl => _scenarioContext.Get<TestBackendFixture>("BackendFixture").MvcBaseUrl;
+
 
     // Onov на реальні тестові креди існуючого юзера
     private const string TestEmail = "newuser@example.com";

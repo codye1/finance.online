@@ -8,7 +8,8 @@ public class LoginSteps
 {
     private readonly IPage _page;
     private readonly ScenarioContext _scenarioContext;
-    private const string BaseUrl = "https://localhost:7024";
+    private string BaseUrl => _scenarioContext.Get<TestBackendFixture>("BackendFixture").MvcBaseUrl;
+
 
     private const string RegisterResponseStatusKey = "RegisterResponseStatus";
     private const string RegisterDialogsKey = "RegisterDialogs";

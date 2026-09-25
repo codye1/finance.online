@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using WireMock;
@@ -13,16 +15,18 @@ namespace tests.Mocks;
 
 /// <summary>
 /// Fake of the Finance API that the MVC app talks to (server-side, via IHttpClientFactory).
-/// Listens on https://localhost:7242 - the same address AuthController hardcodes - so the
-/// MVC app needs no changes: just stop the real API and run the tests.
+/// Each instance listens on its own dynamically-allocated port, so multiple instances can
+/// run side-by-side for parallel test workers without colliding.
 ///
 /// One catch-all WireMock mapping + a C# router, so state is kept in memory
 /// (POST /categories then GET /categories returns the new item).
 /// </summary>
 public sealed class FakeFinanceApi : IDisposable
 {
-    public const string Url = "https://localhost:7242";
     private const int PageSize = 20;
+
+    /// <summary>Base URL this instance is actually listening on (e.g. https://localhost:53214).</summary>
+    public string Url { get; }
 
     private static readonly JsonSerializerOptions JsonOpts = new(JsonSerializerDefaults.Web);
     private static readonly Regex EmailRx = new(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled);
@@ -32,15 +36,21 @@ public sealed class FakeFinanceApi : IDisposable
 
     public FakeApiState State { get; } = new();
 
-    public FakeFinanceApi()
+    /// <param name="port">Pass 0 (default) to bind to a free OS-assigned port — required for
+    /// running multiple instances in parallel. Pass an explicit port only for single-instance,
+    /// sequential runs that rely on a fixed address.</param>
+    public FakeFinanceApi(int port = 0)
     {
+        var actualPort = port == 0 ? GetFreePort() : port;
+        Url = $"https://localhost:{actualPort}";
+
         _server = WireMockServer.Start(new WireMockServerSettings
         {
             Urls = new[] { Url },
             UseSSL = true,
             // Uses the ASP.NET Core dev certificate (dotnet dev-certs https --trust).
-            // If the store lookup fails, export it to a PFX and use
-            // X509CertificateFilePath / X509CertificatePassword instead.
+            // The cert is bound to the "localhost" subject name, not to a specific port,
+            // so it stays valid regardless of which port we bind to.
             CertificateSettings = new WireMockCertificateSettings
             {
                 X509StoreName = "My",
@@ -52,6 +62,21 @@ public sealed class FakeFinanceApi : IDisposable
         _server
             .Given(Request.Create().WithPath("/*").UsingAnyMethod())
             .RespondWith(Response.Create().WithCallback(req => Handle(req)));
+    }
+
+    /// <summary>
+    /// Picks a free TCP port by binding a throwaway listener to port 0 and reading back
+    /// what the OS assigned. There's a small theoretical race (another process could grab
+    /// the port between Stop() and WireMock's own bind), but it's negligible in practice
+    /// and standard practice for test infrastructure.
+    /// </summary>
+    private static int GetFreePort()
+    {
+        var listener = new TcpListener(IPAddress.Loopback, 0);
+        listener.Start();
+        var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+        listener.Stop();
+        return port;
     }
 
     /// <summary>Seed ids are deterministic, so a Reset never invalidates ids already rendered in an open page.</summary>

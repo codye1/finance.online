@@ -9,7 +9,8 @@ public class CategoriesSteps
 {
     private readonly IPage _page;
     private readonly ScenarioContext _scenarioContext;
-    private const string BaseUrl = "https://localhost:7024";
+    private string BaseUrl => _scenarioContext.Get<TestBackendFixture>("BackendFixture").MvcBaseUrl;
+
 
     // Той самий користувач, що й в OperationsSteps: має мати активну організацію.
     private const string TestEmail = "newuser@example.com";

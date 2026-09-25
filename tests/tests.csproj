@@ -16,9 +16,18 @@
     <PackageReference Include="Reqnroll.MSTest" Version="3.3.4" />
     <PackageReference Include="WireMock.Net" Version="2.18.0" />
   </ItemGroup>
+	
+<ItemGroup>
+  <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.31" />
+</ItemGroup>
+
 
   <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
+
+<ItemGroup>
+  <ProjectReference Include="..\finance.online.mvc\finance.online.mvc.csproj" />
+</ItemGroup>
 
 </Project>

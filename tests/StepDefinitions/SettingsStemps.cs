@@ -9,7 +9,8 @@ public class SettingsSteps
 {
     private readonly IPage _page;
     private readonly ScenarioContext _scenarioContext;
-    private const string BaseUrl = "https://localhost:7024";
+    private string BaseUrl => _scenarioContext.Get<TestBackendFixture>("BackendFixture").MvcBaseUrl;
+
 
     // Тестовий юзер має бути ВЛАСНИКОМ активної організації
     // (інакше не буде кнопок #open-invite-member-modal-btn та #open-delete-organization-dialog).

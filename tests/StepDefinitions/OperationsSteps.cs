@@ -13,7 +13,7 @@ using static Microsoft.Playwright.Assertions;
 [Scope(Feature = "Operations page")]
 public sealed class OperationsSteps
 {
-    private const string BaseUrl = "https://localhost:7024";
+    private string BaseUrl => _scenarioContext.Get<TestBackendFixture>("BackendFixture").MvcBaseUrl;
     private const string ItemSelector = "#operations-list .op-item";
 
     // Той самий користувач, що й в інших Steps-файлах: має мати активну організацію.
