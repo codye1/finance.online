@@ -54,6 +54,8 @@ $(function () {
                         // Новий айтем міг заповнити список так, що скрол з'явився,
                         // або навпаки — перевіряємо, чи не треба довантажити ще.
                         fillOperationsListIfNeeded();
+
+                        window.location.reload();
                     })
                     .fail((xhr) => {
                         if (xhr.status === 401) {

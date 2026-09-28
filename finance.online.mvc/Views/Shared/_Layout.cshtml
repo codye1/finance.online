@@ -6,10 +6,10 @@
     var currentPath = Context.Request.Path.Value ?? "/";
     var navItems = new[]
     {
-        new { Path = "/", Icon = "dashboard", Label = "Дашборд" },
-        new { Path = "/operations", Icon = "receipt", Label = "Операції" },
-        new { Path = "/categories", Icon = "tags", Label = "Категорії" },
-        new { Path = "/settings", Icon = "settings", Label = "Налаштування" }
+        new { Path = "/", Icon = "dashboard", Label = "Дашборд",Id ="dashboard" },
+        new { Path = "/operations", Icon = "receipt", Label = "Операції",Id = "operations" },
+        new { Path = "/categories", Icon = "tags", Label = "Категорії", Id = "categories" },
+        new { Path = "/settings", Icon = "settings", Label = "Налаштування",Id = "settings" }
     };
 }
 
@@ -83,6 +83,7 @@
                         : currentPath.StartsWith(item.Path, StringComparison.OrdinalIgnoreCase);
 
                     <a href="@item.Path"
+                       id="@item.Id"
                        class="app-nav-link @(isActive ? "is-active" : "")"
                        title="@item.Label"
                        aria-label="@item.Label"
