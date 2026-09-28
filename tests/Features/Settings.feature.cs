@@ -126,7 +126,7 @@ namespace tests.Features
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Settings.feature.ndjson", 14);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Settings.feature.ndjson", 16);
         }
         
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Settings page is displayed")]
@@ -140,7 +140,7 @@ namespace tests.Features
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Settings page is displayed", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 6
+#line 8
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -153,14 +153,43 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 7
-    await testRunner.ThenAsync("I see the settings page header", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 8
-    await testRunner.AndAsync("I see the organization card", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ElementTagName",
+                            "AttributeName",
+                            "ElementValue"});
+                table1.AddRow(new string[] {
+                            ".settings-header h1",
+                            "h1",
+                            "",
+                            "Налаштування організації"});
+                table1.AddRow(new string[] {
+                            ".settings-organization",
+                            "div",
+                            "",
+                            ""});
+                table1.AddRow(new string[] {
+                            ".settings-organization-body h2",
+                            "h2",
+                            "",
+                            ""});
+                table1.AddRow(new string[] {
+                            ".settings-members-list",
+                            "div",
+                            "",
+                            ""});
+                table1.AddRow(new string[] {
+                            "#open-invite-member-modal-btn",
+                            "button",
+                            "",
+                            ""});
+                table1.AddRow(new string[] {
+                            "#open-delete-organization-dialog",
+                            "button",
+                            "",
+                            ""});
 #line 9
-    await testRunner.AndAsync("I see the members section", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.ThenAsync("check elements existence", ((string)(null)), table1, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -177,7 +206,7 @@ await this.FeatureBackgroundAsync();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Current user is shown in the members list as owner", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 11
+#line 20
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -190,11 +219,34 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 12
-    await testRunner.ThenAsync("the members list contains the current user marked as Ви", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ElementTagName",
+                            "AttributeName",
+                            "ElementValue"});
+                table2.AddRow(new string[] {
+                            ".settings-member:has-text(\'newuser@example.com\') .settings-pill",
+                            "span",
+                            "",
+                            "Ви"});
+                table2.AddRow(new string[] {
+                            ".settings-member:has-text(\'newuser@example.com\') .settings-role",
+                            "span",
+                            "",
+                            "Owner"});
+#line 21
+    await testRunner.ThenAsync("check elements existence", ((string)(null)), table2, "Then ");
 #line hidden
-#line 13
-    await testRunner.AndAsync("the current user has the \"Owner\" role", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table3.AddRow(new string[] {
+                            ".settings-member:has-text(\'newuser@example.com\') .settings-role",
+                            "is-owner",
+                            "true"});
+#line 25
+    await testRunner.AndAsync("check elements class", ((string)(null)), table3, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -211,7 +263,7 @@ await this.FeatureBackgroundAsync();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Open and close the invite member modal", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 17
+#line 31
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -224,259 +276,116 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 18
-    await testRunner.WhenAsync("I click the invite member button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator"});
+                table4.AddRow(new string[] {
+                            "#open-invite-member-modal-btn"});
+#line 32
+    await testRunner.WhenAsync("click elements", ((string)(null)), table4, "When ");
 #line hidden
-#line 19
-    await testRunner.ThenAsync("the invite member modal is visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table5.AddRow(new string[] {
+                            "#form-invite-member",
+                            "true"});
+#line 35
+    await testRunner.ThenAsync("check elements visibility", ((string)(null)), table5, "Then ");
 #line hidden
-#line 20
-    await testRunner.WhenAsync("I close the invite member modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+                global::Reqnroll.Table table6 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator"});
+                table6.AddRow(new string[] {
+                            "#js-close-invite-member-modal"});
+#line 38
+    await testRunner.WhenAsync("click elements", ((string)(null)), table6, "When ");
 #line hidden
-#line 21
-    await testRunner.ThenAsync("the invite member modal is hidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table7 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table7.AddRow(new string[] {
+                            "#app-modal",
+                            "is-active",
+                            "false"});
+#line 41
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table7, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Invite member role defaults to accountant")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invite member role defaults to accountant")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Invite member form defaults")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invite member form defaults")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
-        public async global::System.Threading.Tasks.Task InviteMemberRoleDefaultsToAccountant()
+        public async global::System.Threading.Tasks.Task InviteMemberFormDefaults()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "3";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Invite member role defaults to accountant", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Invite member form defaults", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 23
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 24
-    await testRunner.GivenAsync("I open the invite member modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 25
-    await testRunner.ThenAsync("the invite member role is \"accountant\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Invite member form requires an email")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invite member form requires an email")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
-        public async global::System.Threading.Tasks.Task InviteMemberFormRequiresAnEmail()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "4";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Invite member form requires an email", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 27
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 28
-    await testRunner.GivenAsync("I open the invite member modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 29
-    await testRunner.WhenAsync("I submit the invite member form without an email", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 30
-    await testRunner.ThenAsync("I see a validation error for the invite email field", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Invite member form rejects an invalid email")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invite member form rejects an invalid email")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
-        public async global::System.Threading.Tasks.Task InviteMemberFormRejectsAnInvalidEmail()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "5";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Invite member form rejects an invalid email", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 32
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 33
-    await testRunner.GivenAsync("I open the invite member modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 34
-    await testRunner.WhenAsync("I fill in the invite email \"not-an-email\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 35
-    await testRunner.AndAsync("I submit the invite member form", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 36
-    await testRunner.ThenAsync("I see a validation error for the invite email field", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 37
-    await testRunner.AndAsync("the invite member modal is visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Invite submit button is disabled while the form is invalid")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invite submit button is disabled while the form is invalid")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
-        public async global::System.Threading.Tasks.Task InviteSubmitButtonIsDisabledWhileTheFormIsInvalid()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "6";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Invite submit button is disabled while the form is invalid", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 39
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 40
-    await testRunner.GivenAsync("I open the invite member modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 41
-    await testRunner.WhenAsync("I submit the invite member form without an email", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 42
-    await testRunner.ThenAsync("the invite member submit button is disabled", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Successfully invite an existing user")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Successfully invite an existing user")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
-        public async global::System.Threading.Tasks.Task SuccessfullyInviteAnExistingUser()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "7";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Successfully invite an existing user", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 44
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
 #line 45
-    await testRunner.GivenAsync("I open the invite member modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
 #line hidden
 #line 46
-    await testRunner.WhenAsync("I fill in the email of an existing user", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.GivenAsync("I open the invite member modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
+                global::Reqnroll.Table table8 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ExpectedValue"});
+                table8.AddRow(new string[] {
+                            "#member-email",
+                            ""});
+                table8.AddRow(new string[] {
+                            "#member-role",
+                            "accountant"});
 #line 47
-    await testRunner.AndAsync("I submit the invite member form", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.ThenAsync("check elements value", ((string)(null)), table8, "Then ");
 #line hidden
-#line 48
-    await testRunner.ThenAsync("the invited user appears in the members list", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Open the delete organization dialog")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Open the delete organization dialog")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
-        public async global::System.Threading.Tasks.Task OpenTheDeleteOrganizationDialog()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "8";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Open the delete organization dialog", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 54
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 55
-    await testRunner.WhenAsync("I click the delete organization button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 56
-    await testRunner.ThenAsync("the delete organization dialog is visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 57
-    await testRunner.AndAsync("the delete organization dialog mentions the organization name", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+                global::Reqnroll.Table table9 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ExpectedCount"});
+                table9.AddRow(new string[] {
+                            "#member-role option",
+                            "3"});
+#line 51
+    await testRunner.AndAsync("check elements count", ((string)(null)), table9, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Cancel closes the delete organization dialog")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Cancel closes the delete organization dialog")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Invite member form validation - <Case>")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Invite member form validation - <Case>")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
-        public async global::System.Threading.Tasks.Task CancelClosesTheDeleteOrganizationDialog()
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("empty", "", "#btn-submit-invite-member", "click", "Вкажіть email користувача", "4", null, DisplayName="Invite member form validation - <Case>(empty,,#btn-submit-invite-member,click,Вка" +
+            "жіть email користувача,4)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("no at sign", "not-an-email", "#member-email", "blur", "Введіть коректний email", "5", null, DisplayName="Invite member form validation - <Case>(no at sign,not-an-email,#member-email,blur" +
+            ",Введіть коректний email,5)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("no domain", "user@", "#member-email", "blur", "Введіть коректний email", "6", null, DisplayName="Invite member form validation - <Case>(no domain,user@,#member-email,blur,Введіть" +
+            " коректний email,6)")]
+        public async global::System.Threading.Tasks.Task InviteMemberFormValidation_Case(string @case, string email, string triggerLocator, string triggerAction, string error, string @__pickleIndex, string[] exampleTags)
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = exampleTags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "9";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Cancel closes the delete organization dialog", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            argumentsOfScenario.Add("Case", @case);
+            argumentsOfScenario.Add("Email", email);
+            argumentsOfScenario.Add("TriggerLocator", triggerLocator);
+            argumentsOfScenario.Add("TriggerAction", triggerAction);
+            argumentsOfScenario.Add("Error", error);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Invite member form validation - <Case>", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 59
@@ -493,16 +402,330 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 await this.FeatureBackgroundAsync();
 #line hidden
 #line 60
+    await testRunner.GivenAsync("I open the invite member modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+                global::Reqnroll.Table table10 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table10.AddRow(new string[] {
+                            "#member-email",
+                            "fill",
+                            string.Format("{0}", email)});
+                table10.AddRow(new string[] {
+                            string.Format("{0}", triggerLocator),
+                            string.Format("{0}", triggerAction),
+                            ""});
+#line 61
+    await testRunner.WhenAsync("fill form", ((string)(null)), table10, "When ");
+#line hidden
+                global::Reqnroll.Table table11 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ElementTagName",
+                            "AttributeName",
+                            "ElementValue"});
+                table11.AddRow(new string[] {
+                            "#form-invite-member .form-group:has(#member-email) span.form-error-text",
+                            "span",
+                            "",
+                            string.Format("{0}", error)});
+#line 65
+    await testRunner.ThenAsync("check elements existence", ((string)(null)), table11, "Then ");
+#line hidden
+                global::Reqnroll.Table table12 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Enabled"});
+                table12.AddRow(new string[] {
+                            "#btn-submit-invite-member",
+                            "false"});
+#line 68
+    await testRunner.AndAsync("check elements state", ((string)(null)), table12, "And ");
+#line hidden
+                global::Reqnroll.Table table13 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table13.AddRow(new string[] {
+                            "#form-invite-member",
+                            "true"});
+#line 71
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table13, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Valid email passes validation")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Valid email passes validation")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
+        public async global::System.Threading.Tasks.Task ValidEmailPassesValidation()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "7";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Valid email passes validation", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 81
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 82
+    await testRunner.GivenAsync("I open the invite member modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+                global::Reqnroll.Table table14 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table14.AddRow(new string[] {
+                            "#member-email",
+                            "fill",
+                            "user@example.com"});
+                table14.AddRow(new string[] {
+                            "#member-email",
+                            "blur",
+                            ""});
+#line 83
+    await testRunner.WhenAsync("fill form", ((string)(null)), table14, "When ");
+#line hidden
+                global::Reqnroll.Table table15 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Enabled"});
+                table15.AddRow(new string[] {
+                            "#btn-submit-invite-member",
+                            "true"});
+#line 87
+    await testRunner.ThenAsync("check elements state", ((string)(null)), table15, "Then ");
+#line hidden
+                global::Reqnroll.Table table16 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table16.AddRow(new string[] {
+                            "#form-invite-member .form-group:has(#member-email) span.form-error-text",
+                            "false"});
+#line 90
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table16, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Successfully invite an existing user")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Successfully invite an existing user")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
+        public async global::System.Threading.Tasks.Task SuccessfullyInviteAnExistingUser()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "8";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Successfully invite an existing user", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 98
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 99
+    await testRunner.GivenAsync("I open the invite member modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+                global::Reqnroll.Table table17 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table17.AddRow(new string[] {
+                            "#member-email",
+                            "fill",
+                            "member@example.com"});
+                table17.AddRow(new string[] {
+                            "#btn-submit-invite-member",
+                            "click",
+                            ""});
+#line 100
+    await testRunner.WhenAsync("fill form", ((string)(null)), table17, "When ");
+#line hidden
+                global::Reqnroll.Table table18 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table18.AddRow(new string[] {
+                            ".settings-member:has-text(\'member@example.com\')",
+                            "true"});
+#line 104
+    await testRunner.ThenAsync("check elements visibility", ((string)(null)), table18, "Then ");
+#line hidden
+                global::Reqnroll.Table table19 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ElementTagName",
+                            "AttributeName",
+                            "ElementValue"});
+                table19.AddRow(new string[] {
+                            ".settings-member:has-text(\'member@example.com\') .settings-role",
+                            "span",
+                            "",
+                            "Member"});
+#line 107
+    await testRunner.AndAsync("check elements existence", ((string)(null)), table19, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Open the delete organization dialog")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Open the delete organization dialog")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
+        public async global::System.Threading.Tasks.Task OpenTheDeleteOrganizationDialog()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "9";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Open the delete organization dialog", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 115
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+                global::Reqnroll.Table table20 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator"});
+                table20.AddRow(new string[] {
+                            "#open-delete-organization-dialog"});
+#line 116
+    await testRunner.WhenAsync("click elements", ((string)(null)), table20, "When ");
+#line hidden
+                global::Reqnroll.Table table21 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table21.AddRow(new string[] {
+                            "#delete-organization-dialog",
+                            "is-active",
+                            "true"});
+#line 119
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table21, "Then ");
+#line hidden
+                global::Reqnroll.Table table22 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "AttributeName",
+                            "ExpectedValue"});
+                table22.AddRow(new string[] {
+                            "#delete-organization-dialog",
+                            "aria-hidden",
+                            "false"});
+#line 122
+    await testRunner.AndAsync("check elements attribute contains", ((string)(null)), table22, "And ");
+#line hidden
+                global::Reqnroll.Table table23 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ElementTagName",
+                            "AttributeName",
+                            "ElementValue"});
+                table23.AddRow(new string[] {
+                            "#delete-organization-title",
+                            "h2",
+                            "",
+                            "Видалити організацію?"});
+#line 125
+    await testRunner.AndAsync("check elements existence", ((string)(null)), table23, "And ");
+#line hidden
+#line 128
+    await testRunner.AndAsync("the delete organization dialog mentions the organization name", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Cancel closes the delete organization dialog")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Cancel closes the delete organization dialog")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
+        public async global::System.Threading.Tasks.Task CancelClosesTheDeleteOrganizationDialog()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "10";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Cancel closes the delete organization dialog", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 130
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 131
     await testRunner.GivenAsync("I open the delete organization dialog", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 61
-    await testRunner.WhenAsync("I click cancel in the delete organization dialog", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+                global::Reqnroll.Table table24 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator"});
+                table24.AddRow(new string[] {
+                            "#cancel-delete-organization"});
+#line 132
+    await testRunner.WhenAsync("click elements", ((string)(null)), table24, "When ");
 #line hidden
-#line 62
-    await testRunner.ThenAsync("the delete organization dialog is hidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table25 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table25.AddRow(new string[] {
+                            "#delete-organization-dialog",
+                            "is-active",
+                            "false"});
+#line 135
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table25, "Then ");
 #line hidden
-#line 63
-    await testRunner.AndAsync("I am still on the settings page", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+                global::Reqnroll.Table table26 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "AttributeName",
+                            "ExpectedValue"});
+                table26.AddRow(new string[] {
+                            "#delete-organization-dialog",
+                            "aria-hidden",
+                            "true"});
+#line 138
+    await testRunner.AndAsync("check elements attribute contains", ((string)(null)), table26, "And ");
+#line hidden
+#line 141
+    await testRunner.AndAsync("current url contains \"/settings\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+                global::Reqnroll.Table table27 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table27.AddRow(new string[] {
+                            ".settings-organization",
+                            "true"});
+#line 142
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table27, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -515,11 +738,11 @@ await this.FeatureBackgroundAsync();
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "10";
+            string pickleIndex = "11";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Escape closes the delete organization dialog", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 65
+#line 146
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -532,14 +755,22 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 66
+#line 147
     await testRunner.GivenAsync("I open the delete organization dialog", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 67
+#line 148
     await testRunner.WhenAsync("I press the Escape key", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 68
-    await testRunner.ThenAsync("the delete organization dialog is hidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table28 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table28.AddRow(new string[] {
+                            "#delete-organization-dialog",
+                            "is-active",
+                            "false"});
+#line 149
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table28, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -552,11 +783,11 @@ await this.FeatureBackgroundAsync();
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "11";
+            string pickleIndex = "12";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Clicking the overlay closes the delete organization dialog", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 70
+#line 153
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -569,14 +800,67 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 71
+#line 154
     await testRunner.GivenAsync("I open the delete organization dialog", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 72
+#line 155
     await testRunner.WhenAsync("I click outside the delete organization dialog", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 73
-    await testRunner.ThenAsync("the delete organization dialog is hidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table29 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table29.AddRow(new string[] {
+                            "#delete-organization-dialog",
+                            "is-active",
+                            "false"});
+#line 156
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table29, "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Clicking inside the delete organization dialog keeps it open")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Clicking inside the delete organization dialog keeps it open")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
+        public async global::System.Threading.Tasks.Task ClickingInsideTheDeleteOrganizationDialogKeepsItOpen()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "13";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Clicking inside the delete organization dialog keeps it open", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 160
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 161
+    await testRunner.GivenAsync("I open the delete organization dialog", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 162
+    await testRunner.WhenAsync("click element \"#delete-organization-title\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+                global::Reqnroll.Table table30 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table30.AddRow(new string[] {
+                            "#delete-organization-dialog",
+                            "is-active",
+                            "true"});
+#line 163
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table30, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

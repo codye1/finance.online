@@ -126,7 +126,7 @@ namespace tests.Features
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Categories.feature.ndjson", 12);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Categories.feature.ndjson", 18);
         }
         
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Categories page is displayed")]
@@ -140,7 +140,7 @@ namespace tests.Features
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Categories page is displayed", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 6
+#line 8
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -153,11 +153,28 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 7
-    await testRunner.ThenAsync("I see the categories page header", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 8
-    await testRunner.AndAsync("I see the categories list", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ElementTagName",
+                            "AttributeName",
+                            "ElementValue"});
+                table1.AddRow(new string[] {
+                            ".categories-header h1",
+                            "h1",
+                            "",
+                            "Категорії"});
+                table1.AddRow(new string[] {
+                            "#categories-list",
+                            "div",
+                            "",
+                            ""});
+                table1.AddRow(new string[] {
+                            "#open-add-category-modal-btn",
+                            "button",
+                            "",
+                            ""});
+#line 9
+    await testRunner.ThenAsync("check elements existence", ((string)(null)), table1, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -174,84 +191,7 @@ await this.FeatureBackgroundAsync();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Open and close the add category modal", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 10
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 11
-    await testRunner.WhenAsync("I click the add category button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 12
-    await testRunner.ThenAsync("the add category modal is visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 13
-    await testRunner.WhenAsync("I close the category modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 14
-    await testRunner.ThenAsync("the add category modal is hidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Add category form requires a name")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add category form requires a name")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Categories page")]
-        public async global::System.Threading.Tasks.Task AddCategoryFormRequiresAName()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "2";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add category form requires a name", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 16
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
 #line 17
-    await testRunner.GivenAsync("I open the add category modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 18
-    await testRunner.WhenAsync("I submit the category form without a name", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 19
-    await testRunner.ThenAsync("I see a validation error for the category name field", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Add category form rejects a name longer than 100 characters")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add category form rejects a name longer than 100 characters")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Categories page")]
-        public async global::System.Threading.Tasks.Task AddCategoryFormRejectsANameLongerThan100Characters()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "3";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add category form rejects a name longer than 100 characters", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 21
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -264,240 +204,214 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 22
-    await testRunner.GivenAsync("I open the add category modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator"});
+                table2.AddRow(new string[] {
+                            "#open-add-category-modal-btn"});
+#line 18
+    await testRunner.WhenAsync("click elements", ((string)(null)), table2, "When ");
 #line hidden
-#line 23
-    await testRunner.WhenAsync("I fill in a category name of 101 characters", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table3.AddRow(new string[] {
+                            "#form-add-category",
+                            "true"});
+#line 21
+    await testRunner.ThenAsync("check elements visibility", ((string)(null)), table3, "Then ");
 #line hidden
+                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator"});
+                table4.AddRow(new string[] {
+                            "#js-close-category-modal"});
 #line 24
-    await testRunner.AndAsync("I submit the category form", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.WhenAsync("click elements", ((string)(null)), table4, "When ");
 #line hidden
-#line 25
-    await testRunner.ThenAsync("I see a validation error for the category name field", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 26
-    await testRunner.AndAsync("the add category modal is visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+                global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table5.AddRow(new string[] {
+                            "#app-modal",
+                            "is-active",
+                            "false"});
+#line 27
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table5, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Submit button is disabled while the form is invalid")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Submit button is disabled while the form is invalid")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Add category form validation - <Case>")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add category form validation - <Case>")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Categories page")]
-        public async global::System.Threading.Tasks.Task SubmitButtonIsDisabledWhileTheFormIsInvalid()
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("empty", "", "#btn-submit-category", "click", "Вкажіть назву категорії", "2", null, DisplayName="Add category form validation - <Case>(empty,,#btn-submit-category,click,Вкажіть н" +
+            "азву категорії,2)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("101 chars", "{chars:101}", "#category-name", "blur", "Назва має бути не довше 100 символів", "3", null, DisplayName="Add category form validation - <Case>(101 chars,{chars:101},#category-name,blur,Н" +
+            "азва має бути не довше 100 символів,3)")]
+        public async global::System.Threading.Tasks.Task AddCategoryFormValidation_Case(string @case, string name, string triggerLocator, string triggerAction, string error, string @__pickleIndex, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Case", @case);
+            argumentsOfScenario.Add("Name", name);
+            argumentsOfScenario.Add("TriggerLocator", triggerLocator);
+            argumentsOfScenario.Add("TriggerAction", triggerAction);
+            argumentsOfScenario.Add("Error", error);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add category form validation - <Case>", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 35
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 36
+    await testRunner.GivenAsync("I open the add category modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+                global::Reqnroll.Table table6 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table6.AddRow(new string[] {
+                            "#category-name",
+                            "fill",
+                            string.Format("{0}", name)});
+                table6.AddRow(new string[] {
+                            string.Format("{0}", triggerLocator),
+                            string.Format("{0}", triggerAction),
+                            ""});
+#line 37
+    await testRunner.WhenAsync("fill form", ((string)(null)), table6, "When ");
+#line hidden
+                global::Reqnroll.Table table7 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ElementTagName",
+                            "AttributeName",
+                            "ElementValue"});
+                table7.AddRow(new string[] {
+                            "#form-add-category .form-group:has(#category-name) span.form-error-text",
+                            "span",
+                            "",
+                            string.Format("{0}", error)});
+#line 41
+    await testRunner.ThenAsync("check elements existence", ((string)(null)), table7, "Then ");
+#line hidden
+                global::Reqnroll.Table table8 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Enabled"});
+                table8.AddRow(new string[] {
+                            "#btn-submit-category",
+                            "false"});
+#line 44
+    await testRunner.AndAsync("check elements state", ((string)(null)), table8, "And ");
+#line hidden
+                global::Reqnroll.Table table9 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table9.AddRow(new string[] {
+                            "#form-add-category",
+                            "true"});
+#line 47
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table9, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Category name of exactly 100 characters is valid")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Category name of exactly 100 characters is valid")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Categories page")]
+        public async global::System.Threading.Tasks.Task CategoryNameOfExactly100CharactersIsValid()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "4";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Submit button is disabled while the form is invalid", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Category name of exactly 100 characters is valid", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 28
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 29
-    await testRunner.GivenAsync("I open the add category modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 30
-    await testRunner.WhenAsync("I submit the category form without a name", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 31
-    await testRunner.ThenAsync("the category submit button is disabled", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Select a category color")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Select a category color")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Categories page")]
-        public async global::System.Threading.Tasks.Task SelectACategoryColor()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "5";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Select a category color", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 33
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 34
-    await testRunner.GivenAsync("I open the add category modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 35
-    await testRunner.WhenAsync("I select the category color \"#10B981\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 36
-    await testRunner.ThenAsync("the category color \"#10B981\" is active", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 37
-    await testRunner.AndAsync("the category color \"#2563EB\" is not active", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Successfully add a new category")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Successfully add a new category")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Categories page")]
-        public async global::System.Threading.Tasks.Task SuccessfullyAddANewCategory()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "6";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Successfully add a new category", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 39
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 40
-    await testRunner.GivenAsync("I open the add category modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 41
-    await testRunner.WhenAsync("I fill in a unique category name", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 42
-    await testRunner.AndAsync("I submit the category form", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 43
-    await testRunner.ThenAsync("the add category modal is hidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 44
-    await testRunner.AndAsync("the new category appears in the categories list", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("New category is created with the selected color")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("New category is created with the selected color")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Categories page")]
-        public async global::System.Threading.Tasks.Task NewCategoryIsCreatedWithTheSelectedColor()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "7";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("New category is created with the selected color", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 46
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 47
-    await testRunner.GivenAsync("I open the add category modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 48
-    await testRunner.WhenAsync("I fill in a unique category name", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 49
-    await testRunner.AndAsync("I select the category color \"#EF4444\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 50
-    await testRunner.AndAsync("I submit the category form", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 51
-    await testRunner.ThenAsync("the new category appears in the categories list", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 52
-    await testRunner.AndAsync("the new category has the color \"#EF4444\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Delete a category and confirm")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete a category and confirm")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Categories page")]
-        public async global::System.Threading.Tasks.Task DeleteACategoryAndConfirm()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "8";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Delete a category and confirm", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 54
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 55
-    await testRunner.GivenAsync("I have created a new category", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
 #line 56
-    await testRunner.WhenAsync("I delete that category and confirm", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
 #line hidden
 #line 57
-    await testRunner.ThenAsync("that category is removed from the categories list", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.GivenAsync("I open the add category modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+                global::Reqnroll.Table table10 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table10.AddRow(new string[] {
+                            "#category-name",
+                            "fill",
+                            "{chars:100}"});
+                table10.AddRow(new string[] {
+                            "#category-name",
+                            "blur",
+                            ""});
+#line 58
+    await testRunner.WhenAsync("fill form", ((string)(null)), table10, "When ");
+#line hidden
+                global::Reqnroll.Table table11 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Enabled"});
+                table11.AddRow(new string[] {
+                            "#btn-submit-category",
+                            "true"});
+#line 62
+    await testRunner.ThenAsync("check elements state", ((string)(null)), table11, "Then ");
+#line hidden
+                global::Reqnroll.Table table12 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table12.AddRow(new string[] {
+                            "#form-add-category .form-group:has(#category-name) span.form-error-text",
+                            "false"});
+#line 65
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table12, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Cancel deleting a category")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Cancel deleting a category")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Select a category color (<Color>)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Select a category color (<Color>)")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Categories page")]
-        public async global::System.Threading.Tasks.Task CancelDeletingACategory()
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("#10B981", "5", null, DisplayName="Select a category color (<Color>)(#10B981,5)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("#EF4444", "6", null, DisplayName="Select a category color (<Color>)(#EF4444,6)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("#F59E0B", "7", null, DisplayName="Select a category color (<Color>)(#F59E0B,7)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("#8B5CF6", "8", null, DisplayName="Select a category color (<Color>)(#8B5CF6,8)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("#EC4899", "9", null, DisplayName="Select a category color (<Color>)(#EC4899,9)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("#06B6D4", "10", null, DisplayName="Select a category color (<Color>)(#06B6D4,10)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("#84CC16", "11", null, DisplayName="Select a category color (<Color>)(#84CC16,11)")]
+        public async global::System.Threading.Tasks.Task SelectACategoryColorColor(string color, string @__pickleIndex, string[] exampleTags)
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = exampleTags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "9";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Cancel deleting a category", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            argumentsOfScenario.Add("Color", color);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Select a category color (<Color>)", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 59
+#line 71
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -510,14 +424,208 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 60
-    await testRunner.GivenAsync("I have created a new category", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 72
+    await testRunner.GivenAsync("I open the add category modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 61
-    await testRunner.WhenAsync("I delete that category and cancel", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 73
+    await testRunner.WhenAsync(string.Format("click element \".color-swatch-btn[data-color=\'{0}\']\"", color), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 62
-    await testRunner.ThenAsync("that category is still in the categories list", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table13 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table13.AddRow(new string[] {
+                            string.Format(".color-swatch-btn[data-color=\'{0}\']", color),
+                            "active",
+                            "true"});
+                table13.AddRow(new string[] {
+                            ".color-swatch-btn[data-color=\'#2563EB\']",
+                            "active",
+                            "false"});
+#line 74
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table13, "Then ");
+#line hidden
+                global::Reqnroll.Table table14 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ExpectedValue"});
+                table14.AddRow(new string[] {
+                            "#category-color",
+                            string.Format("{0}", color)});
+#line 78
+    await testRunner.AndAsync("check elements value", ((string)(null)), table14, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Successfully add a new category with color <Color>")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Successfully add a new category with color <Color>")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Categories page")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("#2563EB", "12", null, DisplayName="Successfully add a new category with color <Color>(#2563EB,12)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("#EF4444", "13", null, DisplayName="Successfully add a new category with color <Color>(#EF4444,13)")]
+        public async global::System.Threading.Tasks.Task SuccessfullyAddANewCategoryWithColorColor(string color, string @__pickleIndex, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Color", color);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Successfully add a new category with color <Color>", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 94
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 95
+    await testRunner.GivenAsync("I open the add category modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+                global::Reqnroll.Table table15 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table15.AddRow(new string[] {
+                            "#category-name",
+                            "fill",
+                            "{unique}"});
+                table15.AddRow(new string[] {
+                            string.Format(".color-swatch-btn[data-color=\'{0}\']", color),
+                            "click",
+                            ""});
+                table15.AddRow(new string[] {
+                            "#btn-submit-category",
+                            "click",
+                            ""});
+#line 96
+    await testRunner.WhenAsync("fill form", ((string)(null)), table15, "When ");
+#line hidden
+                global::Reqnroll.Table table16 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table16.AddRow(new string[] {
+                            "#app-modal",
+                            "is-active",
+                            "false"});
+#line 101
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table16, "Then ");
+#line hidden
+                global::Reqnroll.Table table17 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table17.AddRow(new string[] {
+                            "#categories-list .categories-item:has-text(\'{unique}\')",
+                            "true"});
+#line 104
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table17, "And ");
+#line hidden
+                global::Reqnroll.Table table18 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "AttributeName",
+                            "ExpectedValue"});
+                table18.AddRow(new string[] {
+                            "#categories-list .categories-item:has-text(\'{unique}\') .category-color-dot",
+                            "style",
+                            string.Format("{0}", color)});
+#line 107
+    await testRunner.AndAsync("check elements attribute contains", ((string)(null)), table18, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Delete a category and <Action> the confirmation")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete a category and <Action> the confirmation")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Categories page")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("accepts", "0", "14", null, DisplayName="Delete a category and <Action> the confirmation(accepts,0,14)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("dismisses", "1", "15", null, DisplayName="Delete a category and <Action> the confirmation(dismisses,1,15)")]
+        public async global::System.Threading.Tasks.Task DeleteACategoryAndActionTheConfirmation(string action, string count, string @__pickleIndex, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Action", action);
+            argumentsOfScenario.Add("Count", count);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Delete a category and <Action> the confirmation", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 120
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 121
+    await testRunner.GivenAsync("I open the add category modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+                global::Reqnroll.Table table19 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table19.AddRow(new string[] {
+                            "#category-name",
+                            "fill",
+                            "{unique}"});
+                table19.AddRow(new string[] {
+                            "#btn-submit-category",
+                            "click",
+                            ""});
+#line 122
+    await testRunner.AndAsync("fill form", ((string)(null)), table19, "And ");
+#line hidden
+                global::Reqnroll.Table table20 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table20.AddRow(new string[] {
+                            "#categories-list .categories-item:has-text(\'{unique}\')",
+                            "true"});
+#line 126
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table20, "And ");
+#line hidden
+                global::Reqnroll.Table table21 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table21.AddRow(new string[] {
+                            "#app-modal",
+                            "is-active",
+                            "false"});
+#line 129
+    await testRunner.AndAsync("check elements class", ((string)(null)), table21, "And ");
+#line hidden
+#line 132
+    await testRunner.AndAsync(string.Format("the browser {0} dialogs", action), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 133
+    await testRunner.WhenAsync("click element \"#categories-list .categories-item:has-text(\'{unique}\') .category-d" +
+                        "elete-btn\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 134
+    await testRunner.ThenAsync("a dialog is shown containing \"Видалити цю категорію?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+                global::Reqnroll.Table table22 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ExpectedCount"});
+                table22.AddRow(new string[] {
+                            "#categories-list .categories-item:has-text(\'{unique}\')",
+                            string.Format("{0}", count)});
+#line 135
+    await testRunner.AndAsync("check elements count", ((string)(null)), table22, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

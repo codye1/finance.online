@@ -126,21 +126,21 @@ namespace tests.Features
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Operations.feature.ndjson", 13);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Operations.feature.ndjson", 21);
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Summary cards are displayed")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Summary cards are displayed")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Operations page is displayed")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Operations page is displayed")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Operations page")]
-        public async global::System.Threading.Tasks.Task SummaryCardsAreDisplayed()
+        public async global::System.Threading.Tasks.Task OperationsPageIsDisplayed()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "0";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Summary cards are displayed", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Operations page is displayed", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 6
+#line 8
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -153,8 +153,58 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 7
-    await testRunner.ThenAsync("I see the operations summary cards", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ElementTagName",
+                            "AttributeName",
+                            "ElementValue"});
+                table1.AddRow(new string[] {
+                            ".op-header h1",
+                            "h1",
+                            "",
+                            "Усі операції"});
+                table1.AddRow(new string[] {
+                            "#open-operation-modal-btn",
+                            "button",
+                            "",
+                            ""});
+                table1.AddRow(new string[] {
+                            "#op-summary-income",
+                            "p",
+                            "",
+                            ""});
+                table1.AddRow(new string[] {
+                            "#op-summary-expense",
+                            "p",
+                            "",
+                            ""});
+                table1.AddRow(new string[] {
+                            "#op-summary-net",
+                            "p",
+                            "",
+                            ""});
+                table1.AddRow(new string[] {
+                            "#op-search-input",
+                            "input",
+                            "",
+                            ""});
+                table1.AddRow(new string[] {
+                            "#op-type-filter",
+                            "select",
+                            "",
+                            ""});
+                table1.AddRow(new string[] {
+                            "#op-category-filter",
+                            "select",
+                            "",
+                            ""});
+                table1.AddRow(new string[] {
+                            "#operations-list",
+                            "div",
+                            "",
+                            ""});
+#line 9
+    await testRunner.ThenAsync("check elements existence", ((string)(null)), table1, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -171,7 +221,7 @@ await this.FeatureBackgroundAsync();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Open and close the add operation modal", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 9
+#line 23
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -184,185 +234,53 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 10
-    await testRunner.WhenAsync("I click the add operation button", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator"});
+                table2.AddRow(new string[] {
+                            "#open-operation-modal-btn"});
+#line 24
+    await testRunner.WhenAsync("click elements", ((string)(null)), table2, "When ");
 #line hidden
-#line 11
-    await testRunner.ThenAsync("the add operation modal is visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table3.AddRow(new string[] {
+                            "#form-add-operation",
+                            "true"});
+#line 27
+    await testRunner.ThenAsync("check elements visibility", ((string)(null)), table3, "Then ");
 #line hidden
-#line 12
-    await testRunner.WhenAsync("I close the modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator"});
+                table4.AddRow(new string[] {
+                            "#js-close-operation-modal"});
+#line 30
+    await testRunner.WhenAsync("click elements", ((string)(null)), table4, "When ");
 #line hidden
-#line 13
-    await testRunner.ThenAsync("the add operation modal is hidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table5.AddRow(new string[] {
+                            "#app-modal",
+                            "is-active",
+                            "false"});
+#line 33
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table5, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Add operation form requires amount")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add operation form requires amount")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Add operation modal has expense selected by default")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add operation modal has expense selected by default")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Operations page")]
-        public async global::System.Threading.Tasks.Task AddOperationFormRequiresAmount()
+        public async global::System.Threading.Tasks.Task AddOperationModalHasExpenseSelectedByDefault()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "2";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add operation form requires amount", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 15
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 16
-    await testRunner.GivenAsync("I open the add operation modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 17
-    await testRunner.WhenAsync("I submit the operation form without an amount", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 18
-    await testRunner.ThenAsync("I see a validation error for the amount field", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Add operation form requires category")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add operation form requires category")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Operations page")]
-        public async global::System.Threading.Tasks.Task AddOperationFormRequiresCategory()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "3";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add operation form requires category", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 20
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 21
-    await testRunner.GivenAsync("I open the add operation modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 22
-    await testRunner.WhenAsync("I submit the operation form without a category", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 23
-    await testRunner.ThenAsync("I see a validation error for the category field", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Successfully add a new expense operation")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Successfully add a new expense operation")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Operations page")]
-        public async global::System.Threading.Tasks.Task SuccessfullyAddANewExpenseOperation()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "4";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Successfully add a new expense operation", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 25
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 26
-    await testRunner.GivenAsync("I open the add operation modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 27
-    await testRunner.WhenAsync("I fill in the operation amount \"150\" and select the first category", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 28
-    await testRunner.AndAsync("I submit the operation form", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-#line 29
-    await testRunner.ThenAsync("the new operation appears at the top of the operations list", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Switch operation type to income")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Switch operation type to income")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Operations page")]
-        public async global::System.Threading.Tasks.Task SwitchOperationTypeToIncome()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "5";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Switch operation type to income", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 31
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 32
-    await testRunner.GivenAsync("I open the add operation modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
-#line hidden
-#line 33
-    await testRunner.WhenAsync("I click the income type toggle", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 34
-    await testRunner.ThenAsync("the income type toggle is active", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 35
-    await testRunner.AndAsync("the expense type toggle is not active", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Search filters the operations list")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Search filters the operations list")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Operations page")]
-        public async global::System.Threading.Tasks.Task SearchFiltersTheOperationsList()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "6";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Search filters the operations list", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add operation modal has expense selected by default", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
 #line 37
@@ -379,61 +297,55 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 await this.FeatureBackgroundAsync();
 #line hidden
 #line 38
-    await testRunner.WhenAsync("I search operations for \"Salary\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+    await testRunner.GivenAsync("I open the add operation modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
+                global::Reqnroll.Table table6 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table6.AddRow(new string[] {
+                            "#btn-type-expense",
+                            "active",
+                            "true"});
+                table6.AddRow(new string[] {
+                            "#btn-type-income",
+                            "active",
+                            "false"});
 #line 39
-    await testRunner.ThenAsync("only operations matching \"Salary\" are visible in the list", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table6, "Then ");
 #line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Filter operations list by type income")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Filter operations list by type income")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Operations page")]
-        public async global::System.Threading.Tasks.Task FilterOperationsListByTypeIncome()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "7";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Filter operations list by type income", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 41
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 42
-    await testRunner.WhenAsync("I filter operations by type \"Дохід\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
+                global::Reqnroll.Table table7 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ExpectedValue"});
+                table7.AddRow(new string[] {
+                            "#operation-type",
+                            "expense"});
+                table7.AddRow(new string[] {
+                            "#operation-category",
+                            ""});
 #line 43
-    await testRunner.ThenAsync("only income operations are visible in the list", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.AndAsync("check elements value", ((string)(null)), table7, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Filter operations list by type expense")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Filter operations list by type expense")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Switch operation type to <Type>")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Switch operation type to <Type>")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Operations page")]
-        public async global::System.Threading.Tasks.Task FilterOperationsListByTypeExpense()
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("income", "expense", "3", null, DisplayName="Switch operation type to <Type>(income,expense,3)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("expense", "income", "4", null, DisplayName="Switch operation type to <Type>(expense,income,4)")]
+        public async global::System.Threading.Tasks.Task SwitchOperationTypeToType(string type, string other, string @__pickleIndex, string[] exampleTags)
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = exampleTags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "8";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Filter operations list by type expense", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            argumentsOfScenario.Add("Type", type);
+            argumentsOfScenario.Add("Other", other);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Switch operation type to <Type>", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 45
+#line 50
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -446,28 +358,148 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 46
-    await testRunner.WhenAsync("I filter operations by type \"Витрати\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 51
+    await testRunner.GivenAsync("I open the add operation modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 47
-    await testRunner.ThenAsync("only expense operations are visible in the list", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line 52
+    await testRunner.WhenAsync(string.Format("click element \"#btn-type-{0}\"", type), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+                global::Reqnroll.Table table8 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table8.AddRow(new string[] {
+                            string.Format("#btn-type-{0}", type),
+                            "active",
+                            "true"});
+                table8.AddRow(new string[] {
+                            string.Format("#btn-type-{0}", other),
+                            "active",
+                            "false"});
+#line 53
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table8, "Then ");
+#line hidden
+                global::Reqnroll.Table table9 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ExpectedValue"});
+                table9.AddRow(new string[] {
+                            "#operation-type",
+                            string.Format("{0}", type)});
+#line 57
+    await testRunner.AndAsync("check elements value", ((string)(null)), table9, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Filter operations list by category")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Filter operations list by category")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Add operation form validation - <Case>")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add operation form validation - <Case>")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Operations page")]
-        public async global::System.Threading.Tasks.Task FilterOperationsListByCategory()
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("no amount", "", "1", "#operation-amount", "#btn-submit-operation", "click", "Вкажіть суму", "5", null, DisplayName="Add operation form validation - <Case>(no amount,,1,#operation-amount,#btn-submit" +
+            "-operation,click,Вкажіть суму,5)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("zero amount", "0", "1", "#operation-amount", "#operation-amount", "blur", "Сума повинна бути більше 0", "6", null, DisplayName="Add operation form validation - <Case>(zero amount,0,1,#operation-amount,#operati" +
+            "on-amount,blur,Сума повинна бути більше 0,6)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("negative", "-5", "1", "#operation-amount", "#operation-amount", "blur", "Сума повинна бути більше 0", "7", null, DisplayName="Add operation form validation - <Case>(negative,-5,1,#operation-amount,#operation" +
+            "-amount,blur,Сума повинна бути більше 0,7)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("no category", "100", "0", "#operation-category", "#btn-submit-operation", "click", "Оберіть категорію", "8", null, DisplayName="Add operation form validation - <Case>(no category,100,0,#operation-category,#btn" +
+            "-submit-operation,click,Оберіть категорію,8)")]
+        public async global::System.Threading.Tasks.Task AddOperationFormValidation_Case(string @case, string amount, string category, string field, string triggerLocator, string triggerAction, string error, string @__pickleIndex, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Case", @case);
+            argumentsOfScenario.Add("Amount", amount);
+            argumentsOfScenario.Add("Category", category);
+            argumentsOfScenario.Add("Field", field);
+            argumentsOfScenario.Add("TriggerLocator", triggerLocator);
+            argumentsOfScenario.Add("TriggerAction", triggerAction);
+            argumentsOfScenario.Add("Error", error);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add operation form validation - <Case>", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 72
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 73
+    await testRunner.GivenAsync("I open the add operation modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+                global::Reqnroll.Table table10 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table10.AddRow(new string[] {
+                            "#operation-amount",
+                            "fill",
+                            string.Format("{0}", amount)});
+                table10.AddRow(new string[] {
+                            "#operation-category",
+                            "select",
+                            string.Format("{0}", category)});
+                table10.AddRow(new string[] {
+                            string.Format("{0}", triggerLocator),
+                            string.Format("{0}", triggerAction),
+                            ""});
+#line 74
+    await testRunner.WhenAsync("fill form", ((string)(null)), table10, "When ");
+#line hidden
+                global::Reqnroll.Table table11 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ElementTagName",
+                            "AttributeName",
+                            "ElementValue"});
+                table11.AddRow(new string[] {
+                            string.Format("#form-add-operation .op-form-group:has({0}) span.form-error-text", field),
+                            "span",
+                            "",
+                            string.Format("{0}", error)});
+#line 79
+    await testRunner.ThenAsync("check elements existence", ((string)(null)), table11, "Then ");
+#line hidden
+                global::Reqnroll.Table table12 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Enabled"});
+                table12.AddRow(new string[] {
+                            "#btn-submit-operation",
+                            "false"});
+#line 82
+    await testRunner.AndAsync("check elements state", ((string)(null)), table12, "And ");
+#line hidden
+                global::Reqnroll.Table table13 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table13.AddRow(new string[] {
+                            "#form-add-operation",
+                            "true"});
+#line 85
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table13, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Minimum amount of 0.01 is valid")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Minimum amount of 0.01 is valid")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Operations page")]
+        public async global::System.Threading.Tasks.Task MinimumAmountOf0_01IsValid()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "9";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Filter operations list by category", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Minimum amount of 0.01 is valid", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 49
+#line 96
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -480,31 +512,61 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 50
-    await testRunner.GivenAsync("I note the first category name", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 97
+    await testRunner.GivenAsync("I open the add operation modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 51
-    await testRunner.WhenAsync("I filter operations by that category", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+                global::Reqnroll.Table table14 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table14.AddRow(new string[] {
+                            "#operation-amount",
+                            "fill",
+                            "0.01"});
+                table14.AddRow(new string[] {
+                            "#operation-amount",
+                            "blur",
+                            ""});
+#line 98
+    await testRunner.WhenAsync("fill form", ((string)(null)), table14, "When ");
 #line hidden
-#line 52
-    await testRunner.ThenAsync("only operations of that category are visible in the list", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table15 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Enabled"});
+                table15.AddRow(new string[] {
+                            "#btn-submit-operation",
+                            "true"});
+#line 102
+    await testRunner.ThenAsync("check elements state", ((string)(null)), table15, "Then ");
+#line hidden
+                global::Reqnroll.Table table16 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table16.AddRow(new string[] {
+                            "#form-add-operation .op-form-group:has(#operation-amount) span.form-error-text",
+                            "false"});
+#line 105
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table16, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Delete an operation")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete an operation")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Successfully add a new <Type> operation")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Successfully add a new <Type> operation")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Operations page")]
-        public async global::System.Threading.Tasks.Task DeleteAnOperation()
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("expense", "10", null, DisplayName="Successfully add a new <Type> operation(expense,10)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("income", "11", null, DisplayName="Successfully add a new <Type> operation(income,11)")]
+        public async global::System.Threading.Tasks.Task SuccessfullyAddANewTypeOperation(string type, string @__pickleIndex, string[] exampleTags)
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = exampleTags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "10";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Delete an operation", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            argumentsOfScenario.Add("Type", type);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Successfully add a new <Type> operation", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 54
+#line 112
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -517,14 +579,539 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 55
-    await testRunner.GivenAsync("there is at least one operation in the list", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 113
+    await testRunner.GivenAsync("I open the add operation modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 56
-    await testRunner.WhenAsync("I delete the first operation and confirm", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+                global::Reqnroll.Table table17 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table17.AddRow(new string[] {
+                            string.Format("#btn-type-{0}", type),
+                            "click",
+                            ""});
+                table17.AddRow(new string[] {
+                            "#operation-amount",
+                            "fill",
+                            "150.5"});
+                table17.AddRow(new string[] {
+                            "#operation-category",
+                            "select",
+                            "1"});
+                table17.AddRow(new string[] {
+                            "#operation-description",
+                            "fill",
+                            "{unique}"});
+                table17.AddRow(new string[] {
+                            "#btn-submit-operation",
+                            "click",
+                            ""});
+#line 114
+    await testRunner.WhenAsync("fill form", ((string)(null)), table17, "When ");
 #line hidden
-#line 57
-    await testRunner.ThenAsync("the operation is removed from the list", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table18 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table18.AddRow(new string[] {
+                            "#app-modal",
+                            "is-active",
+                            "false"});
+#line 121
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table18, "Then ");
+#line hidden
+                global::Reqnroll.Table table19 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table19.AddRow(new string[] {
+                            "#operations-list > .op-item:first-child:has-text(\'{unique}\')",
+                            "true"});
+#line 124
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table19, "And ");
+#line hidden
+                global::Reqnroll.Table table20 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "AttributeName",
+                            "ExpectedValue"});
+                table20.AddRow(new string[] {
+                            "#operations-list .op-item:has-text(\'{unique}\')",
+                            "data-type",
+                            string.Format("{0}", type)});
+                table20.AddRow(new string[] {
+                            "#operations-list .op-item:has-text(\'{unique}\')",
+                            "data-amount",
+                            "150.5"});
+#line 127
+    await testRunner.AndAsync("check elements attribute contains", ((string)(null)), table20, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Search shows only matching operations")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Search shows only matching operations")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Operations page")]
+        public async global::System.Threading.Tasks.Task SearchShowsOnlyMatchingOperations()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "12";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Search shows only matching operations", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 140
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 141
+    await testRunner.GivenAsync("I open the add operation modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+                global::Reqnroll.Table table21 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table21.AddRow(new string[] {
+                            "#operation-amount",
+                            "fill",
+                            "100"});
+                table21.AddRow(new string[] {
+                            "#operation-category",
+                            "select",
+                            "1"});
+                table21.AddRow(new string[] {
+                            "#operation-description",
+                            "fill",
+                            "{unique}"});
+                table21.AddRow(new string[] {
+                            "#btn-submit-operation",
+                            "click",
+                            ""});
+#line 142
+    await testRunner.AndAsync("fill form", ((string)(null)), table21, "And ");
+#line hidden
+                global::Reqnroll.Table table22 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table22.AddRow(new string[] {
+                            "#app-modal",
+                            "is-active",
+                            "false"});
+#line 148
+    await testRunner.AndAsync("check elements class", ((string)(null)), table22, "And ");
+#line hidden
+                global::Reqnroll.Table table23 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table23.AddRow(new string[] {
+                            "#op-search-input",
+                            "fill",
+                            "{unique}"});
+#line 151
+    await testRunner.WhenAsync("fill form", ((string)(null)), table23, "When ");
+#line hidden
+                global::Reqnroll.Table table24 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ExpectedCount"});
+                table24.AddRow(new string[] {
+                            "#operations-list .op-item:visible",
+                            "1"});
+                table24.AddRow(new string[] {
+                            "#operations-list .op-item:has-text(\'{unique}\')",
+                            "1"});
+#line 154
+    await testRunner.ThenAsync("check elements count", ((string)(null)), table24, "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Search without matches shows the empty state")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Search without matches shows the empty state")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Operations page")]
+        public async global::System.Threading.Tasks.Task SearchWithoutMatchesShowsTheEmptyState()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "13";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Search without matches shows the empty state", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 159
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+                global::Reqnroll.Table table25 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table25.AddRow(new string[] {
+                            "#op-search-input",
+                            "fill",
+                            "no-such-operation-zzz999"});
+#line 160
+    await testRunner.WhenAsync("fill form", ((string)(null)), table25, "When ");
+#line hidden
+                global::Reqnroll.Table table26 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ExpectedCount"});
+                table26.AddRow(new string[] {
+                            "#operations-list .op-item:visible",
+                            "0"});
+#line 163
+    await testRunner.ThenAsync("check elements count", ((string)(null)), table26, "Then ");
+#line hidden
+                global::Reqnroll.Table table27 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table27.AddRow(new string[] {
+                            "#op-empty-state",
+                            "true"});
+#line 166
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table27, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Filter operations by type \"<Label>\"")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Filter operations by type \"<Label>\"")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Operations page")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("income", "Дохід", "expense", "14", null, DisplayName="Filter operations by type \"<Label>\"(income,Дохід,expense,14)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("expense", "Витрати", "income", "15", null, DisplayName="Filter operations by type \"<Label>\"(expense,Витрати,income,15)")]
+        public async global::System.Threading.Tasks.Task FilterOperationsByTypeLabel(string type, string label, string opposite, string @__pickleIndex, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Type", type);
+            argumentsOfScenario.Add("Label", label);
+            argumentsOfScenario.Add("Opposite", opposite);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Filter operations by type \"<Label>\"", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 172
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 173
+    await testRunner.GivenAsync("I open the add operation modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+                global::Reqnroll.Table table28 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table28.AddRow(new string[] {
+                            string.Format("#btn-type-{0}", type),
+                            "click",
+                            ""});
+                table28.AddRow(new string[] {
+                            "#operation-amount",
+                            "fill",
+                            "100"});
+                table28.AddRow(new string[] {
+                            "#operation-category",
+                            "select",
+                            "1"});
+                table28.AddRow(new string[] {
+                            "#operation-description",
+                            "fill",
+                            "{unique}"});
+                table28.AddRow(new string[] {
+                            "#btn-submit-operation",
+                            "click",
+                            ""});
+#line 174
+    await testRunner.AndAsync("fill form", ((string)(null)), table28, "And ");
+#line hidden
+                global::Reqnroll.Table table29 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table29.AddRow(new string[] {
+                            "#app-modal",
+                            "is-active",
+                            "false"});
+#line 181
+    await testRunner.AndAsync("check elements class", ((string)(null)), table29, "And ");
+#line hidden
+                global::Reqnroll.Table table30 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table30.AddRow(new string[] {
+                            "#op-type-filter",
+                            "select",
+                            string.Format("{0}", label)});
+#line 184
+    await testRunner.WhenAsync("fill form", ((string)(null)), table30, "When ");
+#line hidden
+                global::Reqnroll.Table table31 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table31.AddRow(new string[] {
+                            "#operations-list .op-item:has-text(\'{unique}\')",
+                            "true"});
+#line 187
+    await testRunner.ThenAsync("check elements visibility", ((string)(null)), table31, "Then ");
+#line hidden
+                global::Reqnroll.Table table32 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ExpectedCount"});
+                table32.AddRow(new string[] {
+                            string.Format("#operations-list .op-item[data-type=\'{0}\']:visible", opposite),
+                            "0"});
+#line 190
+    await testRunner.AndAsync("check elements count", ((string)(null)), table32, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Filter operations by category")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Filter operations by category")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Operations page")]
+        public async global::System.Threading.Tasks.Task FilterOperationsByCategory()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "16";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Filter operations by category", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 204
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 205
+    await testRunner.GivenAsync("I open the add operation modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+                global::Reqnroll.Table table33 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table33.AddRow(new string[] {
+                            "#operation-amount",
+                            "fill",
+                            "100"});
+                table33.AddRow(new string[] {
+                            "#operation-category",
+                            "select",
+                            "2"});
+                table33.AddRow(new string[] {
+                            "#operation-description",
+                            "fill",
+                            "{unique}"});
+                table33.AddRow(new string[] {
+                            "#btn-submit-operation",
+                            "click",
+                            ""});
+#line 206
+    await testRunner.AndAsync("fill form", ((string)(null)), table33, "And ");
+#line hidden
+                global::Reqnroll.Table table34 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table34.AddRow(new string[] {
+                            "#app-modal",
+                            "is-active",
+                            "false"});
+#line 212
+    await testRunner.AndAsync("check elements class", ((string)(null)), table34, "And ");
+#line hidden
+                global::Reqnroll.Table table35 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table35.AddRow(new string[] {
+                            "#op-category-filter",
+                            "select",
+                            "1"});
+#line 215
+    await testRunner.WhenAsync("fill form", ((string)(null)), table35, "When ");
+#line hidden
+                global::Reqnroll.Table table36 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ExpectedCount"});
+                table36.AddRow(new string[] {
+                            "#operations-list .op-item:has-text(\'{unique}\'):visible",
+                            "0"});
+#line 218
+    await testRunner.ThenAsync("check elements count", ((string)(null)), table36, "Then ");
+#line hidden
+                global::Reqnroll.Table table37 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table37.AddRow(new string[] {
+                            "#op-category-filter",
+                            "select",
+                            "2"});
+#line 221
+    await testRunner.WhenAsync("fill form", ((string)(null)), table37, "When ");
+#line hidden
+                global::Reqnroll.Table table38 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table38.AddRow(new string[] {
+                            "#operations-list .op-item:has-text(\'{unique}\')",
+                            "true"});
+#line 224
+    await testRunner.ThenAsync("check elements visibility", ((string)(null)), table38, "Then ");
+#line hidden
+                global::Reqnroll.Table table39 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table39.AddRow(new string[] {
+                            "#op-category-filter",
+                            "select",
+                            "0"});
+#line 227
+    await testRunner.WhenAsync("fill form", ((string)(null)), table39, "When ");
+#line hidden
+                global::Reqnroll.Table table40 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table40.AddRow(new string[] {
+                            "#operations-list .op-item:has-text(\'{unique}\')",
+                            "true"});
+#line 230
+    await testRunner.ThenAsync("check elements visibility", ((string)(null)), table40, "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Delete an operation and <Action> the confirmation")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete an operation and <Action> the confirmation")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Operations page")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("accepts", "0", "17", null, DisplayName="Delete an operation and <Action> the confirmation(accepts,0,17)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("dismisses", "1", "18", null, DisplayName="Delete an operation and <Action> the confirmation(dismisses,1,18)")]
+        public async global::System.Threading.Tasks.Task DeleteAnOperationAndActionTheConfirmation(string action, string count, string @__pickleIndex, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Action", action);
+            argumentsOfScenario.Add("Count", count);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Delete an operation and <Action> the confirmation", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 238
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 239
+    await testRunner.GivenAsync("I open the add operation modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+                global::Reqnroll.Table table41 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table41.AddRow(new string[] {
+                            "#operation-amount",
+                            "fill",
+                            "100"});
+                table41.AddRow(new string[] {
+                            "#operation-category",
+                            "select",
+                            "1"});
+                table41.AddRow(new string[] {
+                            "#operation-description",
+                            "fill",
+                            "{unique}"});
+                table41.AddRow(new string[] {
+                            "#btn-submit-operation",
+                            "click",
+                            ""});
+#line 240
+    await testRunner.AndAsync("fill form", ((string)(null)), table41, "And ");
+#line hidden
+                global::Reqnroll.Table table42 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table42.AddRow(new string[] {
+                            "#app-modal",
+                            "is-active",
+                            "false"});
+#line 246
+    await testRunner.AndAsync("check elements class", ((string)(null)), table42, "And ");
+#line hidden
+                global::Reqnroll.Table table43 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table43.AddRow(new string[] {
+                            "#operations-list .op-item:has-text(\'{unique}\')",
+                            "true"});
+#line 249
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table43, "And ");
+#line hidden
+#line 252
+    await testRunner.AndAsync(string.Format("the browser {0} dialogs", action), ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+#line 253
+    await testRunner.WhenAsync("click element \"#operations-list .op-item:has-text(\'{unique}\') .op-delete-btn\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 254
+    await testRunner.ThenAsync("a dialog is shown containing \"Видалити цю операцію?\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+                global::Reqnroll.Table table44 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ExpectedCount"});
+                table44.AddRow(new string[] {
+                            "#operations-list .op-item:has-text(\'{unique}\')",
+                            string.Format("{0}", count)});
+#line 255
+    await testRunner.AndAsync("check elements count", ((string)(null)), table44, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

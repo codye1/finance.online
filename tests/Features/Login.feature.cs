@@ -126,7 +126,7 @@ namespace tests.Features
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Login.feature.ndjson", 11);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Login.feature.ndjson", 18);
         }
         
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Login panel is shown by default")]
@@ -140,7 +140,7 @@ namespace tests.Features
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Login panel is shown by default", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 6
+#line 8
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -153,88 +153,111 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 7
-    await testRunner.ThenAsync("the login panel is visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table1 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table1.AddRow(new string[] {
+                            "#loginPanel",
+                            "hidden",
+                            "false"});
+                table1.AddRow(new string[] {
+                            "#registerPanel",
+                            "hidden",
+                            "true"});
+#line 9
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table1, "Then ");
 #line hidden
-#line 8
-    await testRunner.AndAsync("the register panel is hidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+                global::Reqnroll.Table table2 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table2.AddRow(new string[] {
+                            "#loginPanel",
+                            "true"});
+#line 13
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table2, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Switch from login to register panel")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Switch from login to register panel")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Toggle link switches between login and register panels")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Toggle link switches between login and register panels")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "User authentication")]
-        public async global::System.Threading.Tasks.Task SwitchFromLoginToRegisterPanel()
+        public async global::System.Threading.Tasks.Task ToggleLinkSwitchesBetweenLoginAndRegisterPanels()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "1";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Switch from login to register panel", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Toggle link switches between login and register panels", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 10
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 11
-    await testRunner.WhenAsync("I click the toggle link", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-#line 12
-    await testRunner.ThenAsync("the register panel is visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
-#line hidden
-#line 13
-    await testRunner.AndAsync("the login panel is hidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
-#line hidden
-            }
-            await this.ScenarioCleanupAsync();
-        }
-        
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Switch back from register to login panel")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Switch back from register to login panel")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "User authentication")]
-        public async global::System.Threading.Tasks.Task SwitchBackFromRegisterToLoginPanel()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "2";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Switch back from register to login panel", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
-            string[] tagsOfRule = ((string[])(null));
-            global::Reqnroll.RuleInfo ruleInfo = null;
-#line 15
-this.ScenarioInitialize(scenarioInfo, ruleInfo);
-#line hidden
-            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                await testRunner.SkipScenarioAsync();
-            }
-            else
-            {
-                await this.ScenarioStartAsync();
-#line 3
-await this.FeatureBackgroundAsync();
-#line hidden
-#line 16
-    await testRunner.WhenAsync("I click the toggle link", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
 #line 17
-    await testRunner.AndAsync("I click the toggle link", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
 #line hidden
 #line 18
-    await testRunner.ThenAsync("the login panel is visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+    await testRunner.WhenAsync("click element \"#loginPanel .toggle-auth-panels\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
+                global::Reqnroll.Table table3 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table3.AddRow(new string[] {
+                            "#loginPanel",
+                            "hidden",
+                            "true"});
+                table3.AddRow(new string[] {
+                            "#registerPanel",
+                            "hidden",
+                            "false"});
 #line 19
-    await testRunner.AndAsync("the register panel is hidden", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table3, "Then ");
+#line hidden
+                global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table4.AddRow(new string[] {
+                            "#registerPanel",
+                            "true"});
+#line 23
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table4, "And ");
+#line hidden
+#line 26
+    await testRunner.WhenAsync("click element \"#registerPanel .toggle-auth-panels\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+                global::Reqnroll.Table table5 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table5.AddRow(new string[] {
+                            "#loginPanel",
+                            "hidden",
+                            "false"});
+                table5.AddRow(new string[] {
+                            "#registerPanel",
+                            "hidden",
+                            "true"});
+#line 27
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table5, "Then ");
+#line hidden
+                global::Reqnroll.Table table6 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table6.AddRow(new string[] {
+                            "#loginPanel",
+                            "true"});
+#line 31
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table6, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -247,11 +270,11 @@ await this.FeatureBackgroundAsync();
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "3";
+            string pickleIndex = "2";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Login with invalid credentials shows an error", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 21
+#line 37
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -264,28 +287,61 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 22
-    await testRunner.WhenAsync("I log in with email \"wrong@example.com\" and password \"wrongpass\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+                global::Reqnroll.Table table7 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table7.AddRow(new string[] {
+                            "#loginEmail",
+                            "fill",
+                            "wrong@example.com"});
+                table7.AddRow(new string[] {
+                            "#loginPassword",
+                            "fill",
+                            "wrongpass"});
+                table7.AddRow(new string[] {
+                            "#loginForm button[type=submit]",
+                            "click",
+                            ""});
+#line 38
+    await testRunner.WhenAsync("fill form", ((string)(null)), table7, "When ");
 #line hidden
-#line 23
-    await testRunner.ThenAsync("I see a login error message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table8 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table8.AddRow(new string[] {
+                            "#loginForm .server-error",
+                            "true"});
+#line 43
+    await testRunner.ThenAsync("check elements visibility", ((string)(null)), table8, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Login form requires email")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Login form requires email")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Login form validation - <Case>")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Login form validation - <Case>")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "User authentication")]
-        public async global::System.Threading.Tasks.Task LoginFormRequiresEmail()
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("empty email", "loginEmail", "", "Password123!", "Будь ласка, введіть пошту.", "3", null, DisplayName="Login form validation - <Case>(empty email,loginEmail,,Password123!,Будь ласка, в" +
+            "ведіть пошту.,3)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("invalid email", "loginEmail", "not-an-email", "Password123!", "Введіть коректну адресу.", "4", null, DisplayName="Login form validation - <Case>(invalid email,loginEmail,not-an-email,Password123!" +
+            ",Введіть коректну адресу.,4)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("empty password", "loginPassword", "user@example.com", "", "Будь ласка, введіть пароль.", "5", null, DisplayName="Login form validation - <Case>(empty password,loginPassword,user@example.com,,Буд" +
+            "ь ласка, введіть пароль.,5)")]
+        public async global::System.Threading.Tasks.Task LoginFormValidation_Case(string @case, string field, string email, string password, string error, string @__pickleIndex, string[] exampleTags)
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = exampleTags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "4";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Login form requires email", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            argumentsOfScenario.Add("Case", @case);
+            argumentsOfScenario.Add("Field", field);
+            argumentsOfScenario.Add("Email", email);
+            argumentsOfScenario.Add("Password", password);
+            argumentsOfScenario.Add("Error", error);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Login form validation - <Case>", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 25
+#line 48
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -298,28 +354,79 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 26
-    await testRunner.WhenAsync("I submit the login form without an email", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+                global::Reqnroll.Table table9 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table9.AddRow(new string[] {
+                            "#loginEmail",
+                            "fill",
+                            string.Format("{0}", email)});
+                table9.AddRow(new string[] {
+                            "#loginPassword",
+                            "fill",
+                            string.Format("{0}", password)});
+                table9.AddRow(new string[] {
+                            "#loginForm button[type=submit]",
+                            "click",
+                            ""});
+#line 49
+    await testRunner.WhenAsync("fill form", ((string)(null)), table9, "When ");
 #line hidden
-#line 27
-    await testRunner.ThenAsync("the browser shows a validation message for the email field", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table10 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ElementTagName",
+                            "AttributeName",
+                            "ElementValue"});
+                table10.AddRow(new string[] {
+                            string.Format("label.error[for=\'{0}\']", field),
+                            "label",
+                            "",
+                            string.Format("{0}", error)});
+#line 54
+    await testRunner.ThenAsync("check elements existence", ((string)(null)), table10, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Login form requires password")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Login form requires password")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Register form validation - <Case>")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Register form validation - <Case>")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "User authentication")]
-        public async global::System.Threading.Tasks.Task LoginFormRequiresPassword()
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("empty email", "registerEmail", "", "Password123!", "Будь ласка, введіть пошту.", "6", null, DisplayName="Register form validation - <Case>(empty email,registerEmail,,Password123!,Будь ла" +
+            "ска, введіть пошту.,6)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("invalid email", "registerEmail", "not-an-email", "Password123!", "Введіть коректну адресу електронної пошти.", "7", null, DisplayName="Register form validation - <Case>(invalid email,registerEmail,not-an-email,Passwo" +
+            "rd123!,Введіть коректну адресу електронної пошти.,7)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("empty password", "registerPassword", "user@example.com", "", "Будь ласка, введіть пароль.", "8", null, DisplayName="Register form validation - <Case>(empty password,registerPassword,user@example.co" +
+            "m,,Будь ласка, введіть пароль.,8)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("too short", "registerPassword", "user@example.com", "Ab1", "Пароль має містити щонайменше 6 символів.", "9", null, DisplayName="Register form validation - <Case>(too short,registerPassword,user@example.com,Ab1" +
+            ",Пароль має містити щонайменше 6 символів.,9)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("no uppercase", "registerPassword", "user@example.com", "password123", "Пароль повинен містити принаймні одну велику літеру, одну малу літеру та одну циф" +
+            "ру.", "10", null, DisplayName="Register form validation - <Case>(no uppercase,registerPassword,user@example.com," +
+            "password123,Пароль повинен містити принаймні одну велику літеру, одну малу літер" +
+            "у та одну цифру.,10)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("no lowercase", "registerPassword", "user@example.com", "PASSWORD123", "Пароль повинен містити принаймні одну велику літеру, одну малу літеру та одну циф" +
+            "ру.", "11", null, DisplayName="Register form validation - <Case>(no lowercase,registerPassword,user@example.com," +
+            "PASSWORD123,Пароль повинен містити принаймні одну велику літеру, одну малу літер" +
+            "у та одну цифру.,11)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("no digit", "registerPassword", "user@example.com", "Password", "Пароль повинен містити принаймні одну велику літеру, одну малу літеру та одну циф" +
+            "ру.", "12", null, DisplayName="Register form validation - <Case>(no digit,registerPassword,user@example.com,Pass" +
+            "word,Пароль повинен містити принаймні одну велику літеру, одну малу літеру та од" +
+            "ну цифру.,12)")]
+        public async global::System.Threading.Tasks.Task RegisterFormValidation_Case(string @case, string field, string email, string password, string error, string @__pickleIndex, string[] exampleTags)
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = exampleTags;
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "5";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Login form requires password", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            argumentsOfScenario.Add("Case", @case);
+            argumentsOfScenario.Add("Field", field);
+            argumentsOfScenario.Add("Email", email);
+            argumentsOfScenario.Add("Password", password);
+            argumentsOfScenario.Add("Error", error);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Register form validation - <Case>", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 29
+#line 66
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -332,11 +439,40 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 30
-    await testRunner.WhenAsync("I submit the login form without a password", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 67
+    await testRunner.WhenAsync("click element \"#loginPanel .toggle-auth-panels\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 31
-    await testRunner.ThenAsync("the browser shows a validation message for the password field", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table11 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table11.AddRow(new string[] {
+                            "#registerEmail",
+                            "fill",
+                            string.Format("{0}", email)});
+                table11.AddRow(new string[] {
+                            "#registerPassword",
+                            "fill",
+                            string.Format("{0}", password)});
+                table11.AddRow(new string[] {
+                            "#registerForm button[type=submit]",
+                            "click",
+                            ""});
+#line 68
+    await testRunner.AndAsync("fill form", ((string)(null)), table11, "And ");
+#line hidden
+                global::Reqnroll.Table table12 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ElementTagName",
+                            "AttributeName",
+                            "ElementValue"});
+                table12.AddRow(new string[] {
+                            string.Format("label.error[for=\'{0}\']", field),
+                            "label",
+                            "",
+                            string.Format("{0}", error)});
+#line 73
+    await testRunner.ThenAsync("check elements existence", ((string)(null)), table12, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -349,11 +485,11 @@ await this.FeatureBackgroundAsync();
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "6";
+            string pickleIndex = "13";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Successful registration", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 33
+#line 87
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -366,17 +502,48 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 34
-    await testRunner.WhenAsync("I switch to the register panel", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 88
+    await testRunner.GivenAsync("the browser accepts dialogs", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 35
-    await testRunner.AndAsync("I register with a new unique email and password \"Password123!\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line 89
+    await testRunner.WhenAsync("click element \"#loginPanel .toggle-auth-panels\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 36
-    await testRunner.ThenAsync("I see the registration success alert", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table13 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table13.AddRow(new string[] {
+                            "#registerEmail",
+                            "fill",
+                            "{uniqueEmail}"});
+                table13.AddRow(new string[] {
+                            "#registerPassword",
+                            "fill",
+                            "Password123!"});
+                table13.AddRow(new string[] {
+                            "#registerForm button[type=submit]",
+                            "click",
+                            ""});
+#line 90
+    await testRunner.AndAsync("fill form", ((string)(null)), table13, "And ");
 #line hidden
-#line 37
-    await testRunner.AndAsync("the login panel is visible", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line 95
+    await testRunner.ThenAsync("a dialog is shown containing \"успішна\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+                global::Reqnroll.Table table14 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table14.AddRow(new string[] {
+                            "#loginPanel",
+                            "hidden",
+                            "false"});
+                table14.AddRow(new string[] {
+                            "#registerPanel",
+                            "hidden",
+                            "true"});
+#line 96
+    await testRunner.AndAsync("check elements class", ((string)(null)), table14, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -389,11 +556,11 @@ await this.FeatureBackgroundAsync();
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "7";
+            string pickleIndex = "14";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Successful registration followed by login", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 39
+#line 101
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -406,15 +573,55 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 40
-    await testRunner.GivenAsync("I register with a new unique email and password \"Password123!\" and accept the ale" +
-                        "rt", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line 102
+    await testRunner.GivenAsync("the browser accepts dialogs", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 41
-    await testRunner.WhenAsync("I log in with the registered email and password \"Password123!\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 103
+    await testRunner.AndAsync("click element \"#loginPanel .toggle-auth-panels\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 42
-    await testRunner.ThenAsync("I am redirected to the home page", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table15 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table15.AddRow(new string[] {
+                            "#registerEmail",
+                            "fill",
+                            "{uniqueEmail}"});
+                table15.AddRow(new string[] {
+                            "#registerPassword",
+                            "fill",
+                            "Password123!"});
+                table15.AddRow(new string[] {
+                            "#registerForm button[type=submit]",
+                            "click",
+                            ""});
+#line 104
+    await testRunner.AndAsync("fill form", ((string)(null)), table15, "And ");
+#line hidden
+#line 109
+    await testRunner.AndAsync("a dialog is shown containing \"успішна\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+                global::Reqnroll.Table table16 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table16.AddRow(new string[] {
+                            "#loginEmail",
+                            "fill",
+                            "{uniqueEmail}"});
+                table16.AddRow(new string[] {
+                            "#loginPassword",
+                            "fill",
+                            "Password123!"});
+                table16.AddRow(new string[] {
+                            "#loginForm button[type=submit]",
+                            "click",
+                            ""});
+#line 110
+    await testRunner.WhenAsync("fill form", ((string)(null)), table16, "When ");
+#line hidden
+#line 115
+    await testRunner.ThenAsync("the current path is \"/\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -427,11 +634,11 @@ await this.FeatureBackgroundAsync();
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "8";
+            string pickleIndex = "15";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Registration with an already used email shows an error", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 44
+#line 117
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -444,17 +651,49 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 45
+#line 118
     await testRunner.GivenAsync("a user is already registered", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 46
-    await testRunner.WhenAsync("I switch to the register panel", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line 119
+    await testRunner.AndAsync("the browser accepts dialogs", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-#line 47
-    await testRunner.AndAsync("I register with the existing email and password \"Password123!\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line 120
+    await testRunner.WhenAsync("click element \"#loginPanel .toggle-auth-panels\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-#line 48
-    await testRunner.ThenAsync("I see a register error message", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+                global::Reqnroll.Table table17 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table17.AddRow(new string[] {
+                            "#registerEmail",
+                            "fill",
+                            "{uniqueEmail}"});
+                table17.AddRow(new string[] {
+                            "#registerPassword",
+                            "fill",
+                            "Password123!"});
+                table17.AddRow(new string[] {
+                            "#registerForm button[type=submit]",
+                            "click",
+                            ""});
+#line 121
+    await testRunner.AndAsync("fill form", ((string)(null)), table17, "And ");
+#line hidden
+#line 126
+    await testRunner.ThenAsync("no dialog is shown", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+                global::Reqnroll.Table table18 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ElementTagName",
+                            "AttributeName",
+                            "ElementValue"});
+                table18.AddRow(new string[] {
+                            "label.error[for=\'registerEmail\']",
+                            "label",
+                            "",
+                            ""});
+#line 127
+    await testRunner.AndAsync("check elements existence", ((string)(null)), table18, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
