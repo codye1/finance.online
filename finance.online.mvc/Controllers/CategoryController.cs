@@ -49,28 +49,55 @@ namespace finance.online.mvc.Controllers
         }
 
         [HttpPost("/categories/create")]
-public async Task<IActionResult> Create([FromBody] CategoryCreateRequestDto request)
-{
-    if (request is null
-        || string.IsNullOrWhiteSpace(request.OrganizationId)
-        || string.IsNullOrWhiteSpace(request.Name))
-    {
-        return BadRequest();
-    }
+        public async Task<IActionResult> Create([FromBody] CategoryCreateRequestDto request)
+        {
+            if (request is null
+                || string.IsNullOrWhiteSpace(request.OrganizationId)
+                || string.IsNullOrWhiteSpace(request.Name))
+            {
+                return BadRequest();
+            }
 
-    var client = _httpClientFactory.CreateClient("FinanceOnlineApi");
-    var response = await client.PostAsJsonAsync(
-        $"/organizations/{request.OrganizationId}/categories",
-        new { name = request.Name, color = request.Color });
+            var client = _httpClientFactory.CreateClient("FinanceOnlineApi");
+            var response = await client.PostAsJsonAsync(
+                $"/organizations/{request.OrganizationId}/categories",
+                new { name = request.Name, color = request.Color });
 
-    if (response.IsSuccessStatusCode)
-    {
-        var category = await response.Content.ReadFromJsonAsync<CategoryResponseDto>();
-        return PartialView("~/Views/Categories/Partials/_CategoryItem.cshtml", category);
-    }
+            if (response.IsSuccessStatusCode)
+            {
+                var category = await response.Content.ReadFromJsonAsync<CategoryResponseDto>();
+                return PartialView("~/Views/Categories/Partials/_CategoryItem.cshtml", category);
+            }
 
-    return await ForwardApiErrorAsync(response);
-}
+            return await ForwardApiErrorAsync(response);
+        }
+
+        [HttpPost("/categories/update")]
+        public async Task<IActionResult> Update([FromBody] CategoryUpdateRequestDto request)
+        {
+            if (request is null
+                || string.IsNullOrWhiteSpace(request.CategoryId)
+                || string.IsNullOrWhiteSpace(request.Name))
+            {
+                return BadRequest();
+            }
+
+            var client = _httpClientFactory.CreateClient("FinanceOnlineApi");
+            using var apiRequest = new HttpRequestMessage(HttpMethod.Patch, $"/categories/{request.CategoryId}")
+            {
+                Content = JsonContent.Create(new { name = request.Name, color = request.Color })
+            };
+
+            var response = await client.SendAsync(apiRequest);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var category = await response.Content.ReadFromJsonAsync<CategoryResponseDto>();
+                return PartialView("~/Views/Categories/Partials/_CategoryItem.cshtml", category);
+            }
+
+            return await ForwardApiErrorAsync(response);
+        }
 
         [HttpPost("/categories/delete")]
         public async Task<IActionResult> Delete([FromBody] CategoryDeleteRequestDto request)

@@ -113,6 +113,113 @@ Scenario Outline: Successfully add a new category with color <Color>
         | #2563EB |
         | #EF4444 |
 
+# ---------- Редагування ----------
+# Редагується ТІЛЬКИ категорія, створена самим сценарієм ({unique}),
+# щоб не зачепити засіяні категорії для тестів Operations.
+
+Scenario: Edit button is displayed for a category
+    Then check elements existence
+        | ElementLocator                                                | ElementTagName | AttributeName | ElementValue |
+        | #categories-list .categories-item:has-text('Salary') .category-edit-btn | button |               |              |
+
+Scenario: Edit modal is prefilled with the category data
+    Given I have created a category "{unique}" with color "#EF4444"
+    And I open the edit modal for category "{unique}"
+    Then check elements value
+        | ElementLocator  | ExpectedValue |
+        | #category-name  | {unique}      |
+        | #category-color | #EF4444       |
+    And check elements class
+        | ElementLocator                          | ClassName | HasClass |
+        | .color-swatch-btn[data-color='#EF4444'] | active    | true     |
+        | .color-swatch-btn[data-color='#2563EB'] | active    | false    |
+    And check elements existence
+        | ElementLocator       | ElementTagName | AttributeName | ElementValue |
+        | #category-submit-text | span          |               | Зберегти     |
+
+Scenario: Successfully edit category name and color
+    Given I have created a category "{unique}" with color "#2563EB"
+    And I open the edit modal for category "{unique}"
+    When fill form
+        | ElementLocator                          | Action | Value            |
+        | #category-name                          | fill   | {unique} updated |
+        | .color-swatch-btn[data-color='#8B5CF6'] | click  |                  |
+        | #btn-submit-category                    | click  |                  |
+    Then check elements class
+        | ElementLocator | ClassName | HasClass |
+        | #app-modal     | is-active | false    |
+    And check elements existence
+        | ElementLocator                                                                | ElementTagName | AttributeName | ElementValue     |
+        | #categories-list .categories-item:has-text('{unique} updated') .categories-item-title span | span |         | {unique} updated |
+    And check elements attribute contains
+        | ElementLocator                                                                  | AttributeName | ExpectedValue |
+        | #categories-list .categories-item:has-text('{unique}') .category-color-dot       | style         | #8B5CF6       |
+    And check elements count
+        | ElementLocator                                         | ExpectedCount |
+        | #categories-list .categories-item:has-text('{unique}') | 1             |
+
+Scenario: Edited category persists after page reload
+    Given I have created a category "{unique}" with color "#2563EB"
+    And I open the edit modal for category "{unique}"
+    When fill form
+        | ElementLocator                          | Action | Value            |
+        | #category-name                          | fill   | {unique} updated |
+        | .color-swatch-btn[data-color='#10B981'] | click  |                  |
+        | #btn-submit-category                    | click  |                  |
+    And check elements class
+        | ElementLocator | ClassName | HasClass |
+        | #app-modal     | is-active | false    |
+    And the page is reloaded
+    Then check elements visibility
+        | ElementLocator                                                  | Visible |
+        | #categories-list .categories-item:has-text('{unique} updated') | true    |
+    And check elements attribute contains
+        | ElementLocator                                                                 | AttributeName | ExpectedValue |
+        | #categories-list .categories-item:has-text('{unique} updated') .category-color-dot | style     | #10B981       |
+
+Scenario: Cancelling the edit modal does not change the category
+    Given I have created a category "{unique}" with color "#2563EB"
+    And I open the edit modal for category "{unique}"
+    When fill form
+        | ElementLocator                          | Action | Value            |
+        | #category-name                          | fill   | {unique} updated |
+        | .color-swatch-btn[data-color='#EF4444'] | click  |                  |
+    And click elements
+        | ElementLocator           |
+        | #js-close-category-modal |
+    Then check elements class
+        | ElementLocator | ClassName | HasClass |
+        | #app-modal     | is-active | false    |
+    And check elements count
+        | ElementLocator                                                  | ExpectedCount |
+        | #categories-list .categories-item:has-text('{unique} updated') | 0             |
+        | #categories-list .categories-item:has-text('{unique}')         | 1             |
+    And check elements attribute contains
+        | ElementLocator                                                             | AttributeName | ExpectedValue |
+        | #categories-list .categories-item:has-text('{unique}') .category-color-dot | style         | #2563EB       |
+
+Scenario Outline: Edit category form validation - <Case>
+    Given I have created a category "{unique}" with color "#2563EB"
+    And I open the edit modal for category "{unique}"
+    When fill form
+        | ElementLocator   | Action          | Value  |
+        | #category-name   | fill            | <Name> |
+        | <TriggerLocator> | <TriggerAction> |        |
+    Then check elements existence
+        | ElementLocator                                                          | ElementTagName | AttributeName | ElementValue |
+        | #form-add-category .form-group:has(#category-name) span.form-error-text | span           |               | <Error>      |
+    And check elements state
+        | ElementLocator       | Enabled |
+        | #btn-submit-category | false   |
+    And check elements visibility
+        | ElementLocator     | Visible |
+        | #form-add-category | true    |
+
+    Examples:
+        | Case      | Name        | TriggerLocator       | TriggerAction | Error                                |
+        | empty     |             | #btn-submit-category | click         | Вкажіть назву категорії              |
+        | 101 chars | {chars:101} | #category-name       | blur          | Назва має бути не довше 100 символів |
+
 # ---------- Видалення ----------
 # Видаляється ТІЛЬКИ категорія, створена самим сценарієм ({unique}),
 # щоб не зачепити засіяні категорії для тестів Operations.

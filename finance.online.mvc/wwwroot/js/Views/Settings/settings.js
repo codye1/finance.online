@@ -102,6 +102,7 @@ $(function () {
                 api.inviteMember(memberData, organizationId)
                     .done(function () {
                         window.location.reload();
+
                     })
                     .fail((xhr) => {
                         if (xhr.status === 401) {
@@ -130,9 +131,132 @@ $(function () {
         });
     }
 
+    function setActiveOrganizationColor($form, color) {
+        $form.find('#organization-color').val(color);
+
+        $form.find('.color-swatch-btn').removeClass('active');
+        $form.find(`.color-swatch-btn[data-color="${color}"]`).addClass('active');
+    }
+
+    function openAddOrganizationModal() {
+        if (!Modal) {
+            console.error('Global Modal manager library initialization instances not found.');
+            return;
+        }
+
+        Modal.open('Нова організація', '#tpl-add-organization', {
+            ...validators.organizationFormRules,
+            showErrors: function () {
+                this.defaultShowErrors();
+
+                const $form = $(this.currentForm);
+                const $submitBtn = $form.find('#btn-submit-organization');
+
+                $submitBtn.prop('disabled', this.numberOfInvalids() > 0);
+            },
+            submitHandler: (form) => {
+                const $form = $(form);
+                const name = $form.find('#organization-name').val().trim();
+                const description = $form.find('#organization-description').val().trim();
+
+                const organizationData = {
+                    name: name,
+                    description: description || name,
+                    participantUserIds: []
+                };
+
+                const $submitBtn = $form.find('#btn-submit-organization');
+                $submitBtn.prop('disabled', true).addClass('loading');
+
+                api.createOrganization(organizationData)
+
+                    .done((organization) => {
+
+                        if (organization?.id) {
+                            localStorage.setItem('activeOrganizationId', organization.id);
+                            window.location.href = 'settings/?organizationId=' + encodeURIComponent(organization.id);
+                            return;
+                        }
+                        window.location.reload();
+                    })
+                    .fail((xhr) => {
+
+                        if (xhr.status === 401) {
+                            //window.location.href = '/login';
+                            return;
+                        }
+
+                        if (xhr.status === 400 && xhr.responseJSON?.errors) {
+                            showApiErrors($form, xhr.responseJSON.errors);
+                            return;
+                        }
+
+                        alert('Помилка створення організації');
+                    })
+                    .always(() => {
+                        $submitBtn.prop('disabled', false).removeClass('loading');
+                    });
+            }
+        });
+
+        const $modalBody = $('#modal-body-content');
+        const $form = $modalBody.find('#form-add-organization');
+
+        setActiveOrganizationColor($form, $form.find('#organization-color').val() || '#2563EB');
+
+        $modalBody.on('click', '.color-swatch-btn', function (e) {
+            e.preventDefault();
+            setActiveOrganizationColor($form, $(this).data('color'));
+        });
+
+        $modalBody.on('click', '#js-close-organization-modal', function (e) {
+            e.preventDefault();
+            Modal.close();
+        });
+    }
+
+    function initRemoveMember() {
+        const organizationId = window.TransitData?.organizationId;
+
+        $('.settings-members-list').on('click', '.settings-member-remove-btn', function () {
+            const $btn = $(this);
+            const userId = $btn.data('user-id');
+            const email = $btn.data('member-email');
+
+            if (!userId || !organizationId) return;
+
+            if (!confirm(`Видалити учасника ${email} з організації?`)) {
+                return;
+            }
+
+            $btn.prop('disabled', true);
+
+            api.removeMember(userId, organizationId)
+                .done(function () {
+                    window.location.reload();
+                })
+                .fail(function (xhr) {
+                    if (xhr.status === 401) {
+                        window.location.href = '/login';
+                        return;
+                    }
+
+                    alert('Помилка видалення учасника');
+                    $btn.prop('disabled', false);
+                });
+        });
+    }
+
     initDeleteOrganizationDialog();
+    initRemoveMember();
+
 
     $('#open-invite-member-modal-btn').on('click', function () {
         openInviteMemberModal();
+    });
+
+    $('#open-create-organization-modal').on('click', function (e) {
+        e.preventDefault();
+        openAddOrganizationModal();
     });
 });

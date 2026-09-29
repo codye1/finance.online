@@ -20,6 +20,28 @@ const settingsValidators = {
         },
         errorClass: "form-error-text",
         errorElement: "span"
+    },
+    organizationFormRules: {
+        rules: {
+            name: {
+                required: true,
+                maxlength: 200
+            },
+            description: {
+                maxlength: 1000
+            }
+        },
+        messages: {
+            name: {
+                required: "Вкажіть назву організації",
+                maxlength: "Назва має бути не довше 200 символів"
+            },
+            description: {
+                maxlength: "Опис має бути не довше 1000 символів"
+            }
+        },
+        errorClass: "form-error-text",
+        errorElement: "span"
     }
 };
 

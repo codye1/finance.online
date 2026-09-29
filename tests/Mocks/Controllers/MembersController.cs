@@ -25,6 +25,9 @@ public sealed class MembersController
         if (ApiHelpers.Matches(method, path, "POST", @"^/organizations/([^/]+)/members$", out var mPost))
             return ApiHelpers.WithOrg(_state, mPost.Groups[1].Value, me, o => InviteMember(req, o, me));
 
+        if (ApiHelpers.Matches(method, path, "DELETE", @"^/organizations/([^/]+)/members/([^/]+)$", out var mDel))
+            return ApiHelpers.WithOrg(_state, mDel.Groups[1].Value, me, o =>
+                RemoveMember(o, Uri.UnescapeDataString(mDel.Groups[2].Value), me));
         return null;
     }
 
@@ -47,5 +50,22 @@ public sealed class MembersController
         var member = new FakeMember { Email = email, Role = role };
         org.Members.Add(member);
         return ApiHelpers.Json(200, Dto.MemberDto(member, me));
+    }
+
+    private ResponseMessage RemoveMember(FakeOrg org, string userId, string me)
+    {
+        if (!Dto.IsOwner(org, me))
+            return ApiHelpers.Json(403, ApiHelpers.Error("_general", "Only the owner can remove members."));
+
+        // У фейку userId учасника = його email
+        var target = org.Members.FirstOrDefault(x => x.Email.Equals(userId, StringComparison.OrdinalIgnoreCase));
+        if (target is null)
+            return ApiHelpers.Json(404, ApiHelpers.Error("_general", "Member not found."));
+
+        if (target.Email == me)
+            return ApiHelpers.Json(400, ApiHelpers.Error("_general", "Owner cannot remove themselves."));
+
+        org.Members.Remove(target);
+        return ApiHelpers.Json(204);
     }
 }

@@ -35,7 +35,7 @@ namespace tests.StepDefinitions
         /// Плейсхолдери: {chars:N} -> рядок з N символів 'a', {today} -> yyyy-MM-dd, {unique} -> одне унікальне значення на сценарій,
         /// {uniqueEmail} -> один унікальний email на сценарій (його ж використовує API-реєстрація в LoginSteps).
         /// </summary>
-        private string Resolve(string value)
+        public string Resolve(string value)
         {
             if (string.IsNullOrEmpty(value)) return "";
 

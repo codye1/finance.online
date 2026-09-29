@@ -7,6 +7,14 @@ const categoriesApi = {
             data: JSON.stringify(categoryData)
         });
     },
+    updateCategory: function (categoryData) {
+        return $.ajax({
+            url: '/categories/update',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(categoryData)
+        });
+    },
     deleteCategory: function (categoryId) {
         return $.ajax({
             url: '/categories/delete',

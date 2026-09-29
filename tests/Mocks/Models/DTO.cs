@@ -12,6 +12,7 @@ public static class Dto
 
     public static object MemberDto(FakeMember m, string me) => new
     {
+        userId = m.Email,
         email = m.Email,
         role = m.Role,
         isOwner = m.Role == "owner",
@@ -47,4 +48,6 @@ public static class Dto
         };
         return ops.Where(o => o.CreatedAt >= from);
     }
+
+    
 }

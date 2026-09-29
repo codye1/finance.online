@@ -3,6 +3,7 @@ class ModalManager {
         this.$modal = $(`#${modalId}`);
         this.$title = this.$modal.find('#modal-title');
         this.$body = this.$modal.find('#modal-body-content');
+        this.closeTimer = null;
         this.initEvents();
     }
 
@@ -16,7 +17,18 @@ class ModalManager {
         });
     }
 
+    // Скасовує відкладене очищення від попереднього close(),
+    // щоб воно не знищило вміст щойно відкритої модалки.
+    cancelPendingCleanup() {
+        if (this.closeTimer !== null) {
+            clearTimeout(this.closeTimer);
+            this.closeTimer = null;
+        }
+    }
+
     open(title, templateId, handlerOrRules = null) {
+        this.cancelPendingCleanup();
+
         this.$title.text(title);
         const htmlContent = $(templateId).html();
         this.$body.html(htmlContent);
@@ -39,7 +51,11 @@ class ModalManager {
 
     close() {
         this.$modal.removeClass('is-active');
-        setTimeout(() => {
+
+        this.cancelPendingCleanup();
+        this.closeTimer = setTimeout(() => {
+            this.closeTimer = null;
+
             const $form = this.$body.find('form');
             if ($form.length) $form.removeData('validator').off();
             this.$body.empty();

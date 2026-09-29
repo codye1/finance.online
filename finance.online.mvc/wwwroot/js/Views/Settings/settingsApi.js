@@ -18,7 +18,23 @@ const settingsApi = {
                 role: memberData.role
             })
         });
-    }
+    },
+    removeMember: function (userId, organizationId) {
+        return $.ajax({
+            url: '/settings/remove-member',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ organizationId: organizationId, userId: userId })
+        });
+    },
+    createOrganization: function (organizationData) {
+        return $.ajax({
+            url: '/organizations',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(organizationData)
+        });
+    },
 };
 
 export default settingsApi;
