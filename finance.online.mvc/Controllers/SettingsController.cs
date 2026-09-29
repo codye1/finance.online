@@ -111,36 +111,66 @@ public async Task<IActionResult> DeleteOrganization([FromBody] DeleteOrganizatio
             return (ApiFetchState.Success, value);
         }
 
-[HttpPost("/settings/invite-member")]
-public async Task<IActionResult> InviteMember([FromBody] InviteMemberRequestDto request)
-{
-    if (request is null
-        || string.IsNullOrWhiteSpace(request.OrganizationId)
-        || string.IsNullOrWhiteSpace(request.Email))
+
+
+    [HttpPost("/settings/invite-member")]
+    public async Task<IActionResult> InviteMember([FromBody] InviteMemberRequestDto request)
     {
-        return BadRequest();
-    }
-
-    var client = _httpClientFactory.CreateClient("FinanceOnlineApi");
-    var response = await client.PostAsJsonAsync(
-        $"/organizations/{request.OrganizationId}/members",
-        new { email = request.Email, role = request.Role });
-
-    if (response.IsSuccessStatusCode)
-    {
-        var member = await response.Content.ReadFromJsonAsync<OrganizationMemberResponseDto>();
-        return Ok(member);
-    }
-
-    return await ForwardApiErrorAsync(response);
-}
-
-        private enum ApiFetchState
+        if (request is null
+            || string.IsNullOrWhiteSpace(request.OrganizationId)
+            || string.IsNullOrWhiteSpace(request.Email))
         {
-            Success,
-            Failed,
-            Unauthorized,
-            Forbidden
+            return BadRequest();
         }
+
+        var client = _httpClientFactory.CreateClient("FinanceOnlineApi");
+        var response = await client.PostAsJsonAsync(
+            $"/organizations/{request.OrganizationId}/members",
+            new { email = request.Email, role = request.Role });
+
+        if (response.IsSuccessStatusCode)
+        {
+            var member = await response.Content.ReadFromJsonAsync<OrganizationMemberResponseDto>();
+            return Ok(member);
+        }
+
+        return await ForwardApiErrorAsync(response);
     }
+        [HttpPost("/settings/remove-member")]
+        public async Task<IActionResult> RemoveMember([FromBody] RemoveMemberRequestDto request)
+        {
+            if (request is null
+                || string.IsNullOrWhiteSpace(request.OrganizationId)
+                || string.IsNullOrWhiteSpace(request.UserId))
+            {
+                return BadRequest();
+            }
+
+            var client = _httpClientFactory.CreateClient("FinanceOnlineApi");
+            var response = await client.DeleteAsync(
+                $"/organizations/{Uri.EscapeDataString(request.OrganizationId)}/members/{Uri.EscapeDataString(request.UserId)}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return NoContent();
+            }
+
+            return await ForwardApiErrorAsync(response);
+        }
+        private enum ApiFetchState
+            {
+                Success,
+                Failed,
+                Unauthorized,
+                Forbidden
+            }
+       }
+
+    public class RemoveMemberRequestDto
+    {
+        public string OrganizationId { get; set; } = string.Empty;
+        public string UserId { get; set; } = string.Empty;
+    }
+
+
 }

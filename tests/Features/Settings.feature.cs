@@ -126,7 +126,7 @@ namespace tests.Features
         
         private static global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages InitializeCucumberMessages()
         {
-            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Settings.feature.ndjson", 16);
+            return new global::Reqnroll.Formatters.RuntimeSupport.FeatureLevelCucumberMessages("Features/Settings.feature.ndjson", 22);
         }
         
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Settings page is displayed")]
@@ -586,18 +586,18 @@ await this.FeatureBackgroundAsync();
             await this.ScenarioCleanupAsync();
         }
         
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Open the delete organization dialog")]
-        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Open the delete organization dialog")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Members list shows the seeded colleague with the member role")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Members list shows the seeded colleague with the member role")]
         [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
-        public async global::System.Threading.Tasks.Task OpenTheDeleteOrganizationDialog()
+        public async global::System.Threading.Tasks.Task MembersListShowsTheSeededColleagueWithTheMemberRole()
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             string pickleIndex = "9";
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Open the delete organization dialog", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Members list shows the seeded colleague with the member role", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 115
+#line 117
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -611,48 +611,282 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 await this.FeatureBackgroundAsync();
 #line hidden
                 global::Reqnroll.Table table20 = new global::Reqnroll.Table(new string[] {
-                            "ElementLocator"});
+                            "ElementLocator",
+                            "ElementTagName",
+                            "AttributeName",
+                            "ElementValue"});
                 table20.AddRow(new string[] {
-                            "#open-delete-organization-dialog"});
-#line 116
-    await testRunner.WhenAsync("click elements", ((string)(null)), table20, "When ");
+                            ".settings-member:has-text(\'colleague@example.com\') .settings-role",
+                            "span",
+                            "",
+                            "Member"});
+                table20.AddRow(new string[] {
+                            ".settings-member:has-text(\'colleague@example.com\') .settings-member-remove-btn",
+                            "button",
+                            "",
+                            ""});
+#line 118
+    await testRunner.ThenAsync("check elements existence", ((string)(null)), table20, "Then ");
 #line hidden
                 global::Reqnroll.Table table21 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "ClassName",
                             "HasClass"});
                 table21.AddRow(new string[] {
-                            "#delete-organization-dialog",
-                            "is-active",
-                            "true"});
-#line 119
-    await testRunner.ThenAsync("check elements class", ((string)(null)), table21, "Then ");
+                            ".settings-member:has-text(\'colleague@example.com\') .settings-role",
+                            "is-owner",
+                            "false"});
+#line 122
+    await testRunner.AndAsync("check elements class", ((string)(null)), table21, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Owner has no remove button next to himself")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Owner has no remove button next to himself")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
+        public async global::System.Threading.Tasks.Task OwnerHasNoRemoveButtonNextToHimself()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "10";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Owner has no remove button next to himself", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 126
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
 #line hidden
                 global::Reqnroll.Table table22 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
+                            "Visible"});
+                table22.AddRow(new string[] {
+                            ".settings-member:has-text(\'newuser@example.com\')",
+                            "true"});
+#line 127
+    await testRunner.ThenAsync("check elements visibility", ((string)(null)), table22, "Then ");
+#line hidden
+                global::Reqnroll.Table table23 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ExpectedCount"});
+                table23.AddRow(new string[] {
+                            ".settings-member:has-text(\'newuser@example.com\') .settings-member-remove-btn",
+                            "0"});
+#line 130
+    await testRunner.AndAsync("check elements count", ((string)(null)), table23, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Remove a member and <Action> the confirmation")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Remove a member and <Action> the confirmation")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("accepts", "0", "11", null, DisplayName="Remove a member and <Action> the confirmation(accepts,0,11)")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute("dismisses", "1", "12", null, DisplayName="Remove a member and <Action> the confirmation(dismisses,1,12)")]
+        public async global::System.Threading.Tasks.Task RemoveAMemberAndActionTheConfirmation(string action, string count, string @__pickleIndex, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Action", action);
+            argumentsOfScenario.Add("Count", count);
+            string pickleIndex = @__pickleIndex;
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Remove a member and <Action> the confirmation", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 134
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 135
+    await testRunner.GivenAsync(string.Format("the browser {0} dialogs", action), ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 136
+    await testRunner.WhenAsync("click element \".settings-member:has-text(\'colleague@example.com\') .settings-membe" +
+                        "r-remove-btn\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+#line hidden
+#line 137
+    await testRunner.ThenAsync("a dialog is shown containing \"Видалити учасника\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+                global::Reqnroll.Table table24 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ExpectedCount"});
+                table24.AddRow(new string[] {
+                            ".settings-member:has-text(\'colleague@example.com\')",
+                            string.Format("{0}", count)});
+#line 138
+    await testRunner.AndAsync("check elements count", ((string)(null)), table24, "And ");
+#line hidden
+                global::Reqnroll.Table table25 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table25.AddRow(new string[] {
+                            ".settings-member:has-text(\'newuser@example.com\')",
+                            "true"});
+#line 141
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table25, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("A removed member can be invited again")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("A removed member can be invited again")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
+        public async global::System.Threading.Tasks.Task ARemovedMemberCanBeInvitedAgain()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "13";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("A removed member can be invited again", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 150
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 151
+    await testRunner.GivenAsync("the browser accepts dialogs", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+#line 152
+    await testRunner.AndAsync("click element \".settings-member:has-text(\'colleague@example.com\') .settings-membe" +
+                        "r-remove-btn\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+                global::Reqnroll.Table table26 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ExpectedCount"});
+                table26.AddRow(new string[] {
+                            ".settings-member:has-text(\'colleague@example.com\')",
+                            "0"});
+#line 153
+    await testRunner.AndAsync("check elements count", ((string)(null)), table26, "And ");
+#line hidden
+#line 156
+    await testRunner.AndAsync("I open the invite member modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
+#line hidden
+                global::Reqnroll.Table table27 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table27.AddRow(new string[] {
+                            "#member-email",
+                            "fill",
+                            "colleague@example.com"});
+                table27.AddRow(new string[] {
+                            "#btn-submit-invite-member",
+                            "click",
+                            ""});
+#line 157
+    await testRunner.AndAsync("fill form", ((string)(null)), table27, "And ");
+#line hidden
+                global::Reqnroll.Table table28 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table28.AddRow(new string[] {
+                            ".settings-member:has-text(\'colleague@example.com\')",
+                            "true"});
+#line 161
+    await testRunner.ThenAsync("check elements visibility", ((string)(null)), table28, "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Open the delete organization dialog")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Open the delete organization dialog")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
+        public async global::System.Threading.Tasks.Task OpenTheDeleteOrganizationDialog()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "14";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Open the delete organization dialog", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 169
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+                global::Reqnroll.Table table29 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator"});
+                table29.AddRow(new string[] {
+                            "#open-delete-organization-dialog"});
+#line 170
+    await testRunner.WhenAsync("click elements", ((string)(null)), table29, "When ");
+#line hidden
+                global::Reqnroll.Table table30 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ClassName",
+                            "HasClass"});
+                table30.AddRow(new string[] {
+                            "#delete-organization-dialog",
+                            "is-active",
+                            "true"});
+#line 173
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table30, "Then ");
+#line hidden
+                global::Reqnroll.Table table31 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
                             "AttributeName",
                             "ExpectedValue"});
-                table22.AddRow(new string[] {
+                table31.AddRow(new string[] {
                             "#delete-organization-dialog",
                             "aria-hidden",
                             "false"});
-#line 122
-    await testRunner.AndAsync("check elements attribute contains", ((string)(null)), table22, "And ");
+#line 176
+    await testRunner.AndAsync("check elements attribute contains", ((string)(null)), table31, "And ");
 #line hidden
-                global::Reqnroll.Table table23 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table32 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "ElementTagName",
                             "AttributeName",
                             "ElementValue"});
-                table23.AddRow(new string[] {
+                table32.AddRow(new string[] {
                             "#delete-organization-title",
                             "h2",
                             "",
                             "Видалити організацію?"});
-#line 125
-    await testRunner.AndAsync("check elements existence", ((string)(null)), table23, "And ");
+#line 179
+    await testRunner.AndAsync("check elements existence", ((string)(null)), table32, "And ");
 #line hidden
-#line 128
+#line 182
     await testRunner.AndAsync("the delete organization dialog mentions the organization name", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
             }
@@ -666,11 +900,11 @@ await this.FeatureBackgroundAsync();
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "10";
+            string pickleIndex = "15";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Cancel closes the delete organization dialog", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 130
+#line 184
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -683,49 +917,49 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 131
+#line 185
     await testRunner.GivenAsync("I open the delete organization dialog", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-                global::Reqnroll.Table table24 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table33 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator"});
-                table24.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "#cancel-delete-organization"});
-#line 132
-    await testRunner.WhenAsync("click elements", ((string)(null)), table24, "When ");
+#line 186
+    await testRunner.WhenAsync("click elements", ((string)(null)), table33, "When ");
 #line hidden
-                global::Reqnroll.Table table25 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table34 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "ClassName",
                             "HasClass"});
-                table25.AddRow(new string[] {
+                table34.AddRow(new string[] {
                             "#delete-organization-dialog",
                             "is-active",
                             "false"});
-#line 135
-    await testRunner.ThenAsync("check elements class", ((string)(null)), table25, "Then ");
+#line 189
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table34, "Then ");
 #line hidden
-                global::Reqnroll.Table table26 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table35 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "AttributeName",
                             "ExpectedValue"});
-                table26.AddRow(new string[] {
+                table35.AddRow(new string[] {
                             "#delete-organization-dialog",
                             "aria-hidden",
                             "true"});
-#line 138
-    await testRunner.AndAsync("check elements attribute contains", ((string)(null)), table26, "And ");
+#line 192
+    await testRunner.AndAsync("check elements attribute contains", ((string)(null)), table35, "And ");
 #line hidden
-#line 141
+#line 195
     await testRunner.AndAsync("current url contains \"/settings\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
 #line hidden
-                global::Reqnroll.Table table27 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table36 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "Visible"});
-                table27.AddRow(new string[] {
+                table36.AddRow(new string[] {
                             ".settings-organization",
                             "true"});
-#line 142
-    await testRunner.AndAsync("check elements visibility", ((string)(null)), table27, "And ");
+#line 196
+    await testRunner.AndAsync("check elements visibility", ((string)(null)), table36, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -738,11 +972,11 @@ await this.FeatureBackgroundAsync();
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "11";
+            string pickleIndex = "16";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Escape closes the delete organization dialog", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 146
+#line 200
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -755,22 +989,22 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 147
+#line 201
     await testRunner.GivenAsync("I open the delete organization dialog", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 148
+#line 202
     await testRunner.WhenAsync("I press the Escape key", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table28 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table37 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "ClassName",
                             "HasClass"});
-                table28.AddRow(new string[] {
+                table37.AddRow(new string[] {
                             "#delete-organization-dialog",
                             "is-active",
                             "false"});
-#line 149
-    await testRunner.ThenAsync("check elements class", ((string)(null)), table28, "Then ");
+#line 203
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table37, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -783,11 +1017,11 @@ await this.FeatureBackgroundAsync();
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "12";
+            string pickleIndex = "17";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Clicking the overlay closes the delete organization dialog", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 153
+#line 207
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -800,22 +1034,22 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 154
+#line 208
     await testRunner.GivenAsync("I open the delete organization dialog", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 155
+#line 209
     await testRunner.WhenAsync("I click outside the delete organization dialog", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table29 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table38 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "ClassName",
                             "HasClass"});
-                table29.AddRow(new string[] {
+                table38.AddRow(new string[] {
                             "#delete-organization-dialog",
                             "is-active",
                             "false"});
-#line 156
-    await testRunner.ThenAsync("check elements class", ((string)(null)), table29, "Then ");
+#line 210
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table38, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -828,11 +1062,11 @@ await this.FeatureBackgroundAsync();
         {
             string[] tagsOfScenario = ((string[])(null));
             global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
-            string pickleIndex = "13";
+            string pickleIndex = "18";
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Clicking inside the delete organization dialog keeps it open", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 160
+#line 214
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -845,22 +1079,137 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 161
+#line 215
     await testRunner.GivenAsync("I open the delete organization dialog", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 162
+#line 216
     await testRunner.WhenAsync("click element \"#delete-organization-title\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table30 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table39 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "ClassName",
                             "HasClass"});
-                table30.AddRow(new string[] {
+                table39.AddRow(new string[] {
                             "#delete-organization-dialog",
                             "is-active",
                             "true"});
-#line 163
-    await testRunner.ThenAsync("check elements class", ((string)(null)), table30, "Then ");
+#line 217
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table39, "Then ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute("Create an organization and delete it - it disappears from the home dropdown")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create an organization and delete it - it disappears from the home dropdown")]
+        [global::Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings page")]
+        public async global::System.Threading.Tasks.Task CreateAnOrganizationAndDeleteIt_ItDisappearsFromTheHomeDropdown()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
+            string pickleIndex = "19";
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Create an organization and delete it - it disappears from the home dropdown", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
+            string[] tagsOfRule = ((string[])(null));
+            global::Reqnroll.RuleInfo ruleInfo = null;
+#line 225
+this.ScenarioInitialize(scenarioInfo, ruleInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                await testRunner.SkipScenarioAsync();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 3
+await this.FeatureBackgroundAsync();
+#line hidden
+                global::Reqnroll.Table table40 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator"});
+                table40.AddRow(new string[] {
+                            "#open-create-organization-modal"});
+#line 226
+    await testRunner.WhenAsync("click elements", ((string)(null)), table40, "When ");
+#line hidden
+                global::Reqnroll.Table table41 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Action",
+                            "Value"});
+                table41.AddRow(new string[] {
+                            "#organization-name",
+                            "fill",
+                            "{unique}"});
+                table41.AddRow(new string[] {
+                            "#btn-submit-organization",
+                            "click",
+                            ""});
+#line 229
+    await testRunner.AndAsync("fill form", ((string)(null)), table41, "And ");
+#line hidden
+#line 233
+    await testRunner.ThenAsync("current url contains \"organizationId=\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+                global::Reqnroll.Table table42 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ElementTagName",
+                            "AttributeName",
+                            "ElementValue"});
+                table42.AddRow(new string[] {
+                            ".settings-organization-body h2",
+                            "h2",
+                            "",
+                            "{unique}"});
+#line 235
+    await testRunner.AndAsync("check elements existence", ((string)(null)), table42, "And ");
+#line hidden
+                global::Reqnroll.Table table43 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator"});
+                table43.AddRow(new string[] {
+                            "#open-delete-organization-dialog"});
+                table43.AddRow(new string[] {
+                            "#delete-organization-form button[type=\'submit\']"});
+#line 238
+    await testRunner.WhenAsync("click elements", ((string)(null)), table43, "When ");
+#line hidden
+#line 242
+    await testRunner.ThenAsync("the current path is \"/\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+#line hidden
+                global::Reqnroll.Table table44 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ExpectedCount"});
+                table44.AddRow(new string[] {
+                            "#org-select-current:has-text(\'{unique}\')",
+                            "0"});
+                table44.AddRow(new string[] {
+                            "#org-select-dropdown .org-select-item:has-text(\'{unique}\')",
+                            "0"});
+#line 243
+    await testRunner.AndAsync("check elements count", ((string)(null)), table44, "And ");
+#line hidden
+                global::Reqnroll.Table table45 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator"});
+                table45.AddRow(new string[] {
+                            "#org-select-toggle"});
+#line 247
+    await testRunner.WhenAsync("click elements", ((string)(null)), table45, "When ");
+#line hidden
+                global::Reqnroll.Table table46 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "Visible"});
+                table46.AddRow(new string[] {
+                            "#org-select-dropdown",
+                            "true"});
+#line 250
+    await testRunner.ThenAsync("check elements visibility", ((string)(null)), table46, "Then ");
+#line hidden
+                global::Reqnroll.Table table47 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator",
+                            "ExpectedCount"});
+                table47.AddRow(new string[] {
+                            "#org-select-dropdown .org-select-item:has-text(\'{unique}\')",
+                            "0"});
+#line 253
+    await testRunner.AndAsync("check elements count", ((string)(null)), table47, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

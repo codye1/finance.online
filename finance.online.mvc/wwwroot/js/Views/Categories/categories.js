@@ -6,6 +6,8 @@ import { showApiErrors } from '../../helpers/showApiErrors.js';
 $(function () {
     'use strict';
 
+    const DEFAULT_COLOR = '#2563EB';
+
     function setActiveCategoryType($form, type) {
         $form.find('#category-type').val(type);
 
@@ -20,19 +22,23 @@ $(function () {
         $form.find(`.color-swatch-btn[data-color="${color}"]`).addClass('active');
     }
 
-    function openAddCategoryModal() {
+    // category == null  -> створення
+    // category != null  -> редагування ({ id, name, color })
+    function openCategoryModal(category) {
         if (!Modal) {
             console.error('Global Modal manager library initialization instances not found.');
             return;
         }
 
+        const isEdit = !!category;
+
         const organizationId = window.TransitData?.organizationId;
-        if (!organizationId) {
+        if (!isEdit && !organizationId) {
             alert('Організацію не знайдено');
             return;
         }
 
-        Modal.open('Нова категорія', '#tpl-add-category', {
+        Modal.open(isEdit ? 'Редагування категорії' : 'Нова категорія', '#tpl-add-category', {
             ...validators.categoryFormRules,
             showErrors: function () {
                 this.defaultShowErrors();
@@ -45,19 +51,24 @@ $(function () {
             submitHandler: (form) => {
                 const $form = $(form);
 
-                const categoryData = {
-                    organizationId: organizationId,
-                    name: $form.find('#category-name').val().trim(),
-                    color: $form.find('#category-color').val()
-                };
+                const name = $form.find('#category-name').val().trim();
+                const color = $form.find('#category-color').val();
 
                 const $submitBtn = $form.find('#btn-submit-category');
                 $submitBtn.prop('disabled', true).addClass('loading');
 
-                api.createCategory(categoryData)
+                const request = isEdit
+                    ? api.updateCategory({ categoryId: category.id, name: name, color: color })
+                    : api.createCategory({ organizationId: organizationId, name: name, color: color });
+
+                request
                     .done((html) => {
-                        $('#categories-list .categories-muted-row').remove();
-                        $('#categories-list').append(html);
+                        if (isEdit) {
+                            $(`#categories-list .categories-item[data-category-id="${category.id}"]`).replaceWith(html);
+                        } else {
+                            $('#categories-list .categories-muted-row').remove();
+                            $('#categories-list').append(html);
+                        }
                         Modal.close();
                     })
                     .fail((xhr) => {
@@ -71,7 +82,7 @@ $(function () {
                             return;
                         }
 
-                        alert('Помилка створення категорії');
+                        alert(isEdit ? 'Помилка оновлення категорії' : 'Помилка створення категорії');
                     })
                     .always(() => {
                         $submitBtn.prop('disabled', false).removeClass('loading');
@@ -83,57 +94,80 @@ $(function () {
         const $form = $modalBody.find('#form-add-category');
 
         setActiveCategoryType($form, 'expense');
-        setActiveCategoryColor($form, '#2563EB');
 
-        $modalBody.on('click', '.type-toggle-btn', function (e) {
+        if (isEdit) {
+            $form.find('#category-name').val(category.name);
+            setActiveCategoryColor($form, category.color || DEFAULT_COLOR);
+            $form.find('#category-submit-text').text('Зберегти');
+        } else {
+            setActiveCategoryColor($form, DEFAULT_COLOR);
+        }
+
+        // namespace + off, щоб обробники не накопичувалися між відкриттями модалки
+        $modalBody.off('.categoryModal');
+
+        $modalBody.on('click.categoryModal', '.type-toggle-btn', function (e) {
             e.preventDefault();
             setActiveCategoryType($form, $(this).data('type'));
         });
 
-        $modalBody.on('click', '.color-swatch-btn', function (e) {
+        $modalBody.on('click.categoryModal', '.color-swatch-btn', function (e) {
             e.preventDefault();
             setActiveCategoryColor($form, $(this).data('color'));
         });
 
-        $modalBody.on('click', '#js-close-category-modal', function (e) {
+        $modalBody.on('click.categoryModal', '#js-close-category-modal', function (e) {
             e.preventDefault();
             Modal.close();
         });
     }
 
-    function initDeleteCategory() {
-    $('#categories-list').on('click', '.category-delete-btn', function () {
-        const categoryId = $(this).data('category-id');
-        if (!categoryId) return;
+    function initEditCategory() {
+        $('#categories-list').on('click', '.category-edit-btn', function () {
+            const $item = $(this).closest('.categories-item');
 
-        if (!confirm('Видалити цю категорію?')) {
-            return;
-        }
-
-        const $item = $(this).closest('.categories-item');
-
-        api.deleteCategory(categoryId)
-            .done(function () {
-                $item.remove();
-
-                if ($('#categories-list .categories-item').length === 0) {
-                    $('#categories-list').html('<div class="categories-muted-row">Категорій ще немає</div>');
-                }
-            })
-            .fail((xhr) => {
-                if (xhr.status === 401) {
-                    window.location.href = '/login';
-                    return;
-                }
-
-                alert('Помилка видалення категорії');
+            openCategoryModal({
+                id: $item.data('category-id'),
+                name: $item.attr('data-category-name'),
+                color: $item.attr('data-category-color')
             });
-    });
-}
+        });
+    }
+
+    function initDeleteCategory() {
+        $('#categories-list').on('click', '.category-delete-btn', function () {
+            const categoryId = $(this).data('category-id');
+            if (!categoryId) return;
+
+            if (!confirm('Видалити цю категорію?')) {
+                return;
+            }
+
+            const $item = $(this).closest('.categories-item');
+
+            api.deleteCategory(categoryId)
+                .done(function () {
+                    $item.remove();
+
+                    if ($('#categories-list .categories-item').length === 0) {
+                        $('#categories-list').html('<div class="categories-muted-row">Категорій ще немає</div>');
+                    }
+                })
+                .fail((xhr) => {
+                    if (xhr.status === 401) {
+                        window.location.href = '/login';
+                        return;
+                    }
+
+                    alert('Помилка видалення категорії');
+                });
+        });
+    }
 
     $('#open-add-category-modal-btn').on('click', function () {
-        openAddCategoryModal();
+        openCategoryModal(null);
     });
 
+    initEditCategory();
     initDeleteCategory();
 });

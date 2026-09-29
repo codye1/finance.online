@@ -303,3 +303,35 @@
         max-width: none;
     }
 }
+
+
+/* Додайте до /css/views/categories.css — за аналогією зі стилями .category-delete-btn */
+.category-edit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    margin-right: 4px;
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    color: #6b7280;
+    cursor: pointer;
+}
+
+    .category-edit-btn:hover {
+        background: rgba(37, 99, 235, 0.1);
+        color: #2563EB;
+    }
+
+    .category-edit-btn svg {
+        width: 18px;
+        height: 18px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }

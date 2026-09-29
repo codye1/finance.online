@@ -177,6 +177,8 @@ $(function () {
         });
     }
 
+
+
     function initFilter($filterBar, $container, itemSelector, emptyStateHtml, onFilterChange) {
         if (!$filterBar.length || !$container.length) {
             return;

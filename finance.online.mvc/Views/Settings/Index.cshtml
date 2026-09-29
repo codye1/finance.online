@@ -33,8 +33,6 @@
                     </svg>
                 </div>
                 <h2>У вас ще немає організацій</h2>
-                <p>Створіть організацію на дашборді, щоб керувати її учасниками та налаштуваннями.</p>
-                <a class="settings-primary-link" href="/">На дашборд</a>
             </section>
         }
         else
@@ -71,6 +69,7 @@
                             </svg>
                             <span>Видалити</span>
                         </button>
+
                     }else
                     {
                         <span class="settings-pill">Учасник</span>
@@ -78,6 +77,10 @@
                 </div>
             </section>
 
+            <button id="open-create-organization-modal" class="btn-primary">
+                <span class="btn-text">Створити нову організацію</span>
+                <span class="spinner"></span>
+            </button>
             <section class="settings-card">
                 <div class="settings-section-heading">
         <div>
@@ -114,12 +117,26 @@
                                             <span class="settings-pill">Ви</span>
                                         }
                                     </div>
+
                                     <div class="settings-member-meta">
                                         @(member.IsOwner ? "Власник" : "Учасник") · з @member.CreatedAt.ToString("dd.MM.yyyy")
                                     </div>
                                 </div>
+
+                                @if (organization.IsOwner && !member.IsMe)
+                                {
+                                    <button type="button"
+                                            class="settings-member-remove-btn"
+                                            data-user-id="@member.UserId"
+                                            data-member-email="@email"
+                                            title="Видалити учасника"
+                                            aria-label="Видалити учасника @email">
+                                        <img src="/images/icons/delete.svg" />
+                                    </button>
+                                }
                                 <span class="settings-role @(member.IsOwner ? "is-owner" : "")">
                                     @(member.IsOwner ? "Owner" : "Member")
+
                                 </span>
                             </div>
                         }
@@ -181,6 +198,46 @@
         </div>
     </form>
 </template>
+    <template id="tpl-add-organization">
+        <form id="form-add-organization" class="modal-form-layout">
+
+            <div class="form-group">
+                <label class="form-label" for="organization-name">Назва</label>
+                <input type="text" name="name" id="organization-name" required placeholder="Напр. ТОВ «Моя компанія»" class="form-input" autocomplete="off" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="organization-description">Опис</label>
+                <textarea name="description" id="organization-description" placeholder="Чим займається організація (необов'язково)" class="form-input" rows="2"></textarea>
+            </div>
+
+            <input type="hidden" name="color" id="organization-color" value="#2563EB" />
+
+            <div class="form-group">
+                <label class="form-label">Колір</label>
+                <div class="color-swatch-group" id="organization-color-group">
+                    <button type="button" class="color-swatch-btn active" data-color="#2563EB" style="background-color:#2563EB;" aria-label="Колір #2563EB"></button>
+                    <button type="button" class="color-swatch-btn" data-color="#10B981" style="background-color:#10B981;" aria-label="Колір #10B981"></button>
+                    <button type="button" class="color-swatch-btn" data-color="#EF4444" style="background-color:#EF4444;" aria-label="Колір #EF4444"></button>
+                    <button type="button" class="color-swatch-btn" data-color="#F59E0B" style="background-color:#F59E0B;" aria-label="Колір #F59E0B"></button>
+                    <button type="button" class="color-swatch-btn" data-color="#8B5CF6" style="background-color:#8B5CF6;" aria-label="Колір #8B5CF6"></button>
+                    <button type="button" class="color-swatch-btn" data-color="#EC4899" style="background-color:#EC4899;" aria-label="Колір #EC4899"></button>
+                    <button type="button" class="color-swatch-btn" data-color="#06B6D4" style="background-color:#06B6D4;" aria-label="Колір #06B6D4"></button>
+                    <button type="button" class="color-swatch-btn" data-color="#84CC16" style="background-color:#84CC16;" aria-label="Колір #84CC16"></button>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-primary" id="js-close-organization-modal">
+                    <span class="btn-text">Скасувати</span>
+                </button>
+                <button type="submit" id="btn-submit-organization" class="btn-primary">
+                    <span class="btn-text">Створити організацію</span>
+                    <span class="spinner"></span>
+                </button>
+            </div>
+        </form>
+    </template>
 </div>
 
 @section Scripts {

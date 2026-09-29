@@ -108,9 +108,63 @@ Scenario: Successfully invite an existing user
         | ElementLocator                                                 | ElementTagName | AttributeName | ElementValue |
         | .settings-member:has-text('member@example.com') .settings-role | span           |               | Member |
 
+# ---------- Видалення учасника ----------
+# colleague@example.com засіяний у FakeApiState як учасник (accountant) засіяної організації.
+# Reset() відновлює його перед кожним сценарієм, тож видалення в одному сценарії
+# не впливає на інші. Текст confirm() перевіряємо без email: крок
+# "a dialog is shown containing" не підставляє плейсхолдери.
+
+Scenario: Members list shows the seeded colleague with the member role
+    Then check elements existence
+        | ElementLocator                                                                 | ElementTagName | AttributeName | ElementValue |
+        | .settings-member:has-text('colleague@example.com') .settings-role              | span           |               | Member |
+        | .settings-member:has-text('colleague@example.com') .settings-member-remove-btn | button         |               | |
+    And check elements class
+        | ElementLocator                                                    | ClassName | HasClass |
+        | .settings-member:has-text('colleague@example.com') .settings-role | is-owner  | false |
+
+Scenario: Owner has no remove button next to himself
+    Then check elements visibility
+        | ElementLocator                                   | Visible |
+        | .settings-member:has-text('newuser@example.com') | true |
+    And check elements count
+        | ElementLocator                                                               | ExpectedCount |
+        | .settings-member:has-text('newuser@example.com') .settings-member-remove-btn | 0 |
+
+Scenario Outline: Remove a member and <Action> the confirmation
+    Given the browser <Action> dialogs
+    When click element ".settings-member:has-text('colleague@example.com') .settings-member-remove-btn"
+    Then a dialog is shown containing "Видалити учасника"
+    And check elements count
+        | ElementLocator                                     | ExpectedCount |
+        | .settings-member:has-text('colleague@example.com') | <Count> |
+    And check elements visibility
+        | ElementLocator                                   | Visible |
+        | .settings-member:has-text('newuser@example.com') | true |
+
+    Examples:
+        | Action    | Count |
+        | accepts   | 0 |
+        | dismisses | 1 |
+
+Scenario: A removed member can be invited again
+    Given the browser accepts dialogs
+    And click element ".settings-member:has-text('colleague@example.com') .settings-member-remove-btn"
+    And check elements count
+        | ElementLocator                                     | ExpectedCount |
+        | .settings-member:has-text('colleague@example.com') | 0 |
+    And I open the invite member modal
+    And fill form
+        | ElementLocator            | Action | Value |
+        | #member-email             | fill   | colleague@example.com |
+        | #btn-submit-invite-member | click  | |
+    Then check elements visibility
+        | ElementLocator                                     | Visible |
+        | .settings-member:has-text('colleague@example.com') | true |
+
 # ---------- Видалення організації: діалог ----------
-# Саме видалення організації навмисно не тестується:
-# воно знищило б засіяні дані, від яких залежать інші feature.
+# Реальне видалення тестується лише на організації, яку сценарій сам створює
+# (див. останній сценарій), щоб не зачепити засіяні дані інших feature.
 
 Scenario: Open the delete organization dialog
     When click elements
@@ -163,3 +217,39 @@ Scenario: Clicking inside the delete organization dialog keeps it open
     Then check elements class
         | ElementLocator              | ClassName | HasClass |
         | #delete-organization-dialog | is-active | true |
+
+# ---------- Видалення організації: повний цикл ----------
+# Спочатку створюємо власну організацію ({unique}), одразу її видаляємо
+# і перевіряємо, що вона зникла з dropdown на Home. Засіяні організації не чіпаємо.
+
+Scenario: Create an organization and delete it - it disappears from the home dropdown
+    When click elements
+        | ElementLocator                  |
+        | #open-create-organization-modal |
+    And fill form
+        | ElementLocator           | Action | Value    |
+        | #organization-name       | fill   | {unique} |
+        | #btn-submit-organization | click  |          |
+    Then current url contains "organizationId="
+    # Запобіжник: без цієї перевірки тест міг би видалити не ту (засіяну) організацію.
+    And check elements existence
+        | ElementLocator                 | ElementTagName | AttributeName | ElementValue |
+        | .settings-organization-body h2 | h2             |               | {unique}     |
+    When click elements
+        | ElementLocator                                  |
+        | #open-delete-organization-dialog                |
+        | #delete-organization-form button[type='submit'] |
+    Then the current path is "/"
+    And check elements count
+        | ElementLocator                                             | ExpectedCount |
+        | #org-select-current:has-text('{unique}')                   | 0             |
+        | #org-select-dropdown .org-select-item:has-text('{unique}') | 0             |
+    When click elements
+        | ElementLocator     |
+        | #org-select-toggle |
+    Then check elements visibility
+        | ElementLocator                                             | Visible |
+        | #org-select-dropdown                                       | true    |
+    And check elements count
+        | ElementLocator                                             | ExpectedCount |
+        | #org-select-dropdown .org-select-item:has-text('{unique}') | 0             |

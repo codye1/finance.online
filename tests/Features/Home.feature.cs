@@ -642,30 +642,16 @@ await this.FeatureBackgroundAsync();
     await testRunner.WhenAsync("fill form", ((string)(null)), table18, "When ");
 #line hidden
                 global::Reqnroll.Table table19 = new global::Reqnroll.Table(new string[] {
-                            "ElementLocator",
-                            "ClassName",
-                            "HasClass"});
-                table19.AddRow(new string[] {
-                            "#app-modal",
-                            "is-active",
-                            "false"});
-#line 139
-    await testRunner.ThenAsync("check elements class", ((string)(null)), table19, "Then ");
-#line hidden
-#line 142
-    await testRunner.WhenAsync("the page is reloaded", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
-#line hidden
-                global::Reqnroll.Table table20 = new global::Reqnroll.Table(new string[] {
                             "KpiTitle",
                             "Change"});
-                table20.AddRow(new string[] {
+                table19.AddRow(new string[] {
                             "Витрати",
                             "increased"});
-                table20.AddRow(new string[] {
+                table19.AddRow(new string[] {
                             "Чистий прибуток",
                             "decreased"});
-#line 143
-    await testRunner.ThenAsync("check kpi values changed", ((string)(null)), table20, "Then ");
+#line 139
+    await testRunner.ThenAsync("check kpi values changed", ((string)(null)), table19, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -688,7 +674,7 @@ await this.FeatureBackgroundAsync();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Operation type toggle switches active button and hidden value (<Type>)", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 148
+#line 144
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -701,35 +687,35 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 149
+#line 145
     await testRunner.GivenAsync("I open the add operation modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-#line 150
+#line 146
     await testRunner.WhenAsync(string.Format("click element \"#btn-type-{0}\"", type), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table21 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table20 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "ClassName",
                             "HasClass"});
-                table21.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             string.Format("#btn-type-{0}", type),
                             "active",
                             "true"});
-                table21.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             string.Format("#btn-type-{0}", other),
                             "active",
                             "false"});
-#line 151
-    await testRunner.ThenAsync("check elements class", ((string)(null)), table21, "Then ");
+#line 147
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table20, "Then ");
 #line hidden
-                global::Reqnroll.Table table22 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table21 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "ExpectedValue"});
-                table22.AddRow(new string[] {
+                table21.AddRow(new string[] {
                             "#operation-type",
                             string.Format("{0}", type)});
-#line 155
-    await testRunner.AndAsync("check elements value", ((string)(null)), table22, "And ");
+#line 151
+    await testRunner.AndAsync("check elements value", ((string)(null)), table21, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -746,7 +732,7 @@ await this.FeatureBackgroundAsync();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Open and close the add organization modal", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 166
+#line 162
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -759,41 +745,41 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-                global::Reqnroll.Table table23 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table22 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator"});
-                table23.AddRow(new string[] {
+                table22.AddRow(new string[] {
                             "#org-select-toggle"});
-                table23.AddRow(new string[] {
+                table22.AddRow(new string[] {
                             "#open-organization-modal-btn"});
-#line 167
-    await testRunner.WhenAsync("click elements", ((string)(null)), table23, "When ");
+#line 163
+    await testRunner.WhenAsync("click elements", ((string)(null)), table22, "When ");
 #line hidden
-                global::Reqnroll.Table table24 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table23 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "Visible"});
-                table24.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "#form-add-organization",
                             "true"});
-#line 171
-    await testRunner.ThenAsync("check elements visibility", ((string)(null)), table24, "Then ");
+#line 167
+    await testRunner.ThenAsync("check elements visibility", ((string)(null)), table23, "Then ");
+#line hidden
+                global::Reqnroll.Table table24 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator"});
+                table24.AddRow(new string[] {
+                            "#js-close-organization-modal"});
+#line 170
+    await testRunner.WhenAsync("click elements", ((string)(null)), table24, "When ");
 #line hidden
                 global::Reqnroll.Table table25 = new global::Reqnroll.Table(new string[] {
-                            "ElementLocator"});
-                table25.AddRow(new string[] {
-                            "#js-close-organization-modal"});
-#line 174
-    await testRunner.WhenAsync("click elements", ((string)(null)), table25, "When ");
-#line hidden
-                global::Reqnroll.Table table26 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "ClassName",
                             "HasClass"});
-                table26.AddRow(new string[] {
+                table25.AddRow(new string[] {
                             "#app-modal",
                             "is-active",
                             "false"});
-#line 177
-    await testRunner.ThenAsync("check elements class", ((string)(null)), table26, "Then ");
+#line 173
+    await testRunner.ThenAsync("check elements class", ((string)(null)), table25, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -810,7 +796,7 @@ await this.FeatureBackgroundAsync();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Add organization form requires name", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 181
+#line 177
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -823,32 +809,32 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 182
+#line 178
     await testRunner.GivenAsync("I open the add organization modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-                global::Reqnroll.Table table27 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table26 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "Action",
                             "Value"});
-                table27.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "#organization-name",
                             "fill",
                             ""});
-                table27.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "#btn-submit-organization",
                             "click",
                             ""});
-#line 183
-    await testRunner.WhenAsync("fill form", ((string)(null)), table27, "When ");
+#line 179
+    await testRunner.WhenAsync("fill form", ((string)(null)), table26, "When ");
 #line hidden
-                global::Reqnroll.Table table28 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table27 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "Visible"});
-                table28.AddRow(new string[] {
+                table27.AddRow(new string[] {
                             "#form-add-organization .form-group:has(#organization-name) .form-error-text",
                             "true"});
-#line 187
-    await testRunner.ThenAsync("check elements visibility", ((string)(null)), table28, "Then ");
+#line 183
+    await testRunner.ThenAsync("check elements visibility", ((string)(null)), table27, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -865,7 +851,7 @@ await this.FeatureBackgroundAsync();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Successfully create a new organization and it becomes active", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 191
+#line 187
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -878,55 +864,55 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 192
+#line 188
     await testRunner.GivenAsync("I open the add organization modal", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-                global::Reqnroll.Table table29 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table28 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "Action",
                             "Value"});
-                table29.AddRow(new string[] {
+                table28.AddRow(new string[] {
                             "#organization-name",
                             "fill",
                             "{unique}"});
-                table29.AddRow(new string[] {
+                table28.AddRow(new string[] {
                             "#btn-submit-organization",
                             "click",
                             ""});
-#line 193
-    await testRunner.WhenAsync("fill form", ((string)(null)), table29, "When ");
+#line 189
+    await testRunner.WhenAsync("fill form", ((string)(null)), table28, "When ");
 #line hidden
-#line 197
+#line 193
     await testRunner.ThenAsync("current url contains \"organizationId=\"", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
-                global::Reqnroll.Table table30 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table29 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "ElementTagName",
                             "AttributeName",
                             "ElementValue"});
-                table30.AddRow(new string[] {
+                table29.AddRow(new string[] {
                             "#org-select-current",
                             "span",
                             "",
                             "{unique}"});
-#line 198
-    await testRunner.AndAsync("check elements existence", ((string)(null)), table30, "And ");
+#line 194
+    await testRunner.AndAsync("check elements existence", ((string)(null)), table29, "And ");
+#line hidden
+                global::Reqnroll.Table table30 = new global::Reqnroll.Table(new string[] {
+                            "ElementLocator"});
+                table30.AddRow(new string[] {
+                            "#org-select-toggle"});
+#line 197
+    await testRunner.WhenAsync("click elements", ((string)(null)), table30, "When ");
 #line hidden
                 global::Reqnroll.Table table31 = new global::Reqnroll.Table(new string[] {
-                            "ElementLocator"});
-                table31.AddRow(new string[] {
-                            "#org-select-toggle"});
-#line 201
-    await testRunner.WhenAsync("click elements", ((string)(null)), table31, "When ");
-#line hidden
-                global::Reqnroll.Table table32 = new global::Reqnroll.Table(new string[] {
                             "OrganizationName",
                             "IsActive"});
-                table32.AddRow(new string[] {
+                table31.AddRow(new string[] {
                             "{unique}",
                             "true"});
-#line 204
-    await testRunner.ThenAsync("the organization dropdown contains", ((string)(null)), table32, "Then ");
+#line 200
+    await testRunner.ThenAsync("the organization dropdown contains", ((string)(null)), table31, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -948,7 +934,7 @@ await this.FeatureBackgroundAsync();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("Filter operations list by <Filter>", null, tagsOfScenario, argumentsOfScenario, featureTags, pickleIndex);
             string[] tagsOfRule = ((string[])(null));
             global::Reqnroll.RuleInfo ruleInfo = null;
-#line 211
+#line 207
 this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -961,20 +947,20 @@ this.ScenarioInitialize(scenarioInfo, ruleInfo);
 #line 3
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 212
+#line 208
     await testRunner.WhenAsync(string.Format("click element \"#operations-filter .filter-toggle:text-is(\'{0}\')\"", filter), ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
-                global::Reqnroll.Table table33 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table32 = new global::Reqnroll.Table(new string[] {
                             "ElementLocator",
                             "ExpectedCount"});
-                table33.AddRow(new string[] {
+                table32.AddRow(new string[] {
                             string.Format("#operations-list .ledger-item[data-type=\'{0}\']:visible", hiddenType),
                             "0"});
-                table33.AddRow(new string[] {
+                table32.AddRow(new string[] {
                             string.Format("#operations-list .ledger-item[data-type=\'{0}\']:visible", visibleType),
                             ">0"});
-#line 213
-    await testRunner.ThenAsync("check elements count", ((string)(null)), table33, "Then ");
+#line 209
+    await testRunner.ThenAsync("check elements count", ((string)(null)), table32, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

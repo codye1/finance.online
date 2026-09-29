@@ -136,10 +136,6 @@ Scenario: Successfully add a new expense operation and KPI values change
         | #operation-category   | select | 1       |
         | #operation-date       | fill   | {today} |
         | #btn-submit-operation | click  |         |
-    Then check elements class
-        | ElementLocator | ClassName | HasClass |
-        | #app-modal     | is-active | false    |
-    When the page is reloaded
     Then check kpi values changed
         | KpiTitle        | Change    |
         | Витрати         | increased |

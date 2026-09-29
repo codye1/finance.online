@@ -6,7 +6,7 @@ using WireMock;
 
 namespace tests.Mocks.Controllers;
 
-/// <summary>Handles /organizations/{id}/categories (list + create) and /categories/{id} (delete).</summary>
+/// <summary>Handles /organizations/{id}/categories (list + create) and /categories/{id} (update + delete).</summary>
 public sealed class CategoriesController
 {
     private readonly FakeApiState _state;
@@ -21,6 +21,14 @@ public sealed class CategoriesController
 
         if (ApiHelpers.Matches(method, path, "POST", @"^/organizations/([^/]+)/categories$", out var mPost))
             return ApiHelpers.WithOrg(_state, mPost.Groups[1].Value, me, o => CreateCategory(req, o));
+
+        if (ApiHelpers.Matches(method, path, "PATCH", @"^/categories/([^/]+)$", out var mPatch))
+        {
+            var id = mPatch.Groups[1].Value;
+            var org = _state.OrgsFor(me).FirstOrDefault(o => o.Categories.Any(c => c.Id == id));
+            if (org is null) return ApiHelpers.Json(404, ApiHelpers.Error("_general", "Category not found."));
+            return UpdateCategory(req, org, org.Categories.First(c => c.Id == id));
+        }
 
         if (ApiHelpers.Matches(method, path, "DELETE", @"^/categories/([^/]+)$", out var mDel))
         {
@@ -50,5 +58,29 @@ public sealed class CategoriesController
         var category = new FakeCategory { Name = name, Color = color };
         org.Categories.Add(category);
         return ApiHelpers.Json(201, Dto.CategoryDto(category));
+    }
+
+    private ResponseMessage UpdateCategory(IRequestMessage req, FakeOrg org, FakeCategory category)
+    {
+        var body = ApiHelpers.Body(req);
+        var name = ApiHelpers.Str(body, "name")?.Trim();
+        var color = ApiHelpers.Str(body, "color");
+
+        if (name is not null)
+        {
+            if (name.Length == 0)
+                return ApiHelpers.Json(400, ApiHelpers.Error("name", "Name is required."));
+            if (name.Length > 100)
+                return ApiHelpers.Json(400, ApiHelpers.Error("name", "Name must be at most 100 characters."));
+            if (org.Categories.Any(c => c.Id != category.Id && c.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+                return ApiHelpers.Json(400, ApiHelpers.Error("name", "Category with this name already exists."));
+
+            category.Name = name;
+        }
+
+        if (!string.IsNullOrEmpty(color))
+            category.Color = color;
+
+        return ApiHelpers.Json(200, Dto.CategoryDto(category));
     }
 }
