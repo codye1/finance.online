@@ -9,6 +9,6 @@ namespace finance.online.api.Models.DTO
         public string Email { get; set; } = null!;
 
         [Required]
-        public string Role { get; set; } = null!;
+        public MemberRole? Role { get; set; }
     }
 }

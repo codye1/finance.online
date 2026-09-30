@@ -1,6 +1,7 @@
 using finance.online.api.Models;
 using finance.online.api.Models.DTO;
 using finance.online.api.Repositories.OperationRepository;
+using finance.online.api.Repositories.OrganizationRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,18 +13,20 @@ namespace finance.online.api.Controllers
     public class OperationsController : ControllerBase
     {
         private readonly IOperationRepository _operationRepository;
+        private readonly IOrganizationRepository _organizationRepository;
         private readonly UserManager<AppUser> _userManager;
 
         public OperationsController(
             IOperationRepository operationRepository,
+            IOrganizationRepository organizationRepository,
             UserManager<AppUser> userManager)
         {
             _operationRepository = operationRepository;
+            _organizationRepository = organizationRepository;
             _userManager = userManager;
         }
 
-
-
+        // Owner, Accountant, Member: перегляд
         [HttpGet("/organizations/{orgId}/operations")]
         public async Task<IActionResult> GetByOrganization(
             string orgId,
@@ -40,7 +43,8 @@ namespace finance.online.api.Controllers
                 return Unauthorized(ApiErrors.General("Authentication is required."));
             }
 
-            if (!await _operationRepository.HasMemberAccessAsync(orgId, currentUserId))
+            var role = await _organizationRepository.GetMemberRoleAsync(orgId, currentUserId);
+            if (role == null)
             {
                 return NotFound(ApiErrors.General("Organization not found."));
             }
@@ -49,6 +53,7 @@ namespace finance.online.api.Controllers
             return Ok(operations.Select(MapOperation).ToList());
         }
 
+        // Owner, Accountant, Member: перегляд
         [HttpGet("/organizations/{orgId}/operations/summary")]
         public async Task<IActionResult> GetSummary(string orgId, [FromQuery] string period = "month")
         {
@@ -58,7 +63,8 @@ namespace finance.online.api.Controllers
                 return Unauthorized(ApiErrors.General("Authentication is required."));
             }
 
-            if (!await _operationRepository.HasMemberAccessAsync(orgId, currentUserId))
+            var role = await _organizationRepository.GetMemberRoleAsync(orgId, currentUserId);
+            if (role == null)
             {
                 return NotFound(ApiErrors.General("Organization not found."));
             }
@@ -72,7 +78,7 @@ namespace finance.online.api.Controllers
             return Ok(summary);
         }
 
-
+        // Owner, Accountant, Member: перегляд
         [HttpGet("/organizations/{orgId}/operations/cashflow")]
         public async Task<IActionResult> GetCashflow(string orgId, [FromQuery] string period = "month")
         {
@@ -82,7 +88,8 @@ namespace finance.online.api.Controllers
                 return Unauthorized(ApiErrors.General("Authentication is required."));
             }
 
-            if (!await _operationRepository.HasMemberAccessAsync(orgId, currentUserId))
+            var role = await _organizationRepository.GetMemberRoleAsync(orgId, currentUserId);
+            if (role == null)
             {
                 return NotFound(ApiErrors.General("Organization not found."));
             }
@@ -96,6 +103,7 @@ namespace finance.online.api.Controllers
             return Ok(cashflow);
         }
 
+        // Owner, Accountant: створення
         [HttpPost("/organizations/{orgId}/operations")]
         public async Task<IActionResult> Create(string orgId, OperationCreateRequestDto dto)
         {
@@ -105,14 +113,15 @@ namespace finance.online.api.Controllers
                 return Unauthorized(ApiErrors.General("Authentication is required."));
             }
 
-            if (!await _operationRepository.HasMemberAccessAsync(orgId, currentUserId))
+            var role = await _organizationRepository.GetMemberRoleAsync(orgId, currentUserId);
+            if (role == null)
             {
                 return NotFound(ApiErrors.General("Organization not found."));
             }
 
-            if (!await _operationRepository.HasEditorAccessAsync(orgId, currentUserId))
+            if (role != MemberRole.Owner && role != MemberRole.Accountant)
             {
-                return Forbid();
+                return ForbiddenResult();
             }
 
             var operation = await _operationRepository.CreateAsync(orgId, currentUserId, dto);
@@ -127,6 +136,7 @@ namespace finance.online.api.Controllers
             return Created($"/operations/{operation.Id}", MapOperation(created ?? operation));
         }
 
+        // Тільки Owner
         [HttpPatch("/operations/{operationId}")]
         public async Task<IActionResult> Update(string operationId, OperationUpdateRequestDto dto)
         {
@@ -142,14 +152,15 @@ namespace finance.online.api.Controllers
                 return NotFound(ApiErrors.General("Operation not found."));
             }
 
-            if (!await _operationRepository.HasMemberAccessAsync(existingOperation.OrganizationId, currentUserId))
+            var role = await _organizationRepository.GetMemberRoleAsync(existingOperation.OrganizationId, currentUserId);
+            if (role == null)
             {
                 return NotFound(ApiErrors.General("Operation not found."));
             }
 
-            if (!await _operationRepository.HasEditorAccessAsync(existingOperation.OrganizationId, currentUserId))
+            if (role != MemberRole.Owner)
             {
-                return Forbid();
+                return ForbiddenResult();
             }
 
             var operation = await _operationRepository.UpdateAsync(operationId, dto);
@@ -164,6 +175,7 @@ namespace finance.online.api.Controllers
             return Ok(MapOperation(updated ?? operation));
         }
 
+        // Тільки Owner
         [HttpDelete("/operations/{operationId}")]
         public async Task<IActionResult> Delete(string operationId)
         {
@@ -179,14 +191,15 @@ namespace finance.online.api.Controllers
                 return NotFound(ApiErrors.General("Operation not found."));
             }
 
-            if (!await _operationRepository.HasMemberAccessAsync(existingOperation.OrganizationId, currentUserId))
+            var role = await _organizationRepository.GetMemberRoleAsync(existingOperation.OrganizationId, currentUserId);
+            if (role == null)
             {
                 return NotFound(ApiErrors.General("Operation not found."));
             }
 
-            if (!await _operationRepository.HasEditorAccessAsync(existingOperation.OrganizationId, currentUserId))
+            if (role != MemberRole.Owner)
             {
-                return Forbid();
+                return ForbiddenResult();
             }
 
             var removed = await _operationRepository.DeleteAsync(operationId);
@@ -197,6 +210,11 @@ namespace finance.online.api.Controllers
 
             await _operationRepository.SaveChangesAsync();
             return NoContent();
+        }
+
+        private ObjectResult ForbiddenResult(string message = "You don't have permission to perform this action.")
+        {
+            return StatusCode(StatusCodes.Status403Forbidden, ApiErrors.General(message));
         }
 
         private static OperationResponseDto MapOperation(OperationModel operation)

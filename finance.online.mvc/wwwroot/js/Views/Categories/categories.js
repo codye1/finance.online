@@ -1,12 +1,21 @@
 import api from './categoriesApi.js';
 import validators from './categoriesValidators.js';
 import Modal from '../../helpers/ModalManager.js';
-import { showApiErrors } from '../../helpers/showApiErrors.js';
+import { showApiErrors, getApiErrorMessage } from '../../helpers/showApiErrors.js';
 
 $(function () {
     'use strict';
 
     const DEFAULT_COLOR = '#2563EB';
+
+    // Помилки поза формою (видалення, відсутня організація) — банер на сторінці
+    function showPageError(message) {
+        $('#categories-error').text(message).show();
+    }
+
+    function hidePageError() {
+        $('#categories-error').hide().text('');
+    }
 
     function setActiveCategoryType($form, type) {
         $form.find('#category-type').val(type);
@@ -30,11 +39,13 @@ $(function () {
             return;
         }
 
+        hidePageError();
+
         const isEdit = !!category;
 
         const organizationId = window.TransitData?.organizationId;
         if (!isEdit && !organizationId) {
-            alert('Організацію не знайдено');
+            showPageError('Організацію не знайдено');
             return;
         }
 
@@ -56,6 +67,7 @@ $(function () {
 
                 const $submitBtn = $form.find('#btn-submit-category');
                 $submitBtn.prop('disabled', true).addClass('loading');
+                $form.find('.server-error').remove();
 
                 const request = isEdit
                     ? api.updateCategory({ categoryId: category.id, name: name, color: color })
@@ -77,12 +89,15 @@ $(function () {
                             return;
                         }
 
-                        if ((xhr.status === 400 || xhr.status === 404) && xhr.responseJSON?.errors) {
+                        // 400 / 403 / 404 та будь-який інший статус з { errors: {...} }
+                        if (xhr.responseJSON?.errors) {
                             showApiErrors($form, xhr.responseJSON.errors);
                             return;
                         }
 
-                        alert(isEdit ? 'Помилка оновлення категорії' : 'Помилка створення категорії');
+                        // 500, мережа, порожня відповідь тощо — загальна помилка у формі
+                        const fallback = isEdit ? 'Помилка оновлення категорії' : 'Помилка створення категорії';
+                        showApiErrors($form, { _general: [getApiErrorMessage(xhr, fallback)] });
                     })
                     .always(() => {
                         $submitBtn.prop('disabled', false).removeClass('loading');
@@ -143,6 +158,8 @@ $(function () {
                 return;
             }
 
+            hidePageError();
+
             const $item = $(this).closest('.categories-item');
 
             api.deleteCategory(categoryId)
@@ -159,7 +176,7 @@ $(function () {
                         return;
                     }
 
-                    alert('Помилка видалення категорії');
+                    showPageError(getApiErrorMessage(xhr, 'Помилка видалення категорії'));
                 });
         });
     }

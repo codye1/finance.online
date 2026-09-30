@@ -7,9 +7,6 @@ namespace finance.online.api.Repositories.OperationRepository
 {
     public class OperationRepository : IOperationRepository
     {
-        private const string OwnerRole = "owner";
-        private const string AccountantRole = "accountant";
-
         private const string IncomeType = "income";
         private const string ExpenseType = "expense";
 
@@ -38,8 +35,8 @@ namespace finance.online.api.Repositories.OperationRepository
             return _context.Members.AnyAsync(member =>
                 member.OrganizationId == orgId &&
                 member.UserId == userId &&
-                (member.Role == OwnerRole ||
-                 member.Role == AccountantRole));
+                (member.Role == MemberRole.Owner ||
+                 member.Role == MemberRole.Accountant));
         }
 
         public async Task<List<OperationModel>> GetByOrganizationAsync(

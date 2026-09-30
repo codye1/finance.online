@@ -5,6 +5,6 @@ namespace finance.online.api.Models.DTO
     public class OrganizationMemberUpdateRequestDto
     {
         [Required]
-        public string Role { get; set; } = null!;
+        public MemberRole? Role { get; set; }
     }
 }

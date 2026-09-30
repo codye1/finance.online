@@ -2,6 +2,7 @@
 using finance.online.api.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace finance.online.api.Data
 {
@@ -24,6 +25,13 @@ namespace finance.online.api.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Member>()
+    .Property(m => m.Role)
+    .HasConversion(
+        v => v.ToString().ToLowerInvariant(),
+        v => Enum.Parse<MemberRole>(v, true))
+    .HasMaxLength(20);
 
             builder.Entity<Organization>()
     .HasOne(x => x.CreatedBy)
@@ -48,5 +56,7 @@ namespace finance.online.api.Data
                 .HasForeignKey(x => x.CategoryId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
+
+
     }
 }

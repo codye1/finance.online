@@ -95,6 +95,11 @@
                         }
                     </a>
                 }
+                <form asp-controller="Auth" asp-action="Logout" method="post" class="logout-form">
+                    <button type="submit" class="logout-btn" aria-label="Logout">
+                        <img src="~/images/icons/logout.svg" alt="" />
+                    </button>
+                </form>
             </aside>
 
             <div class="app-content">

@@ -161,7 +161,7 @@ namespace finance.online.api.Controllers
                 return BadRequest(ApiErrors.General("Користувача з таким email не знайдено. Він має бути зареєстрований у застосунку."));
             }
 
-            var member = await _organizationRepository.AddMemberAsync(orgId, invitedUser.Id, dto.Role, currentUserId);
+            var member = await _organizationRepository.AddMemberAsync(orgId, invitedUser.Id, dto.Role!.Value, currentUserId);
             if (member == null)
             {
                 return BadRequest(ApiErrors.General("Organization not found, or you don't have permission to add members."));
@@ -180,7 +180,7 @@ namespace finance.online.api.Controllers
                 return Unauthorized(ApiErrors.General("Authentication is required."));
             }
 
-            var member = await _organizationRepository.UpdateMemberRoleAsync(orgId, userId, dto.Role, currentUserId);
+            var member = await _organizationRepository.UpdateMemberRoleAsync(orgId, userId, dto.Role!.Value, currentUserId);
             if (member == null)
             {
                 return NotFound(ApiErrors.General("Member not found."));
@@ -203,7 +203,7 @@ namespace finance.online.api.Controllers
 
             var activeOrganization = organizations
                 .OrderByDescending(organization => organization.Members
-                    .Any(member => member.UserId == currentUserId && string.Equals(member.Role, "owner", StringComparison.OrdinalIgnoreCase)))
+                    .Any(member => member.UserId == currentUserId && member.Role == MemberRole.Owner))
                 .ThenBy(organization => organization.CreatedAt)
                 .FirstOrDefault();
 
@@ -287,7 +287,7 @@ namespace finance.online.api.Controllers
                 CreatedById = organization.CreatedById,
                 CreatedAt = organization.CreatedAt,
                 MemberCount = organization.Members.Count,
-                IsOwner = string.Equals(currentMember?.Role, "owner", StringComparison.OrdinalIgnoreCase)
+                IsOwner = currentMember?.Role == MemberRole.Owner
             };
         }
 
@@ -301,7 +301,7 @@ namespace finance.online.api.Controllers
                 Role = member.Role,
                 CreatedAt = member.CreatedAt,
                 IsMe = member.UserId == currentUserId,
-                IsOwner = string.Equals(member.Role, "owner", StringComparison.OrdinalIgnoreCase)
+                IsOwner = member.Role == MemberRole.Owner
             };
         }
     }

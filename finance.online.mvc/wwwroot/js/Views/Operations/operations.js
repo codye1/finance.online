@@ -1,7 +1,7 @@
 import api from './operationsApi.js';
 import validators from './operationsValidators.js';
 import Modal from '../../helpers/ModalManager.js';
-import { showApiErrors } from '../../helpers/showApiErrors.js';
+import { showApiErrors, getApiErrorMessage } from '../../helpers/showApiErrors.js';
 
 $(function () {
     'use strict';
@@ -59,12 +59,12 @@ $(function () {
                             return;
                         }
 
-                        if (xhr.status === 400 && xhr.responseJSON?.errors) {
+                        if (xhr.responseJSON?.errors) {
                             showApiErrors($form, xhr.responseJSON.errors);
                             return;
                         }
 
-                        alert('Помилка збереження нової операції');
+                        showApiErrors($form, { _general: [getApiErrorMessage(xhr, 'Помилка збереження нової операції')] });
                     })
                     .always(() => {
                         $submitBtn.prop('disabled', false).removeClass('loading');
@@ -167,7 +167,7 @@ $(function () {
                         return;
                     }
 
-                    alert('Помилка видалення операції');
+                    alert(getApiErrorMessage(xhr, 'Помилка видалення операції'));
                 });
         });
     }

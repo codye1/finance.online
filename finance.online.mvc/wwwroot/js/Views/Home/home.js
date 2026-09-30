@@ -1,7 +1,7 @@
 import api from './homeApi.js';
 import validators from './homeValidators.js';
 import Modal from '../../helpers/ModalManager.js';
-import { showApiErrors } from '../../helpers/showApiErrors.js';
+import { showApiErrors, getApiErrorMessage } from '../../helpers/showApiErrors.js';
 import { initCashflowChart } from './cashflowChart.js';
 
 $(function () {
@@ -64,12 +64,12 @@ $(function () {
                             return;
                         }
 
-                        if (xhr.status === 400 && xhr.responseJSON?.errors) {
+                        if (xhr.responseJSON?.errors) {
                             showApiErrors($form, xhr.responseJSON.errors);
                             return;
                         }
 
-                        alert('Помилка збереження нової операції');
+                        showApiErrors($form, { _general: [getApiErrorMessage(xhr, 'Помилка збереження нової операції')] });
                     })
                     .always(() => {
                         $submitBtn.prop('disabled', false).removeClass('loading');
@@ -149,12 +149,12 @@ $(function () {
                             return;
                         }
 
-                        if (xhr.status === 400 && xhr.responseJSON?.errors) {
+                        if (xhr.responseJSON?.errors) {
                             showApiErrors($form, xhr.responseJSON.errors);
                             return;
                         }
 
-                        alert('Помилка створення організації');
+                        showApiErrors($form, { _general: [getApiErrorMessage(xhr, 'Помилка створення організації')] });
                     })
                     .always(() => {
                         $submitBtn.prop('disabled', false).removeClass('loading');

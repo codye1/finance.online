@@ -8,7 +8,7 @@ namespace finance.online.api.Models.DTO
 
         public string? Email { get; set; }
 
-        public string Role { get; set; } = null!;
+        public MemberRole Role { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

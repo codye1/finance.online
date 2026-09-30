@@ -7,9 +7,6 @@ namespace finance.online.api.Repositories.CategoryRepository
 {
     public class CategoryRepository : ICategoryRepository
     {
-        private const string OwnerRole = "owner";
-        private const string AccountantRole = "accountant";
-
         private readonly FinanceOnlineDbContext _context;
 
         public CategoryRepository(FinanceOnlineDbContext context)
@@ -27,7 +24,7 @@ namespace finance.online.api.Repositories.CategoryRepository
             return _context.Members.AnyAsync(member =>
                 member.OrganizationId == orgId &&
                 member.UserId == userId &&
-                (member.Role == OwnerRole || member.Role == AccountantRole));
+                (member.Role == MemberRole.Owner || member.Role == MemberRole.Accountant));
         }
 
         public async Task<List<Category>?> GetByOrganizationAsync(string orgId, string currentUserId)

@@ -6,9 +6,6 @@ namespace finance.online.api.Repositories.OrganizationRepository
 {
     public class OrganizationRepository : IOrganizationRepository
     {
-        private const string OwnerRole = "owner";
-        private const string MemberRole = "member";
-
         private readonly FinanceOnlineDbContext _context;
 
         public OrganizationRepository(FinanceOnlineDbContext context)
@@ -33,7 +30,7 @@ namespace finance.online.api.Repositories.OrganizationRepository
                 .FirstOrDefaultAsync(organization => organization.Id == orgId && organization.Members.Any(member => member.UserId == userId));
         }
 
-        // Тепер "власник" визначається по ролі в Members ("owner"), а не по CreatedById.
+        // "Власник" визначається по ролі в Members (MemberRole.Owner), а не по CreatedById.
         // Використовується скрізь, де раніше стояла перевірка CreatedById == userId:
         // Update/Delete організації, AddMember, UpdateMemberRole, RemoveMember.
         public async Task<Organization?> GetByIdForOwnerAsync(string orgId, string userId)
@@ -42,7 +39,7 @@ namespace finance.online.api.Repositories.OrganizationRepository
                 .Include(organization => organization.Members)
                 .FirstOrDefaultAsync(organization => organization.Id == orgId
                     && organization.Members.Any(member => member.UserId == userId
-                        && member.Role == OwnerRole));
+                        && member.Role == MemberRole.Owner));
         }
 
         public async Task<List<OrganizationListItemDto>> GetMineListAsync(string userId)
@@ -75,7 +72,7 @@ namespace finance.online.api.Repositories.OrganizationRepository
                 .ToListAsync();
         }
 
-        public async Task<Member?> AddMemberAsync(string orgId, string targetUserId, string role, string currentUserId)
+        public async Task<Member?> AddMemberAsync(string orgId, string targetUserId, MemberRole role, string currentUserId)
         {
             var organization = await GetByIdForOwnerAsync(orgId, currentUserId);
             if (organization == null)
@@ -83,7 +80,6 @@ namespace finance.online.api.Repositories.OrganizationRepository
                 return null;
             }
 
-            var normalizedRole = NormalizeRole(role);
             if (string.IsNullOrWhiteSpace(targetUserId))
             {
                 return null;
@@ -105,7 +101,7 @@ namespace finance.online.api.Repositories.OrganizationRepository
             {
                 UserId = targetUserId,
                 OrganizationId = orgId,
-                Role = normalizedRole,
+                Role = role,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -113,7 +109,7 @@ namespace finance.online.api.Repositories.OrganizationRepository
             return member;
         }
 
-        public async Task<Member?> UpdateMemberRoleAsync(string orgId, string userId, string role, string currentUserId)
+        public async Task<Member?> UpdateMemberRoleAsync(string orgId, string userId, MemberRole role, string currentUserId)
         {
             var organization = await GetByIdForOwnerAsync(orgId, currentUserId);
             if (organization == null)
@@ -127,17 +123,16 @@ namespace finance.online.api.Repositories.OrganizationRepository
                 return null;
             }
 
-            var normalizedRole = NormalizeRole(role);
-            if (member.Role == OwnerRole && normalizedRole != OwnerRole)
+            if (member.Role == MemberRole.Owner && role != MemberRole.Owner)
             {
-                var ownerCount = await _context.Members.CountAsync(item => item.OrganizationId == orgId && item.Role == OwnerRole);
+                var ownerCount = await _context.Members.CountAsync(item => item.OrganizationId == orgId && item.Role == MemberRole.Owner);
                 if (ownerCount <= 1)
                 {
                     return null;
                 }
             }
 
-            member.Role = normalizedRole;
+            member.Role = role;
             return member;
         }
 
@@ -155,9 +150,9 @@ namespace finance.online.api.Repositories.OrganizationRepository
                 return null;
             }
 
-            if (member.Role == OwnerRole)
+            if (member.Role == MemberRole.Owner)
             {
-                var ownerCount = await _context.Members.CountAsync(item => item.OrganizationId == orgId && item.Role == OwnerRole);
+                var ownerCount = await _context.Members.CountAsync(item => item.OrganizationId == orgId && item.Role == MemberRole.Owner);
                 if (ownerCount <= 1)
                 {
                     return null;
@@ -176,9 +171,9 @@ namespace finance.online.api.Repositories.OrganizationRepository
                 return null;
             }
 
-            if (member.Role == OwnerRole)
+            if (member.Role == MemberRole.Owner)
             {
-                var ownerCount = await _context.Members.CountAsync(item => item.OrganizationId == orgId && item.Role == OwnerRole);
+                var ownerCount = await _context.Members.CountAsync(item => item.OrganizationId == orgId && item.Role == MemberRole.Owner);
                 if (ownerCount <= 1)
                 {
                     return null;
@@ -204,7 +199,7 @@ namespace finance.online.api.Repositories.OrganizationRepository
             {
                 UserId = ownerUserId,
                 OrganizationId = organization.Id,
-                Role = OwnerRole,
+                Role = MemberRole.Owner,
                 CreatedAt = organization.CreatedAt
             };
 
@@ -226,7 +221,7 @@ namespace finance.online.api.Repositories.OrganizationRepository
                 {
                     UserId = participantUserId,
                     OrganizationId = organization.Id,
-                    Role = MemberRole,
+                    Role = MemberRole.Member,
                     CreatedAt = organization.CreatedAt
                 };
 
@@ -240,13 +235,6 @@ namespace finance.online.api.Repositories.OrganizationRepository
         public void Update(Organization organization)
         {
             _context.Organizations.Update(organization);
-        }
-
-        private static string NormalizeRole(string role)
-        {
-            return string.IsNullOrWhiteSpace(role)
-                ? MemberRole
-                : role.Trim().ToLowerInvariant();
         }
 
         public async Task DeleteAsync(string orgId)
@@ -268,6 +256,15 @@ namespace finance.online.api.Repositories.OrganizationRepository
             {
                 _context.Organizations.Remove(organization);
             }
+        }
+
+        public async Task<MemberRole?> GetMemberRoleAsync(string orgId, string userId)
+        {
+            return await _context.Members
+                .AsNoTracking()
+                .Where(m => m.OrganizationId == orgId && m.UserId == userId)
+                .Select(m => (MemberRole?)m.Role)
+                .FirstOrDefaultAsync();
         }
 
         public async Task SaveChangesAsync()

@@ -1171,3 +1171,78 @@ input[type="date"].form-input {
         border-color: hsl(var(--foreground));
         transform: scale(1.1);
     }
+.logout-form {
+    margin-top: auto;
+    display: flex;
+}
+
+.logout-btn {
+    /* скидання стандартних стилів кнопки */
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: 0;
+    margin: 0;
+    font: inherit;
+    cursor: pointer;
+    /* ваші стилі */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0.5rem;
+    border-radius: var(--radius-md);
+    color: hsl(var(--muted-foreground));
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+    .logout-btn:hover {
+        background-color: hsl(var(--muted));
+        color: hsl(var(--foreground));
+    }
+
+    .logout-btn:focus-visible {
+        outline: 2px solid hsl(var(--ring, var(--foreground)));
+        outline-offset: 2px;
+    }
+
+    .logout-btn img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+.alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.alert-danger {
+    background-color: hsl(var(--destructive) / 0.1);
+    border-color: hsl(var(--destructive) / 0.4);
+    color: hsl(var(--destructive));
+}
+
+    /* Іконка «!» в колі, така сама, як у .form-error-text */
+    .alert-danger::before {
+        content: "";
+        flex: 0 0 auto;
+        width: 1.05rem;
+        height: 1.05rem;
+        margin-top: 0.1rem;
+        background-color: currentColor;
+        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 8v4'/%3E%3Cpath d='M12 16h.01'/%3E%3C/svg%3E") center / contain no-repeat;
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 8v4'/%3E%3Cpath d='M12 16h.01'/%3E%3C/svg%3E") center / contain no-repeat;
+    }

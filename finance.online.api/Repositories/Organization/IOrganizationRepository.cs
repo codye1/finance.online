@@ -12,9 +12,9 @@ namespace finance.online.api.Repositories.OrganizationRepository
 
         Task<List<Member>?> GetMembersAsync(string orgId, string currentUserId);
 
-        Task<Member?> AddMemberAsync(string orgId, string targetUserId, string role, string currentUserId);
+        Task<Member?> AddMemberAsync(string orgId, string targetUserId, MemberRole role, string currentUserId);
 
-        Task<Member?> UpdateMemberRoleAsync(string orgId, string userId, string role, string currentUserId);
+        Task<Member?> UpdateMemberRoleAsync(string orgId, string userId, MemberRole role, string currentUserId);
 
         Task<Member?> RemoveMemberAsync(string orgId, string userId, string currentUserId);
 
@@ -29,5 +29,7 @@ namespace finance.online.api.Repositories.OrganizationRepository
         Task DeleteAsync(string orgId);
 
         Task SaveChangesAsync();
+
+        Task<MemberRole?> GetMemberRoleAsync(string orgId, string userId);
     }
 }
