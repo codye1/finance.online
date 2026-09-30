@@ -6,7 +6,7 @@ namespace finance.online.api.Models.DTO
 
         public string Type { get; set; } = null!;
 
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
 
         public string CategoryId { get; set; } = null!;
 

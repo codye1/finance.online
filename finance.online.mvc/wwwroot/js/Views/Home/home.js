@@ -2,6 +2,7 @@ import api from './homeApi.js';
 import validators from './homeValidators.js';
 import Modal from '../../helpers/ModalManager.js';
 import { showApiErrors } from '../../helpers/showApiErrors.js';
+import { initCashflowChart } from './cashflowChart.js';
 
 $(function () {
     'use strict';
@@ -404,12 +405,7 @@ $(function () {
         applyOperationsFilter
     );
 
-    initFilter(
-        $('#chart-filter'),
-        $('#chart-placeholder'),
-        '.chart-bar-pair',
-        null
-    );
+    initCashflowChart();
 
     initOrganizationDropdown();
     initPeriodDropdown();

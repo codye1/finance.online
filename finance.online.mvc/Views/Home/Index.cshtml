@@ -8,10 +8,12 @@
 
     AssetManager.RegisterScript("/lib/jquery-validation/dist/jquery.validate.min.js");
 
+    // Chart.js — звичайний (не module) скрипт, має підключитись до home.js
+    AssetManager.RegisterScript("https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js");
+
     AssetManager.RegisterScript("/js/views/Home/home.js", isModule: true);
 
     var viewModel = Model as finance.online.mvc.Models.HomeViewModel ?? new finance.online.mvc.Models.HomeViewModel();
-    var maxOp = viewModel.Operations.Count > 0 ? viewModel.Operations.Max(o => o.Amount) : 1m;
     var activePeriodLabel = viewModel.Periods.FirstOrDefault(p => p.Value == viewModel.ActivePeriod)?.Label ?? "Період";
     string FormatMoney(decimal amount) => amount.ToString("N2");
 
@@ -136,14 +138,12 @@
                         </div>
                     </div>
 
-                    <div class="chart-placeholder" id="chart-placeholder">
-                        @foreach (var op in viewModel.Operations.OrderBy(o => o.Date))
-                        {
-                            var h = maxOp > 0 ? (int)(op.Amount / maxOp * 100) : 0;
-                            <div class="chart-bar-pair" data-type="@op.Type" title="@op.Category — @FormatMoney(op.Amount)">
-                                <div class="chart-bar @(op.Type)" style="height:@(h)%;"></div>
-                            </div>
-                        }
+                    <div class="cashflow-chart-wrap" style="position:relative; height:260px;">
+                        <canvas id="cashflow-chart" aria-label="Діаграма грошового потоку" role="img"></canvas>
+                        <div id="cashflow-empty" class="text-xs text-muted-foreground"
+                             style="display:@(viewModel.Cashflow.Points.Count == 0 ? "flex" : "none"); position:absolute; inset:0; align-items:center; justify-content:center;">
+                            Немає даних за обраний період
+                        </div>
                     </div>
 
                 </div>
@@ -290,7 +290,10 @@
     <script>
         window.TransitData = {
             organizationId: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ActiveOrganization.Id)),
-            activePeriod: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ActivePeriod))
+            activePeriod: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ActivePeriod)),
+            cashflow: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+                Model.Cashflow,
+                new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase }))
         };
 
         localStorage.setItem('activeOrganizationId', window.TransitData.organizationId);

@@ -29,6 +29,8 @@ namespace finance.online.api.Repositories.OperationRepository
 
         Task<OperationsSummaryDto?> GetSummaryAsync(string orgId, string period);
 
+        Task<CashflowResponseDto?> GetCashflowAsync(string orgId, string period);
+
         Task SaveChangesAsync();
     }
 }

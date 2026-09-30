@@ -72,6 +72,30 @@ namespace finance.online.api.Controllers
             return Ok(summary);
         }
 
+
+        [HttpGet("/organizations/{orgId}/operations/cashflow")]
+        public async Task<IActionResult> GetCashflow(string orgId, [FromQuery] string period = "month")
+        {
+            var currentUserId = _userManager.GetUserId(User);
+            if (string.IsNullOrWhiteSpace(currentUserId))
+            {
+                return Unauthorized(ApiErrors.General("Authentication is required."));
+            }
+
+            if (!await _operationRepository.HasMemberAccessAsync(orgId, currentUserId))
+            {
+                return NotFound(ApiErrors.General("Organization not found."));
+            }
+
+            var cashflow = await _operationRepository.GetCashflowAsync(orgId, period);
+            if (cashflow == null)
+            {
+                return BadRequest(ApiErrors.General("Unsupported period."));
+            }
+
+            return Ok(cashflow);
+        }
+
         [HttpPost("/organizations/{orgId}/operations")]
         public async Task<IActionResult> Create(string orgId, OperationCreateRequestDto dto)
         {
