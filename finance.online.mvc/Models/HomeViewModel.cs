@@ -13,6 +13,7 @@ namespace finance.online.mvc.Models
         public List<KpiViewModel> Kpis { get; set; } = new();
         public List<OperationViewModel> Operations { get; set; } = new();
         public List<CategoryViewModel> Categories { get; set; } = new();
+        public CashflowSeriesViewModel Cashflow { get; set; } = new();
     }
 
     public class PeriodOption
@@ -45,6 +46,19 @@ namespace finance.online.mvc.Models
         public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string Color { get; set; } = string.Empty;
+    }
+
+    public class CashflowSeriesViewModel
+    {
+        public string Granularity { get; set; } = "day";
+        public List<CashflowPointViewModel> Points { get; set; } = new();
+    }
+
+    public class CashflowPointViewModel
+    {
+        public DateTime Date { get; set; }
+        public decimal Income { get; set; }
+        public decimal Expense { get; set; }
     }
 
     public class HomeUserModel

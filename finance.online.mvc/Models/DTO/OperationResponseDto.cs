@@ -4,7 +4,7 @@ namespace finance.online.mvc.Models.DTO
     {
         public string Id { get; set; } = string.Empty;
         public string Type { get; set; } = string.Empty;
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
         public string CategoryId { get; set; } = string.Empty;
         public string CategoryName { get; set; } = string.Empty;
         public string CategoryColor { get; set; } = string.Empty;

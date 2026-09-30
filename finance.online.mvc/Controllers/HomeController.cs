@@ -19,16 +19,16 @@ namespace finance.online.mvc.Controllers
         public async Task<IActionResult> Index(
     string? organizationId,
     string period = "month")
-{
-    var viewModel = await BuildHomeViewModelAsync(organizationId, period);
+        {
+            var viewModel = await BuildHomeViewModelAsync(organizationId, period);
 
-    if (viewModel == null)
-    {
-        return RedirectToAction("Auth", "Auth");
-    }
+            if (viewModel == null)
+            {
+                return RedirectToAction("Auth", "Auth");
+            }
 
-    return View(viewModel);
-}
+            return View(viewModel);
+        }
 
         // Повний список організацій юзера — лишив як окремий екшн на випадок,
         // якщо знадобиться ліниво оновлювати дропдаун без перезавантаження сторінки
@@ -57,169 +57,188 @@ namespace finance.online.mvc.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-       private async Task<HomeViewModel?> BuildHomeViewModelAsync(
-    string? organizationId,
-    string period)
-{
-    var client = _httpClientFactory.CreateClient("FinanceOnlineApi");
-    var periods = GetDefaultPeriods();
-
-    period = periods.Any(x => x.Value == period)
-        ? period
-        : "month";
-
-    var activeOrganizationTask =
-        ResolveActiveOrganizationAsync(client, organizationId);
-
-    var organizationsListTask =
-        TryGetJsonAsync<List<OrganizationResponseDto>>(
-            client,
-            "/organizations/list");
-
-    await Task.WhenAll(
-        activeOrganizationTask,
-        organizationsListTask);
-
-    var activeOrganizationResult = await activeOrganizationTask;
-
-    if (activeOrganizationResult.State is
-        ApiFetchState.Unauthorized or
-        ApiFetchState.Forbidden)
-    {
-        return null;
-    }
-
-    var organizationsListResult = await organizationsListTask;
-
-    if (organizationsListResult.State is
-        ApiFetchState.Unauthorized or
-        ApiFetchState.Forbidden)
-    {
-        return null;
-    }
-
-    var organizations =
-        organizationsListResult.Value ??
-        new List<OrganizationResponseDto>();
-
-    var activeOrganization = activeOrganizationResult.Value;
-
-    if (activeOrganization is null)
-    {
-        return new HomeViewModel
+        private async Task<HomeViewModel?> BuildHomeViewModelAsync(
+     string? organizationId,
+     string period)
         {
-            ActiveOrganization = new OrganizationResponseDto(),
-            Organizations = organizations,
-            ActivePeriod = period,
-            Periods = periods,
-            Kpis = BuildEmptyKpis(period),
-            Operations = new List<OperationViewModel>(),
-            Categories = new List<CategoryViewModel>()
-        };
-    }
+            var client = _httpClientFactory.CreateClient("FinanceOnlineApi");
+            var periods = GetDefaultPeriods();
 
-    var summaryTask = TryGetJsonAsync<OperationsSummaryDto>(
-        client,
-        $"/organizations/{activeOrganization.Id}/operations/summary?period={Uri.EscapeDataString(period)}");
+            period = periods.Any(x => x.Value == period)
+                ? period
+                : "month";
 
-    var operationsTask = TryGetJsonAsync<List<OperationResponseDto>>(
-        client,
-        $"/organizations/{activeOrganization.Id}/operations?period={Uri.EscapeDataString(period)}&page=1");
+            var activeOrganizationTask =
+                ResolveActiveOrganizationAsync(client, organizationId);
 
-    var categoriesTask = TryGetJsonAsync<List<CategoryResponseDto>>(
-        client,
-        $"/organizations/{activeOrganization.Id}/categories");
+            var organizationsListTask =
+                TryGetJsonAsync<List<OrganizationResponseDto>>(
+                    client,
+                    "/organizations/list");
 
-    await Task.WhenAll(
-        summaryTask,
-        operationsTask,
-        categoriesTask);
+            await Task.WhenAll(
+                activeOrganizationTask,
+                organizationsListTask);
 
-    var summaryResult = await summaryTask;
+            var activeOrganizationResult = await activeOrganizationTask;
 
-    if (summaryResult.State is
-        ApiFetchState.Unauthorized or
-        ApiFetchState.Forbidden)
-    {
-        return null;
-    }
+            if (activeOrganizationResult.State is
+                ApiFetchState.Unauthorized or
+                ApiFetchState.Forbidden)
+            {
+                return null;
+            }
 
-    var operationsResult = await operationsTask;
+            var organizationsListResult = await organizationsListTask;
 
-    if (operationsResult.State is
-        ApiFetchState.Unauthorized or
-        ApiFetchState.Forbidden)
-    {
-        return null;
-    }
+            if (organizationsListResult.State is
+                ApiFetchState.Unauthorized or
+                ApiFetchState.Forbidden)
+            {
+                return null;
+            }
 
-    var categoriesResult = await categoriesTask;
+            var organizations =
+                organizationsListResult.Value ??
+                new List<OrganizationResponseDto>();
 
-    if (categoriesResult.State is
-        ApiFetchState.Unauthorized or
-        ApiFetchState.Forbidden)
-    {
-        return null;
-    }
+            var activeOrganization = activeOrganizationResult.Value;
 
-    var summary =
-        summaryResult.Value ??
-        new OperationsSummaryDto
+            if (activeOrganization is null)
+            {
+                return new HomeViewModel
+                {
+                    ActiveOrganization = new OrganizationResponseDto(),
+                    Organizations = organizations,
+                    ActivePeriod = period,
+                    Periods = periods,
+                    Kpis = BuildEmptyKpis(period),
+                    Operations = new List<OperationViewModel>(),
+                    Categories = new List<CategoryViewModel>()
+                };
+            }
+
+            var summaryTask = TryGetJsonAsync<OperationsSummaryDto>(
+                client,
+                $"/organizations/{activeOrganization.Id}/operations/summary?period={Uri.EscapeDataString(period)}");
+
+            var operationsTask = TryGetJsonAsync<List<OperationResponseDto>>(
+                client,
+                $"/organizations/{activeOrganization.Id}/operations?period={Uri.EscapeDataString(period)}&page=1");
+
+            var categoriesTask = TryGetJsonAsync<List<CategoryResponseDto>>(
+                client,
+                $"/organizations/{activeOrganization.Id}/categories");
+
+            var cashflowTask = TryGetJsonAsync<CashflowSeriesViewModel>(
+                client,
+                $"/organizations/{activeOrganization.Id}/operations/cashflow?period={Uri.EscapeDataString(period)}");
+
+            await Task.WhenAll(
+                summaryTask,
+                operationsTask,
+                categoriesTask,
+                cashflowTask);
+
+            var summaryResult = await summaryTask;
+
+            if (summaryResult.State is
+                ApiFetchState.Unauthorized or
+                ApiFetchState.Forbidden)
+            {
+                return null;
+            }
+
+            var operationsResult = await operationsTask;
+
+            if (operationsResult.State is
+                ApiFetchState.Unauthorized or
+                ApiFetchState.Forbidden)
+            {
+                return null;
+            }
+
+            var categoriesResult = await categoriesTask;
+
+            if (categoriesResult.State is
+                ApiFetchState.Unauthorized or
+                ApiFetchState.Forbidden)
+            {
+                return null;
+            }
+
+            var cashflowResult = await cashflowTask;
+
+            if (cashflowResult.State is
+                ApiFetchState.Unauthorized or
+                ApiFetchState.Forbidden)
+            {
+                return null;
+            }
+
+            // Якщо діаграма не завантажилась — не валимо всю сторінку, просто порожня серія
+            var cashflow = cashflowResult.Value ?? new CashflowSeriesViewModel();
+
+            var summary =
+                summaryResult.Value ??
+                new OperationsSummaryDto
+                {
+                    Period = period
+                };
+
+            var operations =
+                operationsResult.Value ??
+                new List<OperationResponseDto>();
+
+            var categories =
+                categoriesResult.Value ??
+                new List<CategoryResponseDto>();
+
+            return new HomeViewModel
+            {
+                // Значення приходить безпосередньо з API
+                NetBalance = summary.NetProfit,
+
+                ActiveOrganization = activeOrganization,
+                Organizations = organizations,
+
+                ActivePeriod = period,
+                Periods = periods,
+
+                Kpis = BuildKpis(summary, period),
+
+                Operations = operations
+                    .OrderByDescending(operation => operation.CreatedAt)
+                    .Select(MapOperation)
+                    .ToList(),
+
+                Categories = categories
+                    .Select(MapCategory)
+                    .ToList(),
+
+                Cashflow = cashflow
+            };
+        }
+        [HttpGet("/organizations/{orgId}/operations/more")]
+        public async Task<IActionResult> LoadMoreOperations(string orgId, int page = 2, string period = "month")
         {
-            Period = period
-        };
+            var client = _httpClientFactory.CreateClient("FinanceOnlineApi");
+            var result = await TryGetJsonAsync<List<OperationResponseDto>>(
+                client,
+                $"/organizations/{orgId}/operations?period={period}&page={page}");
 
-    var operations =
-        operationsResult.Value ??
-        new List<OperationResponseDto>();
+            if (result.State is ApiFetchState.Unauthorized or ApiFetchState.Forbidden)
+            {
+                return Unauthorized();
+            }
 
-    var categories =
-        categoriesResult.Value ??
-        new List<CategoryResponseDto>();
+            var operations = (result.Value ?? new List<OperationResponseDto>())
+                .OrderByDescending(operation => operation.CreatedAt)
+                .Select(MapOperation)
+                .ToList();
 
-    return new HomeViewModel
-    {
-        // Значення приходить безпосередньо з API
-        NetBalance = summary.NetProfit,
-
-        ActiveOrganization = activeOrganization,
-        Organizations = organizations,
-
-        ActivePeriod = period,
-        Periods = periods,
-
-        Kpis = BuildKpis(summary, period),
-
-        Operations = operations
-            .OrderByDescending(operation => operation.CreatedAt)
-            .Select(MapOperation)
-            .ToList(),
-
-        Categories = categories
-            .Select(MapCategory)
-            .ToList()
-    };
-}
-[HttpGet("/organizations/{orgId}/operations/more")]
-public async Task<IActionResult> LoadMoreOperations(string orgId, int page = 2, string period = "month")
-{
-    var client = _httpClientFactory.CreateClient("FinanceOnlineApi");
-    var result = await TryGetJsonAsync<List<OperationResponseDto>>(
-        client,
-        $"/organizations/{orgId}/operations?period={period}&page={page}");
-
-    if (result.State is ApiFetchState.Unauthorized or ApiFetchState.Forbidden)
-    {
-        return Unauthorized();
-    }
-
-    var operations = (result.Value ?? new List<OperationResponseDto>())
-        .OrderByDescending(operation => operation.CreatedAt)
-        .Select(MapOperation)
-        .ToList();
-
-    return PartialView("~/Views/Home/Partials/_OperationItemsList.cshtml", operations);
-}
+            return PartialView("~/Views/Home/Partials/_OperationItemsList.cshtml", operations);
+        }
         // Якщо передано organizationId (з localStorage на клієнті) — тягнемо конкретну організацію по id.
         // Якщо його нема, або він виявився невалідним (404/Failed) — фолбек на /organizations/active.
         private static async Task<(ApiFetchState State, OrganizationResponseDto? Value)> ResolveActiveOrganizationAsync(
@@ -270,8 +289,8 @@ public async Task<IActionResult> LoadMoreOperations(string orgId, int page = 2, 
         }
 
         private static List<PeriodOption> GetDefaultPeriods()
-{
-    return new List<PeriodOption>
+        {
+            return new List<PeriodOption>
     {
         new()
         {
@@ -294,20 +313,20 @@ public async Task<IActionResult> LoadMoreOperations(string orgId, int page = 2, 
             Label = "Весь час"
         }
     };
-}
+        }
 
         private static List<KpiViewModel> BuildEmptyKpis(string period)
-{
-    var periodLabel = period switch
-    {
-        "week" => "За тиждень",
-        "month" => "За місяць",
-        "year" => "За рік",
-        "all" => "За весь час",
-        _ => "За період"
-    };
+        {
+            var periodLabel = period switch
+            {
+                "week" => "За тиждень",
+                "month" => "За місяць",
+                "year" => "За рік",
+                "all" => "За весь час",
+                _ => "За період"
+            };
 
-    return new List<KpiViewModel>
+            return new List<KpiViewModel>
     {
         new()
         {
@@ -345,22 +364,22 @@ public async Task<IActionResult> LoadMoreOperations(string orgId, int page = 2, 
             Icon = "percent"
         }
     };
-}
+        }
 
         private static List<KpiViewModel> BuildKpis(
     OperationsSummaryDto summary,
     string period)
-{
-    var periodLabel = period switch
-    {
-        "week" => "За тиждень",
-        "month" => "За місяць",
-        "year" => "За рік",
-        "all" => "За весь час",
-        _ => "За період"
-    };
+        {
+            var periodLabel = period switch
+            {
+                "week" => "За тиждень",
+                "month" => "За місяць",
+                "year" => "За рік",
+                "all" => "За весь час",
+                _ => "За період"
+            };
 
-    return new List<KpiViewModel>
+            return new List<KpiViewModel>
     {
         new()
         {
@@ -398,7 +417,7 @@ public async Task<IActionResult> LoadMoreOperations(string orgId, int page = 2, 
             Icon = "percent"
         }
     };
-}
+        }
 
         private static OperationViewModel MapOperation(OperationResponseDto operation)
         {

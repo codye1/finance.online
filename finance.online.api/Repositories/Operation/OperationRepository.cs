@@ -132,6 +132,145 @@ namespace finance.online.api.Repositories.OperationRepository
                     operation.Id == operationId);
         }
 
+        // Cash flow series for the dashboard chart.
+        // Uses the same GetPeriodRange as GetSummaryAsync, so KPI cards and chart always match.
+        public async Task<CashflowResponseDto?> GetCashflowAsync(
+            string orgId,
+            string period)
+        {
+            var normalizedPeriod =
+                period.Trim().ToLowerInvariant();
+
+            var range = GetPeriodRange(normalizedPeriod);
+
+            if (range == null)
+            {
+                return null;
+            }
+
+            // week/month -> per day, year/all -> per month
+            var byMonth = normalizedPeriod is "year" or "all";
+
+            var query = _context.Operations
+                .AsNoTracking()
+                .Where(operation =>
+                    operation.OrganizationId == orgId);
+
+            if (range.Value.Start.HasValue)
+            {
+                query = query.Where(operation =>
+                    operation.CreatedAt >= range.Value.Start.Value);
+            }
+
+            if (range.Value.End.HasValue)
+            {
+                query = query.Where(operation =>
+                    operation.CreatedAt < range.Value.End.Value);
+            }
+
+            // Group in SQL by (bucket, type) - translates reliably in EF Core;
+            // income/expense columns are pivoted in memory below.
+            List<(DateTime Bucket, string Type, decimal Sum)> rows;
+
+            if (byMonth)
+            {
+                rows = (await query
+                        .GroupBy(operation => new
+                        {
+                            operation.CreatedAt.Year,
+                            operation.CreatedAt.Month,
+                            operation.Type
+                        })
+                        .Select(group => new
+                        {
+                            group.Key.Year,
+                            group.Key.Month,
+                            group.Key.Type,
+                            Sum = group.Sum(item => (decimal)item.Amount)
+                        })
+                        .ToListAsync())
+                    .Select(row => (
+                        new DateTime(row.Year, row.Month, 1),
+                        row.Type,
+                        row.Sum))
+                    .ToList();
+            }
+            else
+            {
+                rows = (await query
+                        .GroupBy(operation => new
+                        {
+                            Day = operation.CreatedAt.Date,
+                            operation.Type
+                        })
+                        .Select(group => new
+                        {
+                            group.Key.Day,
+                            group.Key.Type,
+                            Sum = group.Sum(item => (decimal)item.Amount)
+                        })
+                        .ToListAsync())
+                    .Select(row => (row.Day, row.Type, row.Sum))
+                    .ToList();
+            }
+
+            var result = new CashflowResponseDto
+            {
+                Granularity = byMonth ? "month" : "day"
+            };
+
+            if (rows.Count == 0)
+            {
+                return result;
+            }
+
+            // X axis without gaps: from period start up to today (or the last operation).
+            var today = DateTime.UtcNow.Date;
+            var lastBucket = rows.Max(row => row.Bucket);
+
+            var first = byMonth
+                ? (range.Value.Start ?? rows.Min(row => row.Bucket))
+                : range.Value.Start!.Value;
+
+            var reference = byMonth
+                ? new DateTime(today.Year, today.Month, 1)
+                : today;
+
+            var last = lastBucket > reference ? lastBucket : reference;
+
+            first = byMonth
+                ? new DateTime(first.Year, first.Month, 1)
+                : first.Date;
+
+            var income = rows
+                .Where(row => row.Type == IncomeType)
+                .ToDictionary(row => row.Bucket, row => row.Sum);
+
+            var expense = rows
+                .Where(row => row.Type == ExpenseType)
+                .ToDictionary(row => row.Bucket, row => row.Sum);
+
+            for (var current = first;
+                 current <= last;
+                 current = byMonth ? current.AddMonths(1) : current.AddDays(1))
+            {
+                // Kind = Unspecified so JSON has no "Z": the browser then shows the same
+                // calendar date instead of shifting it by the user's UTC offset.
+                var point = DateTime.SpecifyKind(
+                    current,
+                    DateTimeKind.Unspecified);
+
+                result.Points.Add(new CashflowPointDto
+                {
+                    Date = point,
+                    Income = income.GetValueOrDefault(point),
+                    Expense = expense.GetValueOrDefault(point)
+                });
+            }
+
+            return result;
+        }
+
         public async Task<OperationModel?> CreateAsync(
             string orgId,
             string currentUserId,
